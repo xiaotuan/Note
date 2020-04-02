@@ -18,6 +18,14 @@ ext {
 }
 ```
 
+或者 
+
+```json
+dependencies {
+    def nav_version = '2.2.1'
+}
+```
+
 
 
 例如
@@ -41,6 +49,16 @@ ext {
 ```
 EXOPLAYER_VERSION = r2.11.3
 ```
+
+3. 在根目录下的 `build.gradle` 文件中使用如下方法定义：
+
+```json
+buildscript {
+    ext.java_version = JavaVersion.VERSION_1_8
+}
+```
+
+
 
 #### 2. 使用gradle变量
 

@@ -3,14 +3,6 @@
 **NSString+Extend.h**
 
 ```objective-c
-//
-//  NSString+Extend.h
-//  HelloWorld
-//
-//  Created by 覃团业 on 2020/3/22.
-//  Copyright © 2020 覃团业. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface NSString (Extend)
@@ -52,14 +44,6 @@
 **NSString+Extend.m**
 
 ```objective-c
-//
-//  NSString+Extend.m
-//  HelloWorld
-//
-//  Created by 覃团业 on 2020/3/22.
-//  Copyright © 2020 覃团业. All rights reserved.
-//
-
 #import "NSString+Extend.h"
 
 @implementation NSString (Extend)

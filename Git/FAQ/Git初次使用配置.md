@@ -1,16 +1,16 @@
 <center><font size="5"><b>Git初次使用配置</b></font></center>
 
-1. 生成秘钥
-
-```console
-$ ssh-keygen -o
-```
-
-2. 配置用户信息
+1. 配置用户信息
 
 ```console
 $ git config --global user.name "John Doe"
 $ git config --global user.email johndoe@example.com
+```
+
+2. 生成秘钥
+
+```console
+$ ssh-keygen -o
 ```
 
 3. 将秘钥添加到服务器中
