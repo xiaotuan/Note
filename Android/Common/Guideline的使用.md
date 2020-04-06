@@ -1,5 +1,7 @@
 <center><font size="5"><b>Guideline的使用</b></font></center>
 
+> 摘自：[android/storage-samples/ActionOpenDocument](https://github.com/android/storage-samples/tree/master/ActionOpenDocument)
+
 `androidx.constraintlayout.widget.Guideline` 是配合 `androidx.constraintlayout.widget.ConstraintLayout` 布局一起使用的。从其名字可以知道，它是一种布局指导线，在界面中不会显示。其主要属性有：
 
 + android:oriention：指定那个方向上的指导线。
