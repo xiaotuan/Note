@@ -10,7 +10,7 @@
 <!-- ToolBar上的title颜色 -->
 <item name="android:textColorPrimary">@color/textColorPrimary</item>
 <!-- 页面背景色 -->
-<item name="android:navigationBarColor">@color/windowBg</item>
+<item name="android:windowBackground">@color/windowBg</item>
 <!-- 底部导航栏颜色 -->
 <item name="android:navigationBarColor">@color/navigationColor</item>
 <!-- 各个控制控件的默认颜色 -->

@@ -72,6 +72,12 @@ defaultConfig {
   versionCode 1
   versionName "1.0"
 }
+
+android {
+    kotlinOptions {
+    	jvmTarget = "$rootProject.ext.java_version"
+    }
+}
 ```
 
 如果在字符串中使用，字符串需要使用双引号（ " ）括起来，不能使用单引号（ ' ），在变量名前面添加（ $ ）符号，可以使用大括号（ {} ）将变量名括起来，也可以不用：
