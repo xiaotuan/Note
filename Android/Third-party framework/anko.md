@@ -8,16 +8,16 @@
 
 > 该框架已经标注为弃用，不再更新。
 
-####1. Github
+#### 1. Github
 <https://github.com/Kotlin/anko>
 
-####2. 过时原因
+#### 2. 过时原因
 
-#####2.1  停止Anko
+##### 2.1  停止Anko
 
 在过去的几个月中，我们收到了许多用户的关于Anko未来的问题。因此，今天，我们要弄清楚一切，并正式弃用该库。
 
-#####2.2 你为什么不赞成Anko？
+##### 2.2 你为什么不赞成Anko？
 
 Anko诞生于用于构建Android布局的类型安全DSL。它不仅允许以类型安全的方式创建布局，而且还使布局更具适应性，动态性，可重用性和高性能，因为不需要昂贵的布局膨胀。
 
@@ -29,19 +29,19 @@ Anko诞生于用于构建Android布局的类型安全DSL。它不仅允许以类
 
 Anko是一个成功的项目，它在与Kotlin建立更好的Android开发人员体验中发挥了作用。但是，今天有其他替代方案，我们觉得是时候向安科说再见了。
 
-#####2.3 我应该用什么代替Anko？
+##### 2.3 我应该用什么代替Anko？
 
-######2.3.1 布局DSL
+###### 2.3.1 布局DSL
 
 - Jetpack Compose。由Google支持的适用于Kotlin的反应式View DSL。
 - Splitties- [Views DSL](https://github.com/LouisCAD/Splitties/tree/master/modules/views-dsl)。类似于Anko的可扩展View DSL。
 
-######2.3.2 通用工具
+###### 2.3.2 通用工具
 
 - [Android KTX](https://developer.android.com/kotlin/ktx)。由Google支持的一组针对不同目的的Kotlin扩展。
 - [Splitties](https://github.com/LouisCAD/Splitties)。很多场合的微型库。
 
-######2.3.3 SQLite助手
+###### 2.3.3 SQLite助手
 
 - [Room](https://developer.android.com/topic/libraries/architecture/room)。由Google支持的基于注释的SQLite数据库访问框架。
 - [SQLDelight](https://github.com/cashapp/sqldelight) 用于SQL查询的类型安全的API生成器。
@@ -52,7 +52,7 @@ Anko是一个成功的项目，它在与Kotlin建立更好的Android开发人员
 
 0.10.8
 
-#####3.2 简介
+##### 3.2 简介
 
 ⚠️Anko已弃用。请参阅[此页面](https://github.com/Kotlin/anko/blob/master/GOODBYE.md)以获取更多信息。
 
@@ -67,7 +67,7 @@ Anko包含以下几个部分：
 - *Anko SQLite*：Android SQLite的查询DSL和解析器集合；
 - *Anko Coroutines*：基于[kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines)库的实用程序。
 
-#####3. 3 安科下议院
+##### 3. 3 安科下议院
 
 *Anko Commons*是Kotlin Android开发人员的“工具箱”。该库包含许多Android SDK的帮助程序，包括但不限于：
 
@@ -76,7 +76,7 @@ Anko包含以下几个部分：
 - Logging（[wiki](https://github.com/Kotlin/anko/wiki/Anko-Commons-–-Logging)）;
 - Resources and dimensions（[Wiki](https://github.com/Kotlin/anko/wiki/Anko-Commons-–-Misc)）。
 
-#####3. 4 Anko Layouts ([wiki](https://github.com/Kotlin/anko/wiki/Anko-Layouts))
+##### 3. 4 Anko Layouts ([wiki](https://github.com/Kotlin/anko/wiki/Anko-Layouts))
 
 *Anko Layouts* is a DSL for writing dynamic Android layouts. Here is a simple UI written with Anko DSL:
 
@@ -99,7 +99,7 @@ Anko has a [DSL for ConstraintLayout](https://github.com/Kotlin/anko/wiki/Constr
 
 There is also a [plugin](https://github.com/Kotlin/anko/wiki/Anko-Layouts#anko-support-plugin) for Android Studio that supports previewing Anko DSL layouts.
 
-#####3.5 Anko SQLite ([wiki](https://github.com/Kotlin/anko/wiki/Anko-SQLite))
+##### 3.5 Anko SQLite ([wiki](https://github.com/Kotlin/anko/wiki/Anko-SQLite))
 
 Have you ever been tired of parsing SQLite query results using Android cursors? *Anko SQLite* provides lots of helpers to simplify working with SQLite databases.
 
@@ -114,16 +114,16 @@ fun getUsers(db: ManagedSQLiteOpenHelper): List<User> = db.use {
 }
 ```
 
-#####3.6 Anko Coroutines ([wiki](https://github.com/Kotlin/anko/wiki/Anko-Coroutines))
+##### 3.6 Anko Coroutines ([wiki](https://github.com/Kotlin/anko/wiki/Anko-Coroutines))
 
 *Anko Coroutines* is based on the [`kotlinx.coroutines`](https://github.com/kotlin/kotlinx.coroutines) library and provides:
 
 - [`bg()`](https://github.com/Kotlin/anko/wiki/Anko-Coroutines#bg) function that executes your code in a common pool.
 - [`asReference()`](https://github.com/Kotlin/anko/wiki/Anko-Coroutines#asreference) function which creates a weak reference wrapper. By default, a coroutine holds references to captured objects until it is finished or canceled. If your asynchronous framework does not support cancellation, the values you use inside the asynchronous block can be leaked. `asReference()` protects you from this.
 
-#####3.7 Using Anko
+##### 3.7 Using Anko
 
-######3.7.1 Gradle-based project
+###### 3.7.1 Gradle-based project
 
 Anko has a meta-dependency which plugs in all available features (including Commons, Layouts, SQLite) into your project at once:
 
@@ -200,11 +200,11 @@ dependencies {
 
 There is an [example project](https://github.com/kotlin/anko-example) showing how to include Anko library into your Android Gradle project.
 
-######3.7.2 IntelliJ IDEA project
+###### 3.7.2 IntelliJ IDEA project
 
 If your project is not based on Gradle, just attach the required JARs from the [jcenter repository](https://jcenter.bintray.com/org/jetbrains/anko/) as the library dependencies and that's it.
 
-#####3.8 Contributing
+##### 3.8 Contributing
 
 The best way to submit a patch is to send us a [pull request](https://help.github.com/articles/about-pull-requests/). Before submitting the pull request, make sure all existing tests are passing, and add the new test if it is required.
 
