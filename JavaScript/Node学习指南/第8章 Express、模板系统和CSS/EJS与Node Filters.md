@@ -38,4 +38,14 @@ Cinder Ella, Joe Brown, Mary Smith, Tom Thumb
 | Plus:n | 接收两个数字或者字符串：返回数值 | 返回 a \+ b |
 | Minus:n | 接收两个数值或者字符串：返回数值 | 返回 a \- b |
 | Times:n | 接收两个数值或者字符串： 返回数值 | 返回 a \* b |
-| Devided_by:n | 接收
+| Devided_by:n | 接收两个数值或者字符串：返回数值 | 返回 a / b |
+| Join:'val' | 接收数组：返回字符串 | 用给定值或默认值应用 Array.join 方法 |
+| truncate:n | 接收字符串和长度数值；返回字符串 | 引用 String.substr |
+| truncate_words:n | 接收字符串和单词数；返回字符串 | 应用 String.spit，String.splice |
+| Replace:pattern，substitution | 接收字符串、模板和替换内容；返回字符串 | 应用 String.replace |
+| Prepend:value | 接收字符串和 value 字符串；返回字符串 | 把 value 加在字符串之前 |
+| Append:value | 接收字符串和 value 字符串；返回字符串 | 把 value 拼在字符串之后 |
+| Map:'prop' | 接收字符串和属性：返回数组 | 用 Array.map方法根据给定对象属性创建新的字符串 |
+| Reverse | 接收数组或者字符串 | 如果是数组，应用 Array.reverse; 如果是字符串，分解单词，翻转，再拼接 |
+| Get | 接收对象和属性 | 返回给定对象的该属性值 |
+| Json | 接收对象 | 转换为 JSON 字符串 |
