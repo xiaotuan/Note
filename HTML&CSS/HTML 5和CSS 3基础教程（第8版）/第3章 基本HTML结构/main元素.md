@@ -46,3 +46,10 @@
 最好在 `main` 开始标签中加上 `role="main"`。
 
 > 不能将 `main` 放置在 `article`、`aside`、`footer`、`header` 或 `nav` 元素中。
+
+同p、 header、 footer等元素一样， main元素的内容显示在新的一行。
+
+> 提示 
+> main元素是HTML5新添加的元素。 记住， 在一个页面里仅使用一次。
+> 如果创建的是Web应用， 则使用main包围其主要的功能。
+> 不能将main放置在article、 aside、 footer、 header或nav元素中。

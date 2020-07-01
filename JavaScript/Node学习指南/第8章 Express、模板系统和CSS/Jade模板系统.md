@@ -145,3 +145,46 @@ html(lang="en")
 extends layout
 ```
 
+你不必使用 content 作为 block 的名字，还可以使用多个 block，并且如果你想进一步分解布局，还可以引用其他模板文件。我修改了 `layout.jade` 文件，包含一个 headerd，而不是直接在 layout 文件中使用 head：
+
+```jade
+doctype html
+html(lang="en")
+  include header
+  body
+    block content
+```
+
+`header.jade` 文件内容如下：
+
+```jade
+head
+  title #{title}
+  meta(charset="utf-8")
+```
+
+在 `layout.jade` 和 `header.jade` 文件中有两件事情需要注意下。
+
+第一， include 相对路径。如果把 views 分解为以下目录结构：
+
+```
+/views
+   |_/widgets
+        |_layout.jade
+        |_/standard
+             |_header.jade
+```
+
+在 layout 文件中引用 header 模板时使用：
+
+```
+include standard/header
+```
+
+文件类型并不一定要是 `Jade`，也可以是 `HTML`。当引用的文件不为 `Jade` 文件类型时，需要加上文件扩展名：
+
+```
+include standard/header.html
+```
+
+第二，在 `header.jade` 文件中不要使用缩进。父文件中已经带有缩进了，引用的模板文件中不需要重复缩进。事实上，如果引用文件中带有缩进，生成代码时会报错。
