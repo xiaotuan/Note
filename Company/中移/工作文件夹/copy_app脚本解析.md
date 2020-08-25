@@ -43,12 +43,16 @@ echo "tmp=$tmp"
 
 if [ "$tmp" == "apk" ];then
     echo "lastapk=$lastapk" 
+    # scp 命令主要用于远程文件拷贝
     scp $scppath$1${lastapk} ./tmpapk/signapk${lastapk}
+    # -e 如果给定的变量包含的文件存在， 则返回真。
+    # -f 如果给定的变量包含正常的文件路径或文件名， 则返回真。
     if [ ! -e "./tmpapk/signapk${lastapk}" ];
     then
         echo "ERROR: no such file $scppath$lastapk" 
         exit 1
     fi
+    # 对 apk 进行签名
 	java -jar ./tool/linux-x86/framework/signapk.jar ./tool/security/platform.x509.pem ./tool/security/platform.pk8 ./tmpapk/signapk${lastapk} ../on-project/apk/${lastapk}
 else
        echo "ERROE:not find apk, $jenkinsPath"

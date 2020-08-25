@@ -1732,20 +1732,29 @@ function make_images()
     for PARTINFO_TYPE in ${PARTINFO_ARRAY}
     do
         make_num=0
+        # 遍历芯片名数组
         for chip_name in ${chip_name_array[*]}
         do
+        	# 获取 PARTINFO_CONF 文件路径
             PARTINFO_CONF=$(Get_Project_File ${OUT}/on-project/pub/swproduct/${PARTINFO_TYPE})
             echo "PARTINFO_CONF: ${PARTINFO_CONF}"
 
             ###===================================================
             cyan " Judge flash type is NAND or EMMC for \"${PARTINFO_CONF}\""
+            # 通过 PARTINFO_CONF 文件判断 FLASH 类型是 NAND 还是 EMMC
+            # judge_flash_partition 是 small/platform/build/PartitionCreate.sh 脚本
+            # 中的函数
             flash=$(judge_flash_partition ${PARTINFO_CONF})
 
             cyan "### Mkdir images path ###"
+            # 获取存放 image 的文件夹路径
+            # 例如：/home/qintuanye/workspace/zhaoge_mv300_2020/cmdc/small/platform/out/publish/images-100.462.001-partinfo_nand
+            # 该目录会在编译完成后删除
             images_path=${PUBLISH_PATH}/images-${build_name_flag}${WIPEDATA_FLAG}-${PARTINFO_TYPE%.conf*}
             mkdir -p ${images_path}
 
             cyan "### echo nand.xml/emmc.xml###"
+            # 创建 *_nand.xml 或 *_emmc.xml 文件，并向其添加内容
             magenta "----------------------------------"
             if [ "${flash}" == "nand" ];then
                 xmlname="-nand.xml"
@@ -1760,12 +1769,17 @@ function make_images()
             ### make patition image ###
             ###
             cyan "### make patition image ###"
+            # 读取 PARTINFO_CONF 文件内容
             while read line
             do
+            	# 获取一行中的第一项数据，并将其 Windows 的文件分隔符转换成 unix 的文件分隔符
+            	# dos2unix 命令将字符串中的 Windows 文件分隔符转换成 unix 文件分隔符
                 part_name=$(echo ${line} | awk '{print $1}' | dos2unix)
+                # 如果是文件首行数据，则跳过
                 if [ "${part_name}" == "#part" ];then
                     continue
                 fi
+                # 获取一行中的第2项数据，根据该数据设置 fs_type 变量
                 fs_type=$(echo ${line} | awk '{print $2}')
                 if [ "${fs_type}" == "raw" ];then
                     fs_type="none"
@@ -1774,9 +1788,13 @@ function make_images()
                 elif [ "${fs_type}" == "ext4" ];then
                     fs_type="ext3/4"
                 fi
+                # 获取一行中的第3项数据，并将其赋给 offset 变量
                 offset=$(echo ${line} | awk '{print $3}')
+                # 获取一行中的第4个参数，并将其赋给 length 变量
                 length=$(echo ${line} | awk '{print $4}')
+                # 获取一行中的第5个参数，并将其赋给 image 变量
                 image=$(echo ${line} | awk '{print $5}' | dos2unix)
+                # 如果 image 变量的值是 0 或者 1，则将 image 的值设置为一行中的第六个参数
                 if [[ "${image}" == "0" || "${image}" == "1" ]];then
                     image=$(echo ${line} | awk '{print $6}' | dos2unix)
                 fi
@@ -1785,6 +1803,7 @@ function make_images()
                 ###
                 ### create hitools use emmc.xml/nand.xml ###
                 ###
+                # 根据 image 和 part_name 的值设置 sel 和 image_name 变量
                 if [[ "${image}" == "NULL" || "${part_name}" == "misc" ]];then
                     sel="0"
                     image_name=""
@@ -1798,24 +1817,28 @@ function make_images()
                         image_name=${image}
                     fi
                 fi
+                # 向 *_nand.xml 或 *_emmc.xml 文件写入如下值
                 echo "<Part Sel=\""${sel}"\" PartitionName=\""${part_name}"\" FlashType=\""${flash}"\" FileSystem=\""${fs_type}"\" Start=\""${offset}"M\" Length=\""${length}"M\" SelectFile=\""${image_name}"\"/>" >> ${images_path}/${chip_name}${xmlname}
 
                 #=================================================
                 ###
                 ### make partition image ###
                 ###
+                # 根据 part_name 和 make_num 的值确定是否编译 partitionimg
                 if [[ ${part_name} == "partition" ]] && [ ${make_num} -eq 0 ]
                 then
                     cyan "### Create for partition.img ###"
                     ${TOP}/platform/build/tool/linux-x86/bin/mkpartitionimg ${PARTINFO_CONF} ${PUBLISH_PATH}/${image_name}
                 fi
 
+				# 设置 make_mlcverify_flag 标志
                 [[ ${part_name} == "mlcverify" ]] && make_mlcverify_flag=y
 
                 #=================================================
                 ###
                 ### make misc image ###
                 ###
+                # 编译 misc img
                 if [[ ${part_name} == "misc" ||  ! -f ${PUBLISH_PATH}/misc.img ]] && [ ${make_num} -eq 0 ]
                 then
                     cyan "### Create for misc.img ###"
@@ -1830,6 +1853,7 @@ function make_images()
                         ###
                         ### Create backup.ext4 Partition
                         ###
+                        # 创建 backup.ext4 分区
                         cyan "### Create backup.ext4 Partitions ###"
                         magenta "----------------------------------"
                         if [[ -f ${BACKUP_IMG} ]]
@@ -1851,6 +1875,7 @@ function make_images()
                                 cp -arf ${OTA_Full_Package_zip} ${PUBLISH_PATH}/backup/update.zip
                             fi
                             echo "version=${build_number}" > ${PUBLISH_PATH}/backup/backup_version.txt
+                            # Create_backup 函数是在 PartitionCreate.sh 中定义的
                             Create_backup "backup" ${PARTINFO_CONF}
                             sleep 1
                             rm -rf ${PUBLISH_PATH}/backup
@@ -1862,6 +1887,7 @@ function make_images()
                         ###
                         cyan "### Create ${part_name} Partitions ###"
                         magenta "----------------------------------"
+                        # Create_partition 函数是在 PartitionCreate.sh 中定义的
                         Create_Partition ${part_name} ${PARTINFO_CONF}
                         sleep 1
                     fi
@@ -1871,6 +1897,7 @@ function make_images()
                 ###
                 ### copy all file to a directory ###
                 ###
+                # 拷贝所有文件到 images_path 指定的目录中
                 if [[ "${image}" == "NULL" || "${image}" == "image_name" ]];then
                     continue
                 else
@@ -1891,6 +1918,7 @@ function make_images()
             ###
             ### make mlcverify image ###
             ###
+            # 编译 mlcverify images
             if [[ ${make_mlcverify_flag} == y ]]
             then
                 cyan "### Create for mlcverify.img ###"
@@ -1915,6 +1943,7 @@ function make_images()
             if [[ "y" == ${Partition_User} ]];then
                 cyan "### Create Empty For Partitions ###"
                 magenta "----------------------------------"
+                # Create_User_partition 函数是
                 Create_User_Partition ${PARTINFO_CONF}
                 magenta "----------------------------------"
             fi

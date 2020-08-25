@@ -3,6 +3,7 @@
 ###
 ### Define Function
 ###
+# 日志输出函数
 function Print
 {
 	echo " Create Partition [ ${1} ] [ size  $2 ]..."
