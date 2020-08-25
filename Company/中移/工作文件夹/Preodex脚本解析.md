@@ -1,7 +1,11 @@
 ```shell
+# 文件位置：cmdc/small/platform/build/Preodex.sh
+# 这个脚本文件不参加编译，可能是将其放到 small/platform/release/system 目录上执行，
+# 用于将 jar 文件转换成 odex 文件
 # usage: 在需要system上层目录调用本接口
 #
 ## prepare bootjars' .odex
+# 下面是 Frameworks 中要转换的 jar 包名字
 PRODUCT_BOOT_JARS="core:conscrypt:okhttp:core-junit:bouncycastle:ext:framework:framework2:telephony-common:voip-common:mms-common:android.policy:qb:services:apache-xml:webviewchromium"
 optimizeFlags="v=a,o=v,m=y,u=n"
 BOOTJARS=${PRODUCT_BOOT_JARS//:/ }
@@ -15,6 +19,7 @@ PRIV_APP_DIR=""
 APP_OUT_DIR=""
 PRIV_APP_OUT_DIR=""
 #local function
+# 将 Frameworks 中知道的 jar 包转换成 odex 文件
 function predex_bootjars
 {
 	for JAR in ${BOOTJARS}
@@ -33,6 +38,7 @@ function predex_bootjars
 #param2: system directory
 function do_preodex
 {
+	# 判断参数是否有两个
 	if [ $# != 2 ]
 	then
 		echo $#
@@ -73,8 +79,10 @@ function do_preodex
 	isbootjar=0
 
 	mkdir -p ${FRAMEWORK_OUT_DIR}
+# 遍历 framework 目录文件
  for f in `ls ${FRAMEWORK_DIR}`
  do
+ 	# 获取文件后缀名
 	 subfix=${f##*.}
 	 if [ ${subfix} ==  "odex" ]
 	 then
@@ -90,7 +98,7 @@ function do_preodex
 	 if [ ${subfix} == "jar" ]
 	 then
 		 filename=$(basename $f .jar)
-
+		 # 如果 filename 是 BOOTJARS 中的 jar 文件，则该文件已经转换过了，不需要再转换
 		 for JAR in ${BOOTJARS}
 		 do
 			 if [ $filename == $JAR ]
@@ -142,6 +150,9 @@ function do_preodex
   rm -rf ${ODEX_OUT}
 }
 #param1: directory name base on "system", ex: app priv_app
+# 将 apk 中的 jar 文件转换成 odex 文件
+# 这个函数有点奇怪， ${ACP} 等变量都未在该函数内有定义，也没有在全局定义，
+# 实际运行不知道会不会报错
  function predex_on_apk
  {
 

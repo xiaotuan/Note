@@ -1,5 +1,6 @@
 ```shell
 #!/usr/bin/env bash
+# 文件位置：cmdc/small/platform/build/make.sh
 # 下面的注释都是基于小系统的目录结构为：
 # /home/qintuanye/workspace/zhaoge_mv300_2020/cmdc/small
 # 作为说明的

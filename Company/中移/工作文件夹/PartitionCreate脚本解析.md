@@ -1,5 +1,6 @@
 ```shell
-
+# 文件位置：cmdc/small/platform/build/PartitionCreate.sh
+# 该脚本主要是根据 partinfo.conf 或 partinfo_nand.conf 文件创建分区
 ###
 ### Define Function
 ###
@@ -9,6 +10,7 @@ function Print
 	echo " Create Partition [ ${1} ] [ size  $2 ]..."
 }
 
+# 获取镜像大小
 function get_size
 {
 	part_name=$1
@@ -18,6 +20,7 @@ function get_size
 	echo $part_size
 }
 
+# 获取镜像类型
 function get_type
 {
 	part_name=$1
@@ -26,6 +29,7 @@ function get_type
 	echo $part_type
 }
 
+# 判断 Flash 类型
 function judge_flash_partition
 {
   part_conf=$1
@@ -47,6 +51,8 @@ function judge_flash_partition
 	echo $flash
 
 }
+# 该函数未使用
+# 创建普通分区
 function Create_Normal_Partition
 {
 	size=$(get_size $1 $2)
@@ -67,6 +73,10 @@ function Create_Normal_Partition
     rm ${PUBLISH_PATH}/${1} -rf
 }
 
+# 创建备份分区
+# 在 make.sh 文件中的 make_images 函数中调用
+# Create_backup "backup" ${PARTINFO_CONF}
+# PARTINFO_CONF 的值可能为 partinfo.conf
 function Create_backup
 {
 	backup_name=$1
@@ -87,6 +97,7 @@ function Create_backup
 	mv ${OUT}/${OUT_DIR}/obj/${backup_name}.img ${PUBLISH_PATH}/${backup_name}.ext4
 	sleep 1
 }
+# 创建分区
 function Create_Partition
 {
     part_name=$1
@@ -163,6 +174,7 @@ function Create_Partition
     #rm -rf ${PUBLISH_PATH}/${part_name}
 }
 
+# 创建用户分区
 function Create_User_Partition
 {
 	part_conf=$1
@@ -176,6 +188,7 @@ function Create_User_Partition
 	done < ${part_conf}
 }
 
+# 创建ubi类型用户分区
 function Create_User_ubi_Partition
 {
 	part_conf=$1

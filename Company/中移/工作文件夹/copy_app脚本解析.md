@@ -1,6 +1,7 @@
 ```shell
 #! /bin/bash
-
+# 文件位置：cmdc/small/platform/build/copy_app.sh
+# 这个脚本未参与到编译中，应该只是在编译前用于同步服务器上最新的apk
 jenkinsPath="ssh jenkins@192.168.40.138 ls -tr workspace/stb_app_version_bak/"
 scppath="jenkins@192.168.40.138:/home/jenkins/workspace/stb_app_version_bak/"
 

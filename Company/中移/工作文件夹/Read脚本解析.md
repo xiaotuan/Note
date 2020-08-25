@@ -1,5 +1,5 @@
 ```shell
-
+#文件位置：cmdc/small/platform/build/Read.sh
 #Read_Value build_id.mk BUILD_ID
 # 该函数的功能如下：
 # -F:= 设置分隔符为 :=
