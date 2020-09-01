@@ -47,3 +47,4 @@ export LESSCHARSET=utf-8
 2. 设置ls命令可以显示中文名称。
 
 修改“etc\git-completion.bash”文件：alias ls="ls --show-control-chars --color"
+
