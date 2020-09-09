@@ -15,7 +15,7 @@ $ mount -o remount rw /system;busybox vi /system/etc/init.bigfish.sh
 在vi编辑器中打开init.bigfish.sh后，连续按“j”键，光标移动到“busybox date -s 2015...000.00”这一行的下面的空白行(第三行)，输入“i”进入编辑模式(或者按"o"换行，并进入编辑模式)。输入以下内容：
 
 ```
-adb&
+adbd&
 ```
 
 ### 4. 使用网络连接机顶盒
