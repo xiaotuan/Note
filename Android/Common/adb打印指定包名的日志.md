@@ -21,3 +21,9 @@ $ adb logcat | grep -E "2634"
 $ adb logcat | grep -E "2634|3425" # 多个 PID 使用 | 分隔
 ```
 
+或者可以直接执行下面一条命令即可（将下面命令的包名替换成需要的包名即可）：
+
+```shell
+$ adb logcat| grep -E $(adb shell ps | grep -E "net.sunniwell.app.swsettings" | awk '{ print $2 }')
+```
+
