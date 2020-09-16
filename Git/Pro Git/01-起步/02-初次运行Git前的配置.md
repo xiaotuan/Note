@@ -34,8 +34,7 @@ $ git config --global core.editor emacs
 在 `Windows` 系统上，如果你想要使用别的文本编辑器，那么必须指定可执行文件的完整路径。例如设置 Notepad++，可以这样做：
 
 ```shell
-$ git config --global core.editor "'C:/Program
-Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
+$ git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
 ```
 
 **检查配置信息**

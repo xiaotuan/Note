@@ -33,7 +33,7 @@ $ git --version
 如果你想从源代码安装 `Git`，需要安装 `Git` 依赖的库：autotools、curl、zlib、openssl、expat 和 libiconv。如果你的系统上有 `dnf` 或者 `apt`，可以使用对应的命令来安装依赖以便编译并安装 `Git` 的二进制版：
 
 ```shell
-$ sudo dnf install d$ sudo dnf install dh-autoreconf curl-devel expat-devel gettext-devel \
+$ sudo dnf install dh-autoreconf curl-devel expat-devel gettext-devel \
 openssl-devel perl-devel zlib-devel
 $ sudo apt-get install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev \
 gettext libz-dev libssl-dev
