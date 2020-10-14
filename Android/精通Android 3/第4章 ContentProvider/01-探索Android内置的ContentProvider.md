@@ -36,7 +36,7 @@ $ ls /system/bin
 $ find . -iname *.db 2>/dev/null
 ```
 
-如果设备中没有 `find` 命令，可以使用如下命令替代：
+如果设备中没有 `find` 命令，可以使用如下命令替代（ls -R 表达递归子目录）：
 
 ```shell
 $ ls -R /data/data/*/databases

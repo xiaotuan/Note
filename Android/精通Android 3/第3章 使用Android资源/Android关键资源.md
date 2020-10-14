@@ -71,6 +71,7 @@ String s4 = res.getQuantityString(R.plurals.eggs_in_a_nest_text, 10, 10);
 <resources>
     <string name="simple_string">simple string</string>
     <string name="quoted_string">"quoted 'xyz' string"</string>
+    <string name="double_quoted_string">\"double quotes\"</string>
     <string name="java_format_string">hello %2$s Java format string. %1$s again</string>
     <string name="tagged_string">Hello <b><i>Slanted Android</i></b>, You are bold.</string>
 </resources>
