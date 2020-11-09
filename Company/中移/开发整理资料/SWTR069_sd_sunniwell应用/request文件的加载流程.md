@@ -1,6 +1,8 @@
-下面讲解 assets/templates/inform/request.xml 文件加载流程。
+> 注：与解析 **assets/templates/inform/request.xml** 文件相关的代码都位于 **src/net/sunniwell/tms/methods** 目录中。
 
-该文件在 src/net/sunniwell/tms/CWMPEventHandler.java 文件中的 sendInform() 方法使用到：
+下面讲解 **assets/templates/inform/request.xml** 文件加载流程。
+
+该文件在 **src/net/sunniwell/tms/CWMPEventHandler.java** 文件中的 sendInform() 方法使用到：
 
 ```java
 private void sendInform(final String[] codes, final ArrayList object) throws IOException, InterruptedException {
@@ -21,7 +23,7 @@ private void sendInform(final String[] codes, final ArrayList object) throws IOE
 }
 ```
 
-从上面的代码中，我们可以看到它通过 src/net/sunniwell/tms/CWMPService.java 类中的 getTemplateInputStream() 方法将其转换成流：
+从上面的代码中，我们可以看到它通过 **src/net/sunniwell/tms/CWMPService.java** 类中的 getTemplateInputStream() 方法将其转换成流：
 
 ```java
 public InputStream getTemplateInputStream(String name) throws IOException {
@@ -34,7 +36,7 @@ public InputStream getTemplateInputStream(String name) throws IOException {
 }
 ```
 
-在 getTemplateInputStream() 方法中通过 src/net/sunniwell/tms/config/Config.java 类中的 getTemplate() 方法来获取 request.xml 的真实路径的。
+在 getTemplateInputStream() 方法中通过 **src/net/sunniwell/tms/config/Config.java** 类中的 getTemplate() 方法来获取 request.xml 的真实路径的。
 
 ```java
 public String getTemplate(String name) {
@@ -46,7 +48,7 @@ public String getTemplate(String name) {
 }
 ```
 
-从上面的方法中，我们可以看到，它是通过查询 templates 集合中是否存在一个名字叫做 "Inform" 的 Template 变量。如果存在 ，则返回该变量的 _xml 属性，否则返回 null。Config 类是在 src/net/sunniwell/tms/CWMPService.java 类中初始化的。
+从上面的方法中，我们可以看到，它是通过查询 templates 集合中是否存在一个名字叫做 "Inform" 的 Template 变量。如果存在 ，则返回该变量的 _xml 属性，否则返回 null。Config 类是在 **src/net/sunniwell/tms/CWMPService.java** 类中初始化的。
 
 ```java
 private void initConfig() throws IOException {
@@ -75,7 +77,7 @@ initConfig() 方法通过读取 assets/config.xml 文件，并通过 XMLBinding 
 </cwmpservice>
 ```
 
-上面就是 request.xml 的加载过程。下面我们来看下它是如何转换成对象的。具体转换是通过 sendInform() 方法中的 `Envelope request = Inform.getInstance().buildRequest(codes, input, object);` 语句进行的。那我们来看下 src/net/sunniwell/tms/methods/Inform.java 的 buildRequest() 方法：
+上面就是 request.xml 的加载过程。下面我们来看下它是如何转换成对象的。具体转换是通过 sendInform() 方法中的 `Envelope request = Inform.getInstance().buildRequest(codes, input, object);` 语句进行的。那我们来看下 **src/net/sunniwell/tms/methods/Inform.java** 的 buildRequest() 方法：
 
 ```java
 public Envelope buildRequest(String[] codes, InputStream template, ArrayList object) {
@@ -167,7 +169,7 @@ public Envelope buildRequest(String[] codes, InputStream template, ArrayList obj
 </soap:Envelope>
 ```
 
-我们再来看下 src/net/sunniwell/tms/methods/beans/Envelope.java 的定义：
+我们再来看下 **src/net/sunniwell/tms/methods/beans/Envelope.java** 的定义：
 
 ```java
 public class Envelope {
@@ -199,7 +201,7 @@ public class Envelope {
 
 从中我们可以看到 Evelope 类的 head 成员对应着 request.xml 文件的 `<soap:Header>` 节点，body 成员对应着 `<soap:Body>` 节点，它们存储着节点中的相关信息。
 
-下面先来看下 src/net/sunniwell/tms/methods/beans/Header.java 类的定义：
+下面先来看下 **src/net/sunniwell/tms/methods/beans/Header.java** 类的定义：
 
 ```java 
 public class Header {
@@ -211,7 +213,7 @@ public class Header {
 
 可以看到类中的成员变量对应这个 request.xml 文件中 header 节点下的值。
 
-再来看下 src/net/sunniwell/tms/methods/beans/Body.java 类的定义：
+再来看下 **src/net/sunniwell/tms/methods/beans/Body.java** 类的定义：
 
 ```java
 package net.sunniwell.tms.methods.beans;
@@ -242,3 +244,98 @@ public class Body {
 }
 ```
 
+从代码中可以看到 Body 类中有一个 informRequest 的成员变量，注解中表明该变量用于存储 request.xml 中 Inform 节点下的内容。下面就来看下**src/net/sunniwell/tms/methods/beans/InformRequest.java**  类的实现代码：
+
+```java
+public class InformRequest {
+	@Element(name = "DeviceId", required = false)
+	public DeviceIdStruct deviceId;
+
+	@Element(name = "Event", required = false)
+	public EventList events = new EventList();
+
+	@Element(name = "MaxEnvelopes", required = false)
+	public int maxEnvelopes;
+
+	@Element(name = "CurrentTime", required = false)
+	public String currentTime;
+
+	@Element(name = "RetryCount", required = false)
+	public int retryCount;
+
+	@Element(name="ParameterList", required = false)
+	public ParameterValueList values = new ParameterValueList();
+	
+	
+	public static String handler = "net.sunniwell.tms.methods.Inform:onRequest";
+}
+```
+
+InformRequest 类中的成员变量也是和 request.xml 文件中的节点一一对应的。下面我们先来看下 **src/net/sunniwell/tms/methods/beans/DeviceIdStruct.java** 的代码：
+
+```java
+public class DeviceIdStruct {
+	@Element(name = "Manufacturer", required = false)
+	public String manufacturer;
+
+	@Element(name = "OUI", required = false)
+	public String OUI;
+
+	@Element(name = "ProductClass", required = false)
+	public String productClass;
+
+	@Element(name = "SerialNumber", required = false)
+	public String serialNumber;
+	
+
+	
+	@Validate
+	public void validate() {
+		Pattern pattern = Pattern.compile("^\\$\\{(.*)\\}$");
+		
+		Matcher matcher = pattern.matcher(manufacturer);
+		if (matcher.matches()) {
+			String variable = matcher.group(1);
+			manufacturer = DataResolver.getInstance().getParameterValue(variable);
+		}
+
+		matcher = pattern.matcher(OUI);
+		if (matcher.matches()) {
+			String variable = matcher.group(1);
+			OUI = DataResolver.getInstance().getParameterValue(variable);
+		}
+
+		matcher = pattern.matcher(productClass);
+		if (matcher.matches()) {
+			String variable = matcher.group(1);
+			productClass = DataResolver.getInstance().getParameterValue(variable);
+		}
+
+		matcher = pattern.matcher(serialNumber);
+		if (matcher.matches()) {
+			String variable = matcher.group(1);
+			serialNumber = DataResolver.getInstance().getParameterValue(variable);
+		}
+		
+	}
+}
+```
+
+再来看下 request.xml 中 DeviceId 节点的内容：
+
+```xml
+<DeviceId>
+    <Manufacturer>${Device.DeviceInfo.Manufacturer}</Manufacturer> 
+    <OUI>${Device.DeviceInfo.OUI}</OUI>
+    <ProductClass>${Device.DeviceInfo.ProductClass}</ProductClass>
+    <SerialNumber>${Device.DeviceInfo.SerialNumber}</SerialNumber>
+</DeviceId>
+```
+
+我们可以看到 DeviceId 节点下的内容都是通过 ${...} 的方式进行定义的，那么它们的真实值是多少呢？我们回过头来看下 DeviceIdStruct 类的代码，就会发现里面有一个 validate() 方法。不错，它们就是在 validate() 中进行初始化的。
+
+后续的节点解析与 DeviceId 节点类似，这里就不在陈述了。
+
+**总结：**
+
+从上面的解析可以看出，对 request.xml 文件的解析的代码都是位于 **src/net/sunniwell/tms/methods/** 目录下的，如果遇到与此文件有关的问题都可以在该目录下找出问题所在。
