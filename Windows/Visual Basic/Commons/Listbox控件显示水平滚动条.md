@@ -1,0 +1,1 @@
+可以通过设置 Listbox 控件中的 HorizontalScrollbar 属性值为 True，即可在内容宽度超过控件宽度时显示水平滚动条了。
