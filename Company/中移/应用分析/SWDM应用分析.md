@@ -1,4 +1,4 @@
-        由于SWDM 应用的业务代码已经进行混淆处理过，因此只能从中大概猜出这个应用应该是用于设备的注册和认证。其主要功能是监听网络连接广播，当网络连接后启动 SWService 服务，并在服务中调用 MTSdk 类的 init() 方法。由于 MTSdk 类封装在 terminal_sdk-v1.1.1_release_jdk1.7.jar 文件中，且该文件已进行混淆，故无法了解其具体功能。从 terminal_sdk-v1.1.1_release_jdk1.7.jar 的解开文件中可以看到在 MTSdk 的 init() 方法中主要是保存 IMEI 号和 IMSI 号，然后再启动 MTService 服务。具体代码如下：
+由于SWDM 应用的业务代码已经进行混淆处理过，因此只能从中大概猜出这个应用应该是用于设备的注册和认证。其主要功能是监听网络连接广播，当网络连接后启动 SWService 服务，并在服务中调用 MTSdk 类的 init() 方法。由于 MTSdk 类封装在 terminal_sdk-v1.1.1_release_jdk1.7.jar 文件中，且该文件已进行混淆，故无法了解其具体功能。从 terminal_sdk-v1.1.1_release_jdk1.7.jar 的解开文件中可以看到在 MTSdk 的 init() 方法中主要是保存 IMEI 号和 IMSI 号，然后再启动 MTService 服务。具体代码如下：
 
 ```java
 public static void init(Application paramApplication, String paramString1, String paramString2, String paramString3, String paramString4) {
