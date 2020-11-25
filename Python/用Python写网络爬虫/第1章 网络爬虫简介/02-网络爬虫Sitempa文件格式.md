@@ -1,0 +1,1 @@
+如果想要了解更多关于 Sitmap 文件信息，可以从 <http://www.sitemaps.org/protocol.html> 获取网站地图标准的定义。
