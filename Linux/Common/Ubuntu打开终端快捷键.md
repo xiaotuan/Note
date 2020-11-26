@@ -1,0 +1,1 @@
+打开终端快捷键是 <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> 。
