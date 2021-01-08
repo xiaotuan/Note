@@ -133,4 +133,191 @@ namespace HelloWorld
 </Application>
 ```
 
-在 App.xaml 文件中定义的元素是对整个应用程序是公用的，例如你在 App.xaml 文件中，添加了 `<Application.Resources></Application.Resources>`
+在 App.xaml 文件中定义的元素是对整个应用程序是公用的，例如你在 App.xaml 文件中，添加了 `<Application.Resources></Application.Resources>` 元素来定义一些资源文件或者样式，这些资源在整个应用程序的所有页面都可以引用，而 Page 的页面所定义的资源或者控件就只能在当前的页面使用。
+
+#### 2.4 App.xaml.cs 文件
+
+**App.xaml.cs 文件代码**
+
+```xaml
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+namespace HelloWorld
+{
+    /// <summary>
+    /// 提供特定于应用程序的行为，以补充默认的应用程序类。
+    /// </summary>
+    sealed partial class App : Application
+    {
+        /// <summary>
+        /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
+        /// 已执行，逻辑上等同于 main() 或 WinMain()。
+        /// </summary>
+        public App()
+        {
+            this.InitializeComponent();
+            this.Suspending += OnSuspending;
+        }
+
+        /// <summary>
+        /// 在应用程序由最终用户正常启动时进行调用。
+        /// 将在启动应用程序以打开特定文件等情况下使用。
+        /// </summary>
+        /// <param name="e">有关启动请求和过程的详细信息。</param>
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // 不要在窗口已包含内容时重复应用程序初始化，
+            // 只需确保窗口处于活动状态
+            if (rootFrame == null)
+            {
+                // 创建要充当导航上下文的框架，并导航到第一页
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: 从之前挂起的应用程序加载状态
+                }
+
+                // 将框架放在当前窗口中
+                Window.Current.Content = rootFrame;
+            }
+
+            if (e.PrelaunchActivated == false)
+            {
+                if (rootFrame.Content == null)
+                {
+                    // 当导航堆栈尚未还原时，导航到第一页，
+                    // 并通过将所需信息作为导航参数传入来配置
+                    // 参数
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                }
+                // 确保当前窗口处于活动状态
+                Window.Current.Activate();
+            }
+        }
+
+        /// <summary>
+        /// 导航到特定页失败时调用
+        /// </summary>
+        ///<param name="sender">导航失败的框架</param>
+        ///<param name="e">有关导航失败的详细信息</param>
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        /// <summary>
+        /// 在将要挂起应用程序执行时调用。  在不知道应用程序
+        /// 无需知道应用程序会被终止还是会恢复，
+        /// 并让内存内容保持不变。
+        /// </summary>
+        /// <param name="sender">挂起的请求的源。</param>
+        /// <param name="e">有关挂起请求的详细信息。</param>
+        private void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: 保存应用程序状态并停止任何后台活动
+            deferral.Complete();
+        }
+    }
+}
+```
+
+应用程序在整个生命周期的过程中会有三种主要状态：Running（运行中）、NotRunning（未运行）和 Suspended（挂起）。
+
+（1）应用启动（从其他状态到 Running 状态）
+
+如果某个应用需要从网络请求数据或者需要处理耗时的相关操作，这些操作应在激活以外完成。应用在等待完成这些长时间运行的操作时，可以使用自定义加载 UI 或延长的初始化屏幕。
+
+（2）应用激活（从 NotRunning 状态到 Running 状态）
+
+activated 事件参数包括一个 PreviousExecutionState 属性，该属性告诉你应用在激活之前处于哪种状态。此属性是 ApplicationExecutionState 枚举值之一，如果应用程序被终止有以下的几种取值： ClosedByUser（被用户关闭）、Terminated（已由系统终止，例如因为资源限制）和 NotRunning（意外终止，或者应用自从用户的会话开始以来未运行）。
+
+PreviousExecutionState 还可能有 Running 或 Suspended 值，但是这些情况下，应用以前不是被终止，因此不用担心还原数据。
+
+（3）应用挂起（从 Ruuning 状态到 Suspended 状态）
+
+如果应用已经为 Suspending 事件注册一个事件处理程序，则在要挂起该应用之前调用此事件处理程序。通常，应用应该在收到挂起事件时立即在事件处理程序中保存其状态并释放其独占资源和文件句柄，一般只需 1 秒即可完成。如果应用未在 5 秒内从挂起事件返回，系统会假设应用已停止响应并终止它。
+
+注意，应用不会收到它们被终止的通知，所以保存应用数据的唯一机会是在挂起期间。
+
+（4）应用恢复（从 Suspended 状态到 Running 状态）
+
+如果应用已经为 Rusuming 事件注册一个事件处理程序，则在应用从 Suspended 状态恢复时调用它。可以使用此时间处理程序刷新内容。
+
+#### 2.5 Package.appxmanifest 文件
+
+**Package.appxmanifest 文件代码**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="b5ce231e-c9cb-424f-9db8-4fa822c60031"
+    Publisher="CN=Xiaotuan"
+    Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="b5ce231e-c9cb-424f-9db8-4fa822c60031" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>HelloWorld</DisplayName>
+    <PublisherDisplayName>Xiaotuan</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="HelloWorld.App">
+      <uap:VisualElements
+        DisplayName="HelloWorld"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="HelloWorld"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
+```
+
+Package.appxmanifest 文件是 Windows 10 应用程序的清单文件，声明应用的标识、应用的功能以及用来进行部署和更新的信息。可以在清单文件对当前的应用程序进行配置，例如添加磁贴图像和初始屏幕、指示应用支持的方向以及定义应用的功能种类。

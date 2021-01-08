@@ -1,11 +1,8 @@
-WIFI名：TP-LINK-123
+| WiFi名称       | 密码        |
+| -------------- | ----------- |
+| TP-LINK-123    | stb123456   |
+| HUAWEI-stb_tss | tss123456   |
+| Xiaomi-B599    | Xiaomi-B599 |
+| 中国移动终端   | zgyd@1234   |
+| ChinaMoblie ZD | zgyd1234    |
 
-密码：stb123456
-
-WIFI名：HUAWEI-stb_tss
-
-密码：tss123456
-
-WIFI名：Xiaomi-B599
-
-密码：Xiaomi-B599
