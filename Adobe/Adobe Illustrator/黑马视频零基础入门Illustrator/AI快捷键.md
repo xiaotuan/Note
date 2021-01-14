@@ -9,5 +9,5 @@
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>                | 取消编组                               |                      |
 | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd>                | 显示隐藏定界框                         |                      |
 | <kbd>Ctrl</kbd>+<kbd>2</kbd><br /><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>2</kbd> | 锁定对象<br />取消锁定                 |                      |
-|                                                              |                                        |                      |
+| <kbd>Shift</kbd>+<kbd>F7</kbd>                               | 对齐面板                               |                      |
 
