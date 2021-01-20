@@ -13,9 +13,9 @@ http.createServer(function (req, res) {
     
     // write message and signal communication is complete
     res.end("Hello, World!\n")
-}).listen(8124)
+}).listen(80)
 
-console.log('Server running on 8124')
+console.log('Server running on 80')
 ```
 
 可以在 `Linux` 系统中使用命令行，或在 `Mac OS` 中使用终端窗口，或在 `Windows` 中使用命令窗口，运行如下命令来启动示例程序：
