@@ -8,6 +8,6 @@ pullStatus = $?
 echo "开始上传代码至Gitee远程仓库...."
 git push origin
 echo "开始上传代码至Github远程仓库...."
-git push Github
+git push GitHub
 echo "开始上传代码至Gitlab远程仓库...."
-git push Gitlab
+git push GitLab
