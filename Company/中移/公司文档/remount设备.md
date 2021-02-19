@@ -24,3 +24,7 @@ $ adb shell echo 1 > /sys/class/remount/need_remount
 $ adb shell mount -o remount /system
 ```
 
+### 3. Android 9.0 系统 remount
+
+#### 3.1 海思芯片
+
