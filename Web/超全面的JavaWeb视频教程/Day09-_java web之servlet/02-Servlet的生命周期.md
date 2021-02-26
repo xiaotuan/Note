@@ -118,3 +118,8 @@ public class AServlet implements Servlet {
 }
 ```
 
+> 注意：
+>
+> + 不要在 Servlet 中创建成员！创建局部变量即可。
+> + 可以创建无状态成员。
+> + 可以创建有状态成员，但状态必须为只读的！
