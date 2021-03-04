@@ -34,6 +34,6 @@ fi
 ### 1. 导入开机向导应用命令
 
 ```shell
-./pushSysApp.sh 192.168.31.55 SWGuide_sd net.sunniwell.guide
+./pushSysApp.sh 192.168.31.7 SWGuide_sd net.sunniwell.guide
 ```
 
