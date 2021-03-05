@@ -148,3 +148,91 @@ public int onStartCommand(Intent intent, int flags, int startId) {
 
 ### 5. 停止 Service
 
+如果使用 Context.bindService() 方式启动，Service 会一直运行知道没有客户端连接为止（使用 Context.unbindService() 断开连接）。有一种例外情况，即最后连接的客户端调用 Service.startForeground() 时还会保持 Service 运行，所以正确地调用 Service.stopForeground() 也很重要。
+
+如果开发者使用 Context.startService() 启动 Service，则只能通过调用 Service.stopSelf() 或者 Context.stopService() 来停止 Service。
+
+```java
+import android.app.Service;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.IBinder;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+/**
+ * @author Erik Hellman
+ */
+public class MyMusicPlayer extends Service implements MediaPlayer.OnCompletionListener {
+    public static final String ACTION_ADD_TO_QUEUE = "com.aptl.services.ADD_TO_QUEUE";
+    private ConcurrentLinkedQueue<Uri> mTrackQueue;
+    private MediaPlayer mMediaPlayer;
+
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mTrackQueue = new ConcurrentLinkedQueue<Uri>();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String action = intent.getAction();
+        if (ACTION_ADD_TO_QUEUE.equals(action)) {
+            Uri trackUri = intent.getData();
+            addTrackToQueue(trackUri);
+        }
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+    }
+
+    /**
+     * 如果已经开始播放就往队尾添加新曲目，否则创建 MediaPlayer 并开始播放
+     */
+    private synchronized void addTrackToQueue(Uri trackUri) {
+        if(mMediaPlayer == null) {
+            try {
+                mMediaPlayer = MediaPlayer.create(this, trackUri);
+                mMediaPlayer.setOnCompletionListener(this);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            } catch (IOException e) {
+                stopSelf();
+            }
+        } else {
+            mTrackQueue.offer(trackUri);
+        }
+    }
+
+    // 曲目播放完毕，开始播放下一首或者停止 Service
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        mediaPlayer.reset();
+        Uri nextTrackUri = mTrackQueue.poll();
+        if(nextTrackUri != null) {
+            try {
+                mMediaPlayer.setDataSource(this, nextTrackUri);
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+            } catch (IOException e) {
+                stopSelf();
+            }
+        } else {
+            stopSelf();
+        }
+    }
+}
+```
+
