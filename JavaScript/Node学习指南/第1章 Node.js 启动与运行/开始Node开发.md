@@ -24,7 +24,7 @@ console.log('Server running on 80')
 node hellowrld.js
 ```
 
-现在可以在浏览器中输入 `localhost:8124` 地址访问站点。
+现在可以在浏览器中输入 `localhost` 地址访问站点。
 
 > 警告：
 > 如果是在 `Fedora` 系统中安装 `Node` 环境，需要留意 `Node` 会被重命名，以避免与系统中现有功能的冲突。
