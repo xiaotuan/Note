@@ -112,3 +112,84 @@ MediaPlayer 的 Native 层整体是一个 C/S（Client/Server）架构，Client 
 
 #### 3.1 Client 端分析
 
+MediaPlayer Client 端的功能实现定义的头文件为 mediaplayer.h，相应的源文件为 mediaplayer.cpp。我们接着来看 mediaplayer.cpp 的 prepare 方法，如下所示：
+
+**frameworks/av/media/libmedia/mediaplayer.cpp**
+
+```cpp
+status_t MediaPlayer::prepare()
+{
+    ...
+    status_t ret = prepareAsync_l();
+    ...
+}
+```
+
+prepare 方法会调用 prepareAsync_l 方法：
+
+**frameworks/av/media/libmedia/mediaplayer.cpp**
+
+```cpp
+status_t MediaPlayer::prepareAsync_l()
+{
+    if ( (mPlayer != 0) && ( mCurrentState & (MEDIA_PLAYER_INITIALIZED | MEDIA_PLAYER_STOPPED) ) ) {
+        if (mAudioAttributesParcel != NULL) {
+            mPlayer->setParameter(KEY_PARAMETER_AUDIO_ATTRIBUTES, *mAudioAttributesParcel);
+        } else {
+            mPlayer->setAudioStreamType(mStreamType);
+        }
+        mCurrentState = MEDIA_PLAYER_PREPARING;
+        return mPlayer->prepareAsync();	// 1
+    }
+    ALOGE("prepareAsync called in state %d, mPlayer(%p)", mCurrentState, mPlayer.get());
+    return INVALID_OPERATION;
+}
+```
+
+在上面的代码注释 1 处调用了 mPlayer 的 prepareAsync 方法，那么 mPlayer 指 的是什么呢？我们带着这个问题来查看 mediaplayer.cpp 的 setDataSource 方法， 如下所示：
+
+**frameworks/av/media/libmedia/mediaplayer.cpp**
+
+```cpp
+status_t MediaPlayer::setDataSource(const sp<IDataSource> &source)
+{
+    ALOGV("setDataSource(IDataSource)");
+    status_t err = UNKNOWN_ERROR;
+    const sp<IMediaPlayerService> service(getMediaPlayerService());	// 1
+    if (service != 0) {
+        sp<IMediaPlayer> player(service->create(this, mAudioSessionId));	// 2
+        if ((NO_ERROR != doSetRetransmitEndpoint(player)) ||
+            (NO_ERROR != player->setDataSource(source))) {
+            player.clear();
+        }
+        err = attachNewPlayer(player);	// 3
+    }
+    return err;
+}
+```
+
+在上面代码注释 1 处通过 getMediaPlayerService方法得到 IMediaPlayerService 指针。IMediaPlayerService 指针指向的就是 MediaPlayer 的 Service 端：MediaPlayerService。又在注释 2        处通过 IMediaPlayerService 的 create 方法得到 IMediaPlayer 指针。通过 IMediaPlayer 指针就可以调用 MediaPlayerService 所提供的各种功能，接下来看注释 3 处的 attachNewPlayer 方法：
+
+**frameworks/av/media/libmedia/mediaplayer.cpp**
+
+```cpp
+status_t MediaPlayer::attachNewPlayer(const sp<IMediaPlayer>& player)
+{
+    ...
+        mPlayer = player;
+    ...
+}
+```
+
+attachNewPlayer 方法将 player 赋值给 mPlayer。mPlayer 指的就是 IMediaPlayer 指针，调用 mPlayer 的 prepareAsync 方法其实就是调用 MediaPlayerService 的 prepareAsync 方法。
+
+#### 3.2 Server 端分析
+
+Android 的多媒体服务是由一个叫作 MediaServer 的服务进程提供的，它是一个可执行程序，在 Android 系统启动时，MediaServer 也会被启动。它的入口函数如下所示：
+
+**frameworks/av/media/mediaserver/main_mediaserver.cpp**
+
+```cpp
+
+```
+
