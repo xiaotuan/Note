@@ -190,6 +190,187 @@ Android 的多媒体服务是由一个叫作 MediaServer 的服务进程提供�
 **frameworks/av/media/mediaserver/main_mediaserver.cpp**
 
 ```cpp
+int main(int argc __unused, char **argv __unused)
+{
+    signal(SIGPIPE, SIG_IGN);
 
+    sp<ProcessState> proc(ProcessState::self());
+    sp<IServiceManager> sm(defaultServiceManager());	// 1
+    ALOGI("ServiceManager: %p", sm.get());
+    InitializeIcuOrDie();
+    MediaPlayerService::instantiate();	// 2
+    ResourceManagerService::instantiate();
+    registerExtensions();
+    ProcessState::self()->startThreadPool();
+    IPCThreadState::self()->joinThreadPool();
+}
+```
+
+MediaServer 需要向 ServiceManager 注册服务，在上面代码注释 1 处得到 IServiceManager 指针。注释 2 处的代码用来初始化 MediaPlayerService。我们来查看 MediaPlayerService 的 instantiate 方法，如下所示：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerService.cpp**
+
+```cpp
+void MediaPlayerService::instantiate() {
+    defaultServiceManager()->addService(
+            String16("media.player"), new MediaPlayerService());
+}
+```
+
+上面的方法调用 IServiceManager 的 addService 方法，向 ServiceManager 添加一个名为 media.player 的 MediaPlayerService 服务。这样 MediaPlayerService 就被添加到 ServiceManager 中，MediaPlayer 就可以通过字符串 "media.player" 来查询 ServiceManager。那么，MediaPlayer 是在哪里进行查询的呢？让我们再回到 mediaplayer 的 setDataSource 方法，如下代码：
+
+**frameworks/av/media/libmedia/mediaplayer.cpp**
+
+```cpp
+status_t MediaPlayer::setDataSource(const sp<IDataSource> &source)
+{
+    ALOGV("setDataSource(IDataSource)");
+    status_t err = UNKNOWN_ERROR;
+    const sp<IMediaPlayerService> service(getMediaPlayerService());	// 1
+    if (service != 0) {
+        sp<IMediaPlayer> player(service->create(this, mAudioSessionId));	// 2
+        if ((NO_ERROR != doSetRetransmitEndpoint(player)) ||
+            (NO_ERROR != player->setDataSource(source))) {
+            player.clear();
+        }
+        err = attachNewPlayer(player);	// 3
+    }
+    return err;
+}
+```
+
+上面代码注释 1 处的 getMediaPlayerService 方法是在 IMediaDeathNotifier 中定义的，如下所示：
+
+**frameworks/av/media/libmedia/IMediaDeathNotifier.cpp**
+
+```cpp
+const sp<IMediaPlayerService>
+IMediaDeathNotifier::getMediaPlayerService()
+{
+    ALOGV("getMediaPlayerService");
+    Mutex::Autolock _l(sServiceLock);
+    if (sMediaPlayerService == 0) {
+        sp<IServiceManager> sm = defaultServiceManager();	// 1
+        sp<IBinder> binder;
+        do {
+            binder = sm->getService(String16("media.player"));	// 2
+            if (binder != 0) {
+                break;
+            }
+            ALOGW("Media player service not published, waiting...");
+            usleep(500000); // 0.5 s
+        } while (true);
+
+        if (sDeathNotifier == NULL) {
+            sDeathNotifier = new DeathNotifier();
+        }
+        binder->linkToDeath(sDeathNotifier);
+        sMediaPlayerService = interface_cast<IMediaPlayerService>(binder);
+    }
+    ALOGE_IF(sMediaPlayerService == 0, "no media player service!?");
+    return sMediaPlayerService;
+}
+```
+
+在上面diam注释 1 处得到 IServiceManager 指针，并在注释 2 处 查询名称为 "media.player" 的服务。这样 MediaPlayer 就获取了 MediaPlayerService 的信息。当我们调用 MediaPlayer 的 setDataSource 方法时， 会调用 MediaPlayerService 的 setDataSource 方法：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerService.cpp**
+
+```cpp
+status_t MediaPlayerService::Client::setDataSource(
+        const sp<IStreamSource> &source) {
+    // create the right type of player
+    player_type playerType = MediaPlayerFactory::getPlayerType(this, source);	// 1
+    sp<MediaPlayerBase> p = setDataSource_pre(playerType);	// 2
+    if (p == NULL) {
+        return NO_INIT;
+    }
+
+    // now set data source
+    return mStatus = setDataSource_post(p, p->setDataSource(source));
+}
+```
+
+在上面代码注释 1 处调用了 MediaPlayerFactory 的 getPlayerType 方法，以获取播放器的类型 playerType，接着调用 setDataSource_pre，如下代码所示：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerService.cpp**
+
+```cpp
+sp<MediaPlayerBase> MediaPlayerService::Client::setDataSource_pre(
+        player_type playerType)
+{
+    ALOGV("player type = %d", playerType);
+
+    // create the right type of player
+    sp<MediaPlayerBase> p = createPlayer(playerType);
+    if (p == NULL) {
+        return p;
+    }
+	...
+}
+```
+
+在 setDataSource_pre 方法中调用了 createPlayer 方法并传入 playerType，createPlayer 方法的代码如下所示：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerService.cpp**
+
+```cpp
+sp<MediaPlayerBase> MediaPlayerService::Client::createPlayer(player_type playerType)
+{
+    // determine if we have the right player type
+    sp<MediaPlayerBase> p = getPlayer();
+    if ((p != NULL) && (p->playerType() != playerType)) {
+        ALOGV("delete player");
+        p.clear();
+    }
+    if (p == NULL) {
+        p = MediaPlayerFactory::createPlayer(playerType, mListener, mPid);	// 1
+    }
+
+    if (p != NULL) {
+        p->setUID(mUid);
+    }
+
+    return p;
+}
+```
+
+在上面代码注释 1 处调用了 MediaPlayerFactory 的 createPlayer方法，代码如下所示：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp**
+
+```cpp
+sp<MediaPlayerBase> MediaPlayerFactory::createPlayer(
+        player_type playerType,
+        const sp<MediaPlayerBase::Listener> &listener,
+        pid_t pid) {
+    sp<MediaPlayerBase> p;
+    IFactory* factory;
+    status_t init_result;
+    Mutex::Autolock lock_(&sLock);
+
+    if (sFactoryMap.indexOfKey(playerType) < 0) {
+        ALOGE("Failed to create player object of type %d, no registered"
+              " factory", playerType);
+        return p;
+    }
+
+    factory = sFactoryMap.valueFor(playerType);
+    CHECK(NULL != factory);
+    p = factory->createPlayer(pid);
+	...
+    return p;
+}
+```
+
+默认播放器使用谷歌自己研发的 NuPlayer 框架。NuPlayerFactory 的 createPlayer 方法如下所示：
+
+**frameworks/av/media/libmediaplayerservice/MediaPlayerFactory.cpp**
+
+```cpp
+virtual sp<MediaPlayerBase> createPlayer(pid_t pid) {
+    ALOGV(" create NuPlayer");
+    return new NuPlayerDriver(pid);
+}
 ```
 
