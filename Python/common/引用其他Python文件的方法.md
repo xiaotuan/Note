@@ -87,8 +87,6 @@ pfile1_1.fun1_1()
 
 如果要在pfile1.py中调用pfile.py 和 pfile2.py，因为当前路径是 '/home/puxitong/python/file1/' ，而 pfile.py和pfile1.py在路径'/home/puxitong/python/'  及其子路径下，这里的思路是将上一级目录 '/home/puxitong/python/' 添加在系统路径中，可以直接访问pfile.py，然后将pfile2.py 按照下一级路径导入方式进行导入：
 
-
-
 ```python
 # 当前路径：/home/puxitong/python/file1/
 
