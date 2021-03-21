@@ -86,49 +86,56 @@ Binder 事务通常会传递事务数据，如前面例子所述。这种数据�
 Android 中的 Parcel 和 Java SE 中的序列化对象类似。不同之处在于，开发者需要使用 Parcelable 接口实现对象的编解码工作。该接口定义了两个编写 Parcel 对象的方法，以及一个静态的不可被复写的 Creator 对象，该对象用来从 Parcel 中读取相应的对象，如下所示：
 
 ```java
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class CustomData implements Parcelable {
-    
+
     public static final Parcelable.Creator<CustomData> CREATOR = new Parcelable.Creator<CustomData>() {
-        
+
         @Override
         public CustomData createFromParcel(Parcel parcel) {
-            CustomData = new CustomData();
+            CustomData customData = new CustomData();
             customData.mName = parcel.readString();
             customData.mReferences = new ArrayList<String>();
             parcel.readStringList(customData.mReferences);
             customData.mCreated = new Date(parcel.readLong());
             return customData;
         }
-        
+
         @Override
         public CustomData[] newArray(int size) {
             return new CustomData[size];
         }
-        
+
     };
-    
+
     private String mName;
     private List<String> mReferences;
     private Date mCreated;
-    
+
     public CustomData() {
         mName = "";	// 默认为空字符串
         mReferences = new ArrayList<String>();
         mCreated = new Date();	// 默认为当前时间
     }
-    
+
     @Override
     public int describeContents() {
         return 0;
     }
-    
+
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(mName);
         parcel.writeStringList(mReferences);
         parcel.writeLong(mCreated.getTime());
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,7 +143,7 @@ public class CustomData implements Parcelable {
         CustomData that = (CustomData) o;
         return mCreated.equals(that.mCreated) && mName.equals(that.mName);
     }
-    
+
     @Override
     public int hashCode() {
         int result = mName.hashCode();
