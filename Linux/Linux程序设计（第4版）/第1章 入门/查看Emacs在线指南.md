@@ -1,0 +1,1 @@
+首先运行 emacs 命令以启动编辑器，然后输入 <kbd>Ctrl</kbd>+<kbd>H</kbd>，接着输入字母 <kbd>t</kbd> 就进入了在线指南。Emacs 也有完整的用户手册。在 Emacs 中输入 <kbd>Ctrl</kbd>+<kbd>H</kbd>，接着输入字母 <kbd>i</kbd> 即可以得到相关信息。
