@@ -1,0 +1,10 @@
+### 11.2　使用ElectroServer 5实现多人应用程序
+
+由于Flash已经内置支持通过套接字通信，很多年以前Flash的应用已经能够与服务器端的程序建立套接字通信了。另一方面，直到WebSockets出现以前，HTML无法与一个套接字服务器建立可靠的通信，除非使用一些技巧。通常用在网页浏览器上不断轮询的方式，从网络服务器获取新消息的。
+
+ElectroTank公司的ElectroServer是首先在Flash客户端上可以与套接字服务器建立可靠通信的软件之一。在过去的几年中，ElectroServer推出了iOS、C#、C++版本的API，现在又推出了JavaScript版本的API。ElectroServer的JavaScript API的第一个版本没有使用WebSockets，而是通过JavaScript轮询实现的。然而，ElectroServer提供的产品大大简化了JavaScript的API使用，读者可以很快上手并用HTML5 Canvas开发多人应用程序。
+
+提示
+
+> 尽管本章的这个部分是专门介绍ElectroServer的，但是其中关于多玩家或多用户应用的概念在其中的技术中也同样适用。
+

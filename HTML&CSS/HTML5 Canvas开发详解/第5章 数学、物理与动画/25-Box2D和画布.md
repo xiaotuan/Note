@@ -1,0 +1,6 @@
+### 5.6　Box2D和画布
+
+本书已经讨论过如何在画布上运用数学和物理知识创建动画，现在是时候进行更深层次的讨论了——学习使用一个名为Box2D的流行的JavaScript框架库。Box2D是一个为2D图形准备的物理模型框架库，可以替换本章前面示例中那些手写的复杂代码。
+
+Box2D原本是Erin Catton为C++开发的，由于在ActionScript 3中成为一个名为Box2DFlashAS3的Flash游戏框架库而得以普及。在JavaScript中，Box2D有两种实现。一种是Box2Djs，另一种是Box2dWeb。Box2dWeb是最新、最好的，而且已经升级到了Box2D 2.1版本，在本书的示例中将使用该版本。Box2dWeb是直接从ActionScript3移植过来的，可以在HTML5 Canvas上应用。
+

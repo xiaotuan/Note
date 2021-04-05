@@ -1,0 +1,4 @@
+### 11.1.1　WebGL是什么
+
+WebGL是一个JavaScript的API。程序员可以使用这个API访问用户计算机的3D硬件加速能力。目前，只有Opera、FireFox和Chrome的测试版或开发版能够支持WebGL（目前Opera、FireFox、Chrome和Safari的最新版都已经支持WebGL，但IE 10除外。有些浏览器的WebGL功能可能默认是关闭的——译者注）。这个API由Kronos组织管理，这个组织也是OpenGL标准的管理者。实际上，WebGL的大部分内容与使用OpenGL进行编程非常类似。这有好的一面也有不好的一面。好的一面在于这是一个已经被许多开发者所认可的标准编程界面，不好的一面在于它不像2D环境那样简单易学。
+

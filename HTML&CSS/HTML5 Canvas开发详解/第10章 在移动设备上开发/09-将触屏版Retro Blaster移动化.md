@@ -1,0 +1,4 @@
+### 10.3　将触屏版Retro Blaster移动化
+
+读者如果想查看触屏版Retro Blaster游戏完整代码，可以访问O’Reilly的网站下载本书的代码包，并在其中的Chapter 10目录中查找retroblaster_touch文件夹。本节不会介绍代码中全部的改动，也不会提供完整的代码列表。触屏版Retro Blaster是在第9章扩展版GeoBlaster代码的基础上修改的，在下面的几个小节中将介绍其中最重要的改动。
+
