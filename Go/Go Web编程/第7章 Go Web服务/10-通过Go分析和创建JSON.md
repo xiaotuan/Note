@@ -1,0 +1,10 @@
+### 7.5　通过Go分析和创建JSON
+
+JSON（JavaScript Object Notation）是衍生自JavaScript语言的一种轻量级的文本数据格式，这种格式的主要设计理念是既能够轻易地被人类读懂，又能够简单地被机器读取。JSON最初由Douglas Crockford定义，现在则由RFC 7159和ECMA-404描述。虽然接受和返回JSON数据并不是实现REST Web服务的唯一选择，但大多数REST Web服务都是这样做的。
+
+在与REST Web服务打交道的时候，我们常常会以某种形式与JSON不期而遇，要么就是为了创建JSON，要么就是为了处理JSON，又或者两者皆有。处理JSON在Web应用中非常常见：无论是从Web服务里面获取数据，还是通过第三方身份验证服务登录Web应用，又或者对其他服务进行控制，通常都需要处理JSON数据。
+
+跟处理JSON一样，创建JSON也非常常见：Go语言经常会被用于创建为前端应用提供服务的Web服务后端，其中就包括基于JavaScript的前端应用，而这些应用常常会运行着React.js和Angular.js这样的JavaScript库。除此之外，Go语言还会被用于为物联网以及诸如智能手表这样的可穿戴设备创建Web服务。因为在很多情况下，这些前端应用都是基于JSON开发的，所以它们与后端进行交互最自然的方式当然也是使用JSON。
+
+正如Go语言提供对XML的支持一样，Go语言也通过 `encoding/json` 库提供对JSON的支持。和上一节一样，我们首先会学习如何分析JSON，然后再学习如何创建JSON数据。
+

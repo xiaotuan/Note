@@ -25,7 +25,7 @@ class ToMobileSpider(CrawlSpider):
 ```
 
 > <img class="my_markdown" src="../images/14.png" style="width:251px;  height: 203px; " width="10%"/>
-> 本章代码可以在GitHub的c `h04` 目录下找到。
+> 本章代码可以在GitHub的 ch04 目录下找到。
 
 你可能已经注意到的一个问题是，这里并没有使用之前章节中用过的Web服务器（ `http://web:9312` ），而是使用了该站点的一个公开可用的副本，这是我存放在 `http://scrapybook.s3.amazonaws.com` 上的副本。之所以在本章中使用这种方式，是因为这样可以使图片和URL都能够公开可用，此时就可以非常轻松地分享应用了。
 
