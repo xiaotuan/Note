@@ -2,7 +2,7 @@
 
 Go Playground允许在浏览器里编辑并运行Go语言代码。在浏览器中打开<a class="my_markdown" href="['http://play.golang.org']">http://play.golang.org</a>。浏览器里展示的代码是可编辑的（见图1-5）。点击Run，看看会发生什么。
 
-![6.png](./images/6.png)
+![6.png](../images/6.png)
 <center class="my_markdown"><b class="my_markdown">图1-5　Go Playground</b></center>
 
 可以把输出的问候文字改成别的语言。试着改动 `fmt.Println()` 里面的文字，然后再次点击Run。
