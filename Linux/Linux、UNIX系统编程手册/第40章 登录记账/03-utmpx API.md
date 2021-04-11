@@ -1,0 +1,10 @@
+### 40.2　utmpx API
+
+utmp和wtmp文件很早就出现在了UNIX系统上了，但随着系统的演化，不同UNIX实现之间的分歧开始出现了，特别是BSD与System V之间的差别。System V Release 4对API进行了大量的扩展，包括创建了一个全新的（并行的）utmpx结构以及相关的utmpx和wtmpx文件。同样，处理这些新文件的函数名以及相关的头文件名中也包含了字母x。很多其他UNIX实现也在API中增加了自己的扩展。
+
+本章将介绍Linux utmpx API，它是BSD和System V实现的一个混合体。Linux并没有像System V那样创建并行的utmpx和wtmpx文件，相反，utmp和wtmp文件包含了所有所需的信息。但为了与其他UNIX实现保持兼容，Linux提供了传统的utmp和从System V演化而来的utmpx API来访问这些文件的内容。在Linux上，这两组API返回的信息是完全一样的。（这两组API之间的差别之一是utmp API中的一些函数是可重入的，而utmpx中的函数是不可重入的。）由于SUSv3规定了utmpx API，因此从与其他UNIX实现保持可移植的角度出发，本章将介绍utmpx接口。
+
+SUSv3规范并没有覆盖到utmpx API的方方面面（如并没有规定utmp和wtmp文件的存放位置）。不同实现上的登录记账文件中包含的内容稍微存在一些差异，并且各种实现都提供了额外的登录记账函数，而SUSv3并没有对这些函数予以定义。
+
+> [Frisch, 2002]中的第17章对不同UNIX实现中wtmp和utmp文件在存放位置和使用方面的差异进行了总结。此外还介绍了ac(1)命令的用法，这条命令可以用来对wtmp文件中的登录信息进行总结。
+
