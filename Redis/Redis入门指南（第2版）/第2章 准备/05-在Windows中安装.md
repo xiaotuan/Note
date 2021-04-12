@@ -13,7 +13,7 @@ Redis官方不支持Windows。2011年微软1向Redis提交了一个补丁，以�
 
 从Cygwin官方网站下载setup.exe程序，setup.exe既是Cygwin的安装包，又是Cygwin的软件包管理器。运行setup.exe后进入安装向导。前几步会要求选择下载源、安装路径、代理和下载镜像等，可以根据具体需求选择，一般来说一路点击“Next”即可。之后会出现软件包管理界面，如图2-1所示。
 
-![2.png](./images/2.png)
+![2.png](../images/2.png)
 <center class="my_markdown"><b class="my_markdown">图2-1　Cygwin包管理界面</b></center>
 
 编译安装Redis需要用到的包有gcc和make，二者都可以在“Devel”分类中找到。在“New”字段中标记为“Skip”的包表示不安装，单击“Skip”切换成需要安装的版本号即可令Cygwin在稍后安装该版本的包。图2-1中所示gcc包的状态为“Keep”是因为作者之前已经安装过该包了，同样如果读者在退出安装向导后还想安装其他软件包，只需要重新运行setup.exe程序再次进入此界面即可。

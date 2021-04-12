@@ -28,14 +28,14 @@ git submodule update
 
 安装PHP和Web服务器（如Nginx），并将phpRedisAdmin文件夹存放到网站目录中即可访问，如图9-1所示。
 
-![48.png](./images/48.png)
+![48.png](../images/48.png)
 <center class="my_markdown"><b class="my_markdown">图9-1 phpRedisAdmin界面</b></center>
 
 phpRedisAdmin自动将Redis的键以“:”分隔并用树形结构显示出来，十分直观。如post:1和post:2两个键都在post树中。
 
 点击一个键后可以查看键的信息，包括键的类型、生存时间及键值，并且可以很方便地编辑，如图9-2所示。
 
-![49.png](./images/49.png)
+![49.png](../images/49.png)
 <center class="my_markdown"><b class="my_markdown">图9-2 查看键信息</b></center>
 
 #### 4．性能

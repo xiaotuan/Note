@@ -1,4 +1,4 @@
-## A.5 REDIS_CMD_SORT_FOR_SCRIPT
+### A.5 REDIS_CMD_SORT_FOR_SCRIPT
 
 拥有REDIS_CMD_SORT_FOR_SCRIPT属性的命令会产生随机结果（见6.4.2节），在脚本中调用这些命令时Redis会对结果进行排序。
 

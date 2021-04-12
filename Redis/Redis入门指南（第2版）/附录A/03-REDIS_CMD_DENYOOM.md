@@ -1,4 +1,4 @@
-## A.2 REDIS_CMD_DENYOOM
+### A.2 REDIS_CMD_DENYOOM
 
 拥有 REDISCMD_DENYOOM 属性的命令有可能增加 Redis 占用的存储空间，显然拥有该属性的命令都拥有 REDIS_CMD_WRITE 属性，但反之则不然。例如， `DEL` 命令拥有 REDIS CMDWRITE 属性，但其总是会减少数据库的占用空间，所以不拥有 REDIS CMD_DENYOOM属性。
 

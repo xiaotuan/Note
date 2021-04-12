@@ -1,4 +1,4 @@
-## 5.1 PHP与Redis
+### 5.1 PHP与Redis
 
 Redis官方推荐的PHP客户端是Predis1和phpredis2。前者是完全使用PHP代码实现的原生客户端，而后者则是使用C语言编写的PHP扩展。在功能上两者区别并不大，就性能而言后者会更胜一筹。考虑到很多主机并未提供安装PHP扩展的权限，本节会以Predis为示例介绍如何在PHP中使用Redis。
 

@@ -1,4 +1,4 @@
-## A.1 REDIS_CMD_WRITE
+### A.1 REDIS_CMD_WRITE
 
 拥有REDISCMD_WRITE属性的命令的表现是会修改Redis数据库的数据。一个只读的从数据库会拒绝执行拥有REDIS_CMD_WRITE属性的命令；另外在Lua脚本中执行了拥有REDIS_CMD_RANDOM属性（见A.4）的命令后，不可以再执行拥有REDIS_CMD WRITE属性的命令，否则会提示错误：“ `Write commands not allowed after non deterministic commands.` ”
 

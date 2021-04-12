@@ -1,4 +1,4 @@
-## 5.4 Node.js与Redis
+### 5.4 Node.js与Redis
 
 Redis官方推荐的Node.js的Redis客户端可以选择的有node_redis7和ioredis8，相比而言前者发布时间较早，而后者的功能则更加丰富一些。从接口来看两者的使用方法大同小异，本文将以ioredis为例讲解。
 
