@@ -1,0 +1,4 @@
+### 11.2　将React和Redux结合起来
+
+我们在Redux上已经取得不错的进展，但此刻React组件对此一无所知。我们还需要以某种方式将它们结合起来。我们已经构建出要使用的reducer、action和store，完成了Redux的设置过程，现在可以开始将新架构与React进行结合。读者也许已经注意到，不需要对React做太多工作就可以让Redux启动并运行起来。这是因为Redux可以在不考虑特定框架的情况下进行实现——或者根本不需要任何框架。诚然，Redux的工作方式与React应用尤为契合，而这至少是Redux成为React应用架构最受欢迎的选择之一的部分原因。但记住，即使开始集成React和Redux，仍然可以将Redux和Angular、Vue、Preact或者Ember集成。
+

@@ -1,0 +1,14 @@
+# 第三部分　React应用架构
+
+截至第二部分结束时，我们已经将Letters Social示例应用从一个简单的静态页面转换为具有路由、身份验证和动态数据的动态用户界面。在第三部分，我们将通过探索一些React的高级主题来为我们所创建的东西添砖加瓦。
+
+第10章和第11章将探索Flux应用架构并实现Redux。Redux是Flux模式的一种变体，Flux已经成为大型React应用事实上的状态管理解决方案。我们将探索Redux的概念并将示例应用转换为使用Redux作为状态管理解决方案。在此过程中将继续为Letter Social添加评论和点赞的功能。
+
+第12章将进一步研究如何在服务器上使用React。归功于Node.js服务器运行时的可用性，开发者可以在服务器上执行React代码。我们将探索使用React进行服务器端渲染，甚至将Redux状态管理集成到该过程中。我们还将集成React Router这个流行的React路由库。
+
+最后，第13章将略微偏离React的Web应用并探索React Native。React Native是另一个React项目，其使开发者可以编写能够在iOS和Android移动设备上运行的React应用。
+
+第三部分结束时，我们将创建一个充分利用React、Redux和服务器端渲染的完整应用。虽然即将完成React的初步尝试，但读者将能够继续增强React的能力并探索其他像React Native这样的高级主题。
+
+
+
