@@ -6,6 +6,8 @@
 
 打开 Visual Studio 开发工具，选择 `File` 菜单，选择新建一个工程（New Project），在 New Project 中选择 `Templates` -> `Visual C#` -> `Windows` -> `Universal`，在面板中可以选择创建的项目末班，选择一个空白的项目模板 `Blank App(Universal Windows)`，单击 `OK` 按钮完成项目的创建。
 
+![01](../images/01.png)
+
 #### 1.2 编写程序代码
 
 双击 `解决方案管理器` 中的 `MainPage.xaml` 文件，在中间编辑框中的 `Grid` 控件里面添加一个 `TextBlock` 控件，代码如下：
