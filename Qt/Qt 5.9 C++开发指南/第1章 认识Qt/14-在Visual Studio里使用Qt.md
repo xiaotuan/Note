@@ -2,7 +2,7 @@
 
 在Qt Creator中可以使用MSVC编译工具对Qt项目进行编译。若有人比较习惯于使用Visual Studio，或某些项目必须使用Visual Studio，也可以在Visual Studio里创建和管理Qt程序项目。要在Visual Studio中使用Qt，需要安装一个Visual Studio的Qt插件，这个插件程序由Qt公司提供。
 
-目前最新的Visual Studio Qt插件是“Visual Studio Add-in 2.0.0 for Qt5 MSVC 2015”，可以从Qt官网下载并安装。安装此插件之前，需已经安装好Visual Studio 2015。
+目前最新的Visual Studio Qt插件是“Visual Studio Add-in 2.0.0 for Qt5 MSVC 2015”，可以从Qt官网下载并安装（<https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools2019>）。安装此插件之前，需已经安装好Visual Studio 2015。
 
 这里省略Visual Studio Add-in 2.0.0 for Qt5的安装过程。安装完成后，在Visual Studio的主菜单栏上增加了一个菜单组“Qt VS Tools”，在新建项目向导里增加了可创建Qt项目的项目模板。
 
