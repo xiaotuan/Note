@@ -68,3 +68,17 @@ random_sleep = 360
 ⑤ 然后我们执行命令 `systemctl start yum-cron`，启动 yum-cron 即可。
 
 ⑥ 最后我们将 yum-cron 加入开机自动启动。执行命令 `systemctl enable yum-cron`。
+
+⑦ 可以执行下面命令直接进行更新：
+
+```shell
+[commands]
+#  What kind of update to use:
+# default                            = yum upgrade
+# security                           = yum --security upgrade
+# security-severity:Critical         = yum --sec-severity=Critical upgrade
+# minimal                            = yum --bugfix update-minimal
+# minimal-security                   = yum --security update-minimal
+# minimal-security-severity:Critical =  --sec-severity=Critical update-minimal
+```
+
