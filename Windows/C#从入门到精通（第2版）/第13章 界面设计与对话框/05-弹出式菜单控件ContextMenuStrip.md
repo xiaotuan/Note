@@ -1,0 +1,14 @@
+### 13.1.3　弹出式菜单控件ContextMenuStrip
+
+弹出式菜单又称为上下文菜单，或快捷菜单，C#使用ContextMenuStrip控件设计弹出式菜单，该控件由ContextMenuStrip 类封装。弹出式菜单在用户在窗体中的控件或特定区域上单击鼠标右键时显示。弹出式菜单通常用于组合来自窗体的一个MenuStrip 的不同菜单项，便于用户在给定应用程序上下文中使用。例如，可以使用分配给TextBox 控件的弹出式菜单提供菜单项，以便更改文本字体，在控件中查找文本或实现复制和粘贴文本的剪贴板功能。还可以在弹出式菜单中显示不位于 MenuStrip 中的新的ToolStripMenuItem 对象，从而提供与特定情况有关且不适合在 MenuStrip 中显示的菜单项命令。
+
+设计弹出式菜单的基本步骤如下。
+
+① 在窗体设计区上添加ContextMenuStrip控件。
+
+② 为该控件设计菜单项，设计方法与MenuStrip控件相同，只是不必设计顶级菜单项。
+
+③ 在需要弹出式菜单的窗体或控件的“属性”窗口中，为ContextMenuStrip属性选择弹出式菜单控件。窗体Form及许多可视控件都有一个Control.ContextMenuStrip属性，该属性可将弹出式菜单ContextMenuStrip绑定到显示该菜单的控件上。多个控件可绑定使用一个弹出式菜单 ContextMenuStrip。
+
+当运行程序时，用户在窗体或控件上单击鼠标右键时，即可显示弹出式菜单。
+

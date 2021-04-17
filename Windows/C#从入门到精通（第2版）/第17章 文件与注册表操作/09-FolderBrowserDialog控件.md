@@ -1,0 +1,8 @@
+### 17.2.2　FolderBrowserDialog控件
+
+.net中的 FolderBrowserDialog 组件也是一个标准的预设对话框，用户可以通过它浏览并选择目录，也可以在目录中创建新文件夹。FolderBrowserDialog类在System.Windows.Forms命名空间下。
+
+FolderBrowserDialog类有两个重要属性：RootFolder和SelectedPath。通过RootFolder属性可以获取或设置从其开始浏览的根文件夹；通过SelectedPath属性可以获取或设置用户选定的路径。
+
+FolderBrowserDialog类的ShowDialog方法可以打开对话框，提示用户浏览、创建并最终选择一个文件夹。文件夹的浏览通过树控件完成。
+

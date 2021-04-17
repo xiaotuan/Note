@@ -1,0 +1,6 @@
+
+
+innodb_log_buffer_size决定InnoDB重做日志缓存池的大小，默认值是8MB。对于可能产生大量更新记录的大事务，增加innodb_log_buffer_size的大小，可以避免InnoDB在事务提交前就执行不必要的日志写入磁盘操作。因此，对于会在一个事务中更新、插入或删除大量记录的应用，我们可以通过增大innodb_log_buffer_size来减少日志写磁盘操作，从而提高事务处理的性能。
+
+
+
