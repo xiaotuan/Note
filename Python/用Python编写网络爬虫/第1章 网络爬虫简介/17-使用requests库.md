@@ -4,7 +4,7 @@
 
 尽管我们只使用 `urllib` 就已经实现了一个相对高级的解析器，不过目前Python编写的主流爬虫一般都会使用 `requests` 库来管理复杂的HTTP请求。该项目起初只是以“人类可读”的方式协助封装 `urllib` 功能的小库，不过现如今已经发展成为拥有数百名贡献者的庞大项目。可用的一些功能包括内置的编码处理、对SSL和安全的重要更新以及对POST请求、JSON、cookie和代理的简单处理。
 
-> <img class="my_markdown" src="../images/11.jpg" style="width:87px;  height: 87px; " width="8%"/>
+> <img src="../images/11.jpg" style="zoom:50%;" />
 > 本书在大部分情况下，都将使用 `requests` 库，因为它足够简单并且易于使用，而且它事实上也是大多数网络爬虫项目的标准。
 
 想要安装 `requests` ，只需使用 `pip` 即可。
