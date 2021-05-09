@@ -21,3 +21,4 @@
 6、打开主界面，找到 Help->Register，选择activation code，将key复制到框内，点击activate即可，如图
 
 ![img](./images/08.jpg)
+
