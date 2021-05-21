@@ -1573,8 +1573,14 @@ case 1:
 
 在消息处理代码中，它会隐藏当前界面，重新显示 `IptvMainActivity` 界面。
 
-> 至此，整个 SHCMCC_Guide_IPTV_HN 应用就分析完成了。
+### 10. 请求地址列表
 
-### 10. 总结
+所有请求地址都是如下地址，先请求 `iptv_home_page` ，如果失败再尝试请求 `iptv_home_page2` 。
+
++ secure 表中 `iptv_home_page` 的值：http://hniptv.itv.cmvideo.cn:8095
++ secure 表中 `iptv_home_page2` 的值：http://hniptv.itv.cmvideo.cn:8095
+
+### 11. 总结
 
 ![SHCMCC_Guide_IPTV_HN](./images/SHCMCC_Guide_IPTV_HN.png)
+
