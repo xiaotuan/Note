@@ -1,4 +1,0 @@
-```kotlin
-View::class.java
-```
-
