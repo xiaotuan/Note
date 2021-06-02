@@ -6,8 +6,8 @@
 
 ```xml
 <rooteleml>
-	<subeleml>
-    	Hello World from an xml sub element
+    <subeleml name="hello">
+        Hello World from an xml sub element
     </subeleml>
 </rooteleml>
 ```
@@ -17,10 +17,65 @@
 **Java 版本**
 
 ```java
+private String getEventsFromAnXMLFile(Activity activity)
+	throws XmlPullParserException, IOException {
+    StringBuffer sb = new StringBuffer();
+    Resources res = activity.getResources();
+    XmlResourceParser xpp = res.getXml(R.xml.test);
+
+    xpp.next();
+    int eventType = xpp.getEventType();
+    while (eventType != XmlPullParser.END_DOCUMENT) {
+        if (eventType == XmlPullParser.START_DOCUMENT) {
+            sb.append("**********Start document");
+        } else if (eventType == XmlPullParser.START_TAG) {
+            sb.append("\nStart tag " + xpp.getName());
+            for (int i = 0; i < xpp.getAttributeCount(); i++) {
+                sb.append("\nAttribute name: " + xpp.getAttributeName(i)
+                          + ", value: " + xpp.getAttributeValue(i));
+            }
+        } else if (eventType == XmlPullParser.END_TAG) {
+            sb.append("\nEnd tag " + xpp.getName());
+        } else if (eventType == XmlPullParser.TEXT) {
+            sb.append("\nText " + xpp.getText());
+        }
+        eventType = xpp.next();
+    }
+    sb.append("\n*************End document");
+    Log.d("example", "xml content: \n" + sb.toString());
+    return sb.toString();
+}
 ```
 
 **Kotlin 版本**
 
 ```kotlin
+private fun getEventsFromAnXMLFile(activity: Activity): String {
+    val sb = StringBuffer()
+    val xpp = activity.resources.getXml(R.xml.test)
+
+    xpp.next()
+    while (xpp.eventType != XmlPullParser.END_DOCUMENT) {
+        when (xpp.eventType) {
+            XmlPullParser.START_DOCUMENT -> sb.append("**********Start document")
+            XmlPullParser.START_TAG -> {
+                sb.append("\nStart tag " + xpp.getName());
+                for (i in 0 until xpp.attributeCount) {
+                    sb.append(
+                        "\nAttribute name: " + xpp.getAttributeName(i)
+                        + ", value: " + xpp.getAttributeValue(i)
+                    );
+                }
+            }
+            XmlPullParser.END_TAG -> sb.append("\nEnd tag " + xpp.name)
+            XmlPullParser.TEXT -> sb.append("\nText " + xpp.text)
+
+        }
+        xpp.next()
+    }
+    sb.append("\n*************End document");
+    Log.d("example", "xml content: \n$sb");
+    return sb.toString()
+}
 ```
 
