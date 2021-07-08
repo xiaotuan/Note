@@ -46,6 +46,19 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 100
 sudo update-alternative --config java
 ```
 
+安装 `Crypto` 库：
+
+```shell
+$ pip install pycrypto
+```
+
+`pip` 工具安装命令：
+
+```shell
+$ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+$ sudo python get-pip.py
+```
+
 ### 4. 安装 OpenJDK-8
 
 ```shell
@@ -111,4 +124,12 @@ sudo apt-get install libssl-dev
 > ```shell
 > sudo apt-get update && sudo apt-get install libesd0-dev
 > ```
+
+安装 `libpng12-0`：
+
+```shell
+$ sudo add-apt-repository ppa:linuxuprising/libpng12
+$ sudo apt update
+$ sudo apt install libpng12-0
+```
 
