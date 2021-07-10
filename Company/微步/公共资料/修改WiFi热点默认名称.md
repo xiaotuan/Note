@@ -41,3 +41,12 @@ private SoftApConfiguration getDefaultApConfiguration() {
 }
 ```
 
+> 提示：
+>
+> 在 `device/sprd/mpool/modul/main.mk` 文件中有一个属性配置 WiFi 热点名称的配置（它的名字又叫 WiFi 直连），如下代码所示：
+>
+> ```makefile
+> PRODUCT_SYSTEM_EXT_PROPERTIES += persist.wb.wifi_direct_name=Magnum Pro	
+> ```
+>
+> 但是不知是否有效，没有验证过。
