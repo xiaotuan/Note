@@ -4,7 +4,7 @@
 
 #### 1.1 MT8168 芯片 Android R
 
-1. 在 `Android` 系统源码中的 `build\target\product\security` 目录下找到 `platform.x509.pem` 和 `platform.pk8` 两个文件。
+1. 在 `Android` 系统源码中的 `out-user\target\product\项目名\obj\PACKAGING\otatools_intermediates\otatools\device\mediatek\security` 目录下找到 `platform.x509.pem` 和 `platform.pk8` 两个文件。
 
 2. 在 `out/host/linux-x86/framework` 目录下找到 `signapk.jar` 文件。
 

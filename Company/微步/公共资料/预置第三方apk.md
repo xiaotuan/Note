@@ -86,4 +86,67 @@
    include $(call all-makefiles-under,$(LOCAL_PATH))
    ```
 
+
+### 2. MTK平台
+
+#### 2.1 MTK8168 Android R
+
+1. 在 `packages` 目录下创建一个名为 `thirdpart` 的目录用于存放第三方 apk。
+
+   > 提示：
+   >
+   > 第三方 apk 文件放置路径可以放置任何你想要放置的位置，不一定是 `packages/thirdpart` 目录下。
+
+2. 创建以 apk 应用名字相同的文件夹，然后将 apk 文件放入其中，以 com.joycool.deskmain_pad_app7_5.9.2_592.apk 为例，该 apk 的应用名称为 `Wana` ，所以创建的文件夹名称为 `Wana`。
+
+3. 在 `Wana` 文件夹中创建 Android.mk 文件，如 apk 使用到 so 库，则其内容如下：
+
+   ```makefile
+   LOCAL_PATH := $(my-dir)
    
+   my_archs := arm arm64 x86 x86_64
+   my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
+   
+   include $(CLEAR_VARS)
+   LOCAL_MODULE := Wana
+   LOCAL_MODULE_CLASS := APPS
+   LOCAL_MODULE_TAGS := optional
+   LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+   #LOCAL_PRIVILEGED_MODULE :=
+   LOCAL_PRODUCT_MODULE := true
+   LOCAL_CERTIFICATE := PRESIGNED
+   LOCAL_SRC_FILES := com.joycool.deskmain_pad_app7_5.9.2_592.apk
+   include $(BUILD_PREBUILT)
+   ```
+
+   否则其内容为：
+
+   ```makefile
+   LOCAL_PATH := $(my-dir)
+   
+   include $(CLEAR_VARS)
+   LOCAL_MODULE := Wana
+   LOCAL_MODULE_CLASS := APPS
+   LOCAL_MODULE_TAGS := optional
+   LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+   #LOCAL_PRIVILEGED_MODULE :=
+   LOCAL_PRODUCT_MODULE := true
+   LOCAL_CERTIFICATE := PRESIGNED
+   LOCAL_SRC_FILES := com.joycool.deskmain_pad_app7_5.9.2_592.apk
+   #LOCAL_REQUIRED_MODULES :=
+   include $(BUILD_PREBUILT)
+   ```
+
+   > 提示：
+   >
+   > 可以参照 `vendor/partner_gms/apps/` 下的内置 apk 的写法修改 Android.mk 文件。
+
+4. 将 apk 添加到编译中去，可以修改 `build/make/target/product/base_system.mk` 文件，在其末尾添加如下代码：
+
+   ```makefile
+   PRODUCT_PACKAGES += \
+   	Wana
+   ```
+
+   
+

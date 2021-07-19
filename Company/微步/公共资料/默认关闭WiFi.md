@@ -21,41 +21,41 @@
 > // and that system code is only sending protected broadcasts.
 > final boolean isProtectedBroadcast;
 > try {
-> isProtectedBroadcast = AppGlobals.getPackageManager().isProtectedBroadcast(action);
+>     isProtectedBroadcast = AppGlobals.getPackageManager().isProtectedBroadcast(action);
 > } catch (RemoteException e) {
-> Slog.w(TAG, "Remote exception", e);
-> return ActivityManager.BROADCAST_SUCCESS;
+>     Slog.w(TAG, "Remote exception", e);
+>     return ActivityManager.BROADCAST_SUCCESS;
 > }
 > 
 > // 添加代码开始位置
 > if(intent != null && intent.getAction() != null &&intent.getAction().equals(Intent.ACTION_PACKAGE_CHANGED)){ 
-> String data =intent.getDataString();
-> if(data.endsWith("setupwizard")){
->   if("false".equalsIgnoreCase(SystemProperties.get("ro.wb.wifi_on", "false"))){
->       WifiManager mWifiManager =(WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
->       int state =mWifiManager.getWifiState();	
->       if(state == WifiManager.WIFI_STATE_ENABLED){
->           mWifiManager.setWifiEnabled(false);
->       }
->   }
-> }
+>     String data =intent.getDataString();
+>     if(data.endsWith("setupwizard")){
+>           if("false".equalsIgnoreCase(SystemProperties.get("ro.wb.wifi_on", "false"))){
+>               WifiManager mWifiManager =(WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+>               int state =mWifiManager.getWifiState();	
+>               if(state == WifiManager.WIFI_STATE_ENABLED){
+>                   mWifiManager.setWifiEnabled(false);
+>               }
+>           }
+>     }
 > }
 > // 添加代码位置结束
 > 
 > final boolean isCallerSystem;
 > switch (UserHandle.getAppId(callingUid)) {
-> case ROOT_UID:
-> case SYSTEM_UID:
-> case PHONE_UID:
-> case BLUETOOTH_UID:
-> case NFC_UID:
-> case SE_UID:
-> case NETWORK_STACK_UID:
->   isCallerSystem = true;
->   break;
-> default:
->   isCallerSystem = (callerApp != null) && callerApp.isPersistent();
->   break;
+>     case ROOT_UID:
+>     case SYSTEM_UID:
+>     case PHONE_UID:
+>     case BLUETOOTH_UID:
+>     case NFC_UID:
+>     case SE_UID:
+>     case NETWORK_STACK_UID:
+>           isCallerSystem = true;
+>           break;
+>     default:
+>           isCallerSystem = (callerApp != null) && callerApp.isPersistent();
+>           break;
 > }
 > ```
 >

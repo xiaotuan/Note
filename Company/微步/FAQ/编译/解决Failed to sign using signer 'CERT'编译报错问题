@@ -1,0 +1,33 @@
+[toc]
+
+### 1. 报错信息
+
+```
+FAILED: out/soong/.intermediates/packages/modules/CaptivePortalLogin/CaptivePortalLogin/android_common/CaptivePortalLogin.apk prebuilts/jdk/jdk11/linux-x86/bin/java -XX:OnError="cat hs_err_pid%p.log" -XX:CICompilerCount=6 -XX:+UseDynamicNumberOfGCThreads -Djava.library.path=$(dirname out/soong/host/linux-x86/lib64/libconscrypt_openjdk_jni.so) -jar out/soong/host/linux-x86/framework/signapk.jar device/mediatek/security/networkstack.x509.pem device/mediatek/security/networkstack.pk8  out/soong/.intermediates/packages/modules/CaptivePortalLogin/CaptivePortalLogin/android_common/CaptivePortalLogin-unsigned.apk  out/soong/.intermediates/packages/modules/CaptivePortalLogin/CaptivePortalLogin/android_common/CaptivePortalLogin.apk
+java.security.SignatureException: Failed to sign using signed "CERT"
+		at com.android.apksig.internal.apk.v1.V1SchemeSigner.signManifest(V1SchemeSigner.java:295)
+		at com.android.apksig.internal.apk.v1.V1SchemeSigner.sign(V1SchemeSigner.java:250)
+		at com.android.apksig.DefaultApkSignerEngine.outputJarEntries(DefaultApkSignerEngine.java:740)
+		at com.android.signapk.SignApk.main(SignApk.java:1198)
+caused by: java.security.SignatureException: Failed to verify generated SHA256withRSA signature using public key from certificate
+		at com.android.apksig.internal.apk.v1.V1SchemeSigner.generateSignatureBlock(V1SchemeSigner.java:530)
+		at com.android.apksig.internal.apk.v1.V1SchemeSigner.SignManifest(V1SchemeSigner.java:287)
+		... 3 more
+caused by: java.security.SignatureException: Signature did not verify
+		at com.android.apksig.internal.apk.v1.V1SchemeSigner.generateSignatureBlock(V1SchemeSigner.java:522)
+		... 4 more
+```
+
+### 2. 问题分析
+
+通过如下日志：
+
+```
+caused by: java.security.SignatureException: Failed to verify generated SHA256withRSA signature using public key from certificate
+```
+
+可以看出报错原因是签名文件不一致造成的（或者说不对）。
+
+### 3. 问题解决办法
+
+可以将 `build/target/product/security/` 目录下的 `networkstack.pk8` 和 `networkstack.x509.pem` 文件替换掉 `device/mediatek/security/` 目录下的对应文件即可。

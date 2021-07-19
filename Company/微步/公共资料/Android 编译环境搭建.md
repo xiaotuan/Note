@@ -55,8 +55,8 @@ $ pip install pycrypto
 `pip` 工具安装命令：
 
 ```shell
-$ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-$ sudo python get-pip.py
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+sudo python get-pip.py
 ```
 
 ### 4. 安装 OpenJDK-8
