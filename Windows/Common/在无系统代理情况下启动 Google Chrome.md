@@ -9,7 +9,7 @@
    例如：
 
    ```shell
-   C:\Users\Xiaotuan>"C:\Program Files\Google\Chrome\Application\chrome.exe" --proxy-server="http://127.0.0.1:58591"
+   C:\Users\Xiaotuan>C:\Program Files\Google\Chrome\Application\chrome.exe --proxy-server="http://127.0.0.1:58591"
    ```
    
    `macOS` 用户（请注意客户端的 `socks5` 监听端口需要设置为 1080）：
