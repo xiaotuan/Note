@@ -2,7 +2,17 @@
 
 ### 1. 展讯
 
-#### 1. Android R(Android 11)
+#### 1.1 Android R(Android 11)
+
+在 `device/sprd/mpool/modul/main.mk` 文件中有一个属性配置 WiFi 热点名称的配置（它的名字又叫 WiFi 直连），如下代码所示：
+
+```makefile
+PRODUCT_SYSTEM_EXT_PROPERTIES += persist.wb.wifi_direct_name=Magnum_Pro	
+```
+
+> 注意：名称不能包含空格，否则空格后面的字符将会被忽略。
+
+### 2. Android 标准修改流程
 
 修改 `frameworks\opt\net\wifi\service\java\com\android\server\wifi\WifiApConfigStore.java` 文件中 `getDefaultApConfiguration()` 方法的 `configBuilder.setSsid(mContext.getResources().getString(R.string.wifi_tether_configure_ssid_default) + "_" + getRandomIntForDefaultSsid());` 代码即可:
 
@@ -40,13 +50,3 @@ private SoftApConfiguration getDefaultApConfiguration() {
     return configBuilder.build();
 }
 ```
-
-> 提示：
->
-> 在 `device/sprd/mpool/modul/main.mk` 文件中有一个属性配置 WiFi 热点名称的配置（它的名字又叫 WiFi 直连），如下代码所示：
->
-> ```makefile
-> PRODUCT_SYSTEM_EXT_PROPERTIES += persist.wb.wifi_direct_name=Magnum Pro	
-> ```
->
-> 但是不知是否有效，没有验证过。
