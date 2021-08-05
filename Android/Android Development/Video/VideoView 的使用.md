@@ -5,7 +5,46 @@
 **Kotlin 版本**
 
 ```kotlin
+package com.qty.kotlintest
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.MediaController
+import android.widget.Toast
+import android.widget.VideoView
+
+class VideoViewDemo : AppCompatActivity() {
+
+    /**
+     * TODO: Set the path variable to a streaming video URL or a local media
+     * file path.
+     */
+    private var path: String = "storage/emulated/0/test.mp4"
+    private var mVideView: VideoView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.videoview)
+
+        mVideView = findViewById(R.id.surface_view);
+
+        if (path == "") {
+            // Tell the user to provide a media file URL/path.
+            Toast.makeText(this, "Please edit VideoViewDemo Activity, and set path"
+                        + " variable to your media file URL/path", Toast.LENGTH_SHORT).show()
+        } else {
+            /*
+             * Alternatively, for streaming media you can use
+             * mVideoView.setVideoURI(Uri.parse(URLstring));
+             */
+            mVideView?.apply {
+                setVideoPath(path)
+                setMediaController(MediaController(this@VideoViewDemo))
+                requestFocus()
+            }
+        }
+    }
+}
 ```
 
 **Java 版本**
