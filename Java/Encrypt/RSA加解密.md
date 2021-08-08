@@ -1,0 +1,242 @@
+### 1. RSA加解密实现方法
+
+```java
+package com.qty.encrypt;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
+
+import javax.crypto.Cipher;
+
+public class RSAEncrypt {
+	
+	/**
+	 * 加密算法
+	 */
+	private static final String ALGORITHM = "RSA";
+	/**
+	 * 密钥的长度
+	 */
+	private static final int KEY_SIZE = 1024;
+	/**
+     * RSA最大加密明文大小
+     */
+    private static final int MAX_ENCRYPT_BLOCK = 117;
+    /**
+     * RSA最大解密密文大小
+     */
+    private static final int MAX_DECRYPT_BLOCK = 128;
+	
+	
+	/**
+	 * 加密字符串
+	 * @param data 要加密的字符串
+	 * @param key 加密密码，密码长度为 16 位
+	 * @return 返回加密后的 byte 数组
+	 * @throws Exception
+	 */
+	public static byte[] encrypt(byte[] datas, String keystorePath) throws Exception {
+		// 将文件中的公钥对象读出
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(keystorePath));
+		Key key = (Key) ois.readObject();
+		ois.close();
+		
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+        int inputLen = datas.length;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int offSet = 0;
+        byte[] cache;
+        int i = 0;
+        // 对数据分段解密
+        while (inputLen - offSet > 0) {
+            if (inputLen - offSet > MAX_ENCRYPT_BLOCK) {
+                cache = cipher.doFinal(datas, offSet, MAX_ENCRYPT_BLOCK);
+            } else {
+                cache = cipher.doFinal(datas, offSet, inputLen - offSet);
+            }
+            out.write(cache, 0, cache.length);
+            i++;
+            offSet = i * MAX_ENCRYPT_BLOCK;
+        }
+        byte[] encryptDatas = out.toByteArray();
+        out.close();
+        return encryptDatas;
+	}
+	
+	/**
+	 * 加密文件
+	 * @param originFilePath 要加密的文件路径
+	 * @param destFilePath 加密后的文件路径
+	 * @param key 加密密码，密码长度为 16 位
+	 * @throws Exception
+	 */
+	public static void encryptFile(String originFilePath, String destFilePath, String keystorePath) throws Exception {
+		// 将文件中的公钥对象读出
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(keystorePath));
+		Key key = (Key) ois.readObject();
+		ois.close();
+		
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		InputStream is = new FileInputStream(originFilePath);
+		OutputStream os = new FileOutputStream(destFilePath);
+		byte[] buffer = new byte[MAX_ENCRYPT_BLOCK];
+		int len = 0;
+		byte[] cache;
+		while ((len = is.read(buffer)) > 0) {
+			cache = cipher.doFinal(buffer, 0, len);
+			os.write(cache);
+		}
+        os.close();
+        is.close();
+	}
+	
+	/**
+	 * 解密 byte 数组
+	 * @param data 要解密的 byte 数组
+	 * @param key 解密密码，密码长度为 16 位
+	 * @return 返回解密后的 byte 数组
+	 * @throws Exception
+	 */
+	public static byte[] decrypt(byte[] datas, String keystorePath) throws Exception {
+		// 将文件中的私钥对象读出
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(keystorePath));
+		Key key = (Key) ois.readObject();
+		ois.close();
+		
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.DECRYPT_MODE, key);
+        int inputLen = datas.length;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int offSet = 0;
+        byte[] cache;
+        int i = 0;
+        // 对数据分段解密
+        while (inputLen - offSet > 0) {
+            if (inputLen - offSet > MAX_DECRYPT_BLOCK) {
+                cache = cipher.doFinal(datas, offSet, MAX_DECRYPT_BLOCK);
+            } else {
+                cache = cipher.doFinal(datas, offSet, inputLen - offSet);
+            }
+            out.write(cache, 0, cache.length);
+            i++;
+            offSet = i * MAX_DECRYPT_BLOCK;
+        }
+        byte[] decryptedData = out.toByteArray();
+        out.close();
+        return decryptedData;
+	}
+	
+	/**
+	 * 解密文件
+	 * @param originFilePath 要解密的文件路径
+	 * @param destFilePath 解密后的文件路径
+	 * @param key 解密密码，密码长度为 16 位
+	 * @throws Exception
+	 */
+	public static void decryptFile(String originFilePath, String destFilePath, String keystorePath) throws Exception {
+		// 将文件中的私钥对象读出
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(keystorePath));
+		Key key = (Key) ois.readObject();
+		ois.close();
+		
+		Cipher cipher = Cipher.getInstance(ALGORITHM);
+		cipher.init(Cipher.DECRYPT_MODE, key);
+		InputStream is = new FileInputStream(originFilePath);
+		OutputStream os = new FileOutputStream(destFilePath);
+		byte[] buffer = new byte[MAX_DECRYPT_BLOCK];
+		int len = 0;
+		byte[] cache;
+		while ((len = is.read(buffer)) > 0) {
+			cache = cipher.doFinal(buffer, 0, len);
+			os.write(cache);
+		}
+        os.close();
+        is.close();
+	}
+	
+	/**
+	 * 生成密钥对
+	 * @param key 加密密码
+	 * @param publicKeyStorePath  公钥文件路径
+	 * @param privateKeyStorePath 私钥文件路径
+	 * @throws Exception
+	 */
+	public static void generateKeyPair(String key, String publicKeyStorePath, String privateKeyStorePath) throws Exception {
+		// RSA 算法要求有一个可信任的随机数源
+		SecureRandom sr = new SecureRandom();
+		sr.setSeed(key.getBytes());
+		// 为 RSA 算法创建一个 KeyPairGenerator 对象
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM);
+		// 利用上面的随机数据源初始化这个 KeyPairGenerator 对象
+		kpg.initialize(KEY_SIZE, sr);
+		// 生成密钥对
+		KeyPair kp = kpg.generateKeyPair();
+		// 得到公钥
+		Key publicKey = kp.getPublic();
+		// 得到私钥
+		Key privateKey = kp.getPrivate();
+		// 用对象流将生成的密钥写入文件
+		ObjectOutputStream oos1 = new ObjectOutputStream(new FileOutputStream(publicKeyStorePath));
+		ObjectOutputStream oos2 = new ObjectOutputStream(new FileOutputStream(privateKeyStorePath));
+		oos1.writeObject(publicKey);
+		oos2.writeObject(privateKey);
+		// 清空缓存，关闭文件流
+		oos1.close();
+		oos2.close();
+	}
+	
+}
+```
+
+### 2. 使用示例
+
+```java
+package com.qty.encrypt;
+
+import java.security.Provider;
+import java.security.Security;
+import java.util.Arrays;
+import java.util.Base64;
+
+public class EncryptDemo {
+
+	public static void main(String[] args) throws Exception {
+		String publicKeyPath = "C:\\Users\\xiaotuan\\Desktop\\public.keystore";
+		String privateKeyPath = "C:\\Users\\xiaotuan\\Desktop\\private.keystore";
+		String source = "Hello World!";
+		String key = "e8v98n23kvc89sdf";
+		String source = "Hello World!byte[] encryptDatas = byte[] encryptDatas = RSAEncrypt.encrypt(source.getBytes(), publicKeyPath);RSAEncrypt.encrypt(source.getBytes(), publicKeyPath);";
+		System.out.println("原文： " + source);
+		RSAEncrypt.generateKeyPair(key, publicKeyPath, privateKeyPath);
+		byte[] encryptDatas = RSAEncrypt.encrypt(source.getBytes(), publicKeyPath);
+		String encryptDatasStr = Base64.getEncoder().encodeToString(encryptDatas);
+		System.out.println("加密后: " + encryptDatasStr);
+		byte[] decryptDatas = RSAEncrypt.decrypt(encryptDatas, privateKeyPath);
+		System.out.println("解密后：" + new String(decryptDatas));
+		DESEncrypt.encryptFile("C:\\WorkSpace\\GitSpace\\Xiaotuan\\Notes\\Common\\12306Bypass使用说明.md", 
+				"C:\\Users\\xiaotuan\\Desktop\\encryptFile.md", key);
+		DESEncrypt.decryptFile("C:\\Users\\xiaotuan\\Desktop\\encryptFile.md", 
+				"C:\\Users\\xiaotuan\\Desktop\\12306Bypass使用说明.md", key);
+		
+		byte[] encryptdatas = {1, 2, 3, 4, 5, 6};
+		byte[] encrypts = {0, 9, 8 ,7};
+		byte[] newDatas = Arrays.copyOf(encryptdatas, encryptdatas.length + encrypts.length);
+		System.out.println("length: " + encryptdatas.length);
+		System.arraycopy(encrypts, 0, newDatas, encryptdatas.length, encrypts.length);
+		System.out.println(Arrays.toString(newDatas));
+	}
+
+}
+```
+
