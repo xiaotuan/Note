@@ -54,6 +54,133 @@
 **Kotlin 版本**
 
 ```kotlin
+package com.qty.kotlintest
+
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
+import java.util.*
+import kotlin.collections.HashMap
+
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    private var mStartBtn: Button? = null
+    private var mPauseBtn: Button? = null
+    private var mStopBtn: Button? = null
+
+    private var mSoundPool: SoundPool? = null
+    private var mStreamIDs: HashMap<Int, Int>? = null
+    private var mCurrStreamId = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        initSoundPool()
+
+        mStartBtn = findViewById(R.id.start)
+        mPauseBtn = findViewById(R.id.pause)
+        mStopBtn = findViewById(R.id.stop);
+
+        mStartBtn?.setOnClickListener(this)
+        mPauseBtn?.setOnClickListener(this)
+        mStopBtn?.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.start -> {
+                if (mCurrStreamId == -1) {
+                    playSound(1, 0)
+                } else {
+                    resumeSound()
+                }
+                mStartBtn?.isEnabled = false
+                mPauseBtn?.isEnabled = true
+                mStopBtn?.isEnabled = true
+                Toast.makeText(this@MainActivity, "播放即时音效", Toast.LENGTH_SHORT).show()
+            }
+            R.id.pause -> {
+                pauseSound()
+                mStartBtn?.isEnabled = true
+                mPauseBtn?.isEnabled = false
+                mStopBtn?.isEnabled = true
+                Toast.makeText(this@MainActivity, "暂停播放即时音效", Toast.LENGTH_SHORT).show()
+            }
+            R.id.stop -> {
+                stopSound()
+                mStartBtn?.isEnabled = true
+                mPauseBtn?.isEnabled = false
+                mStopBtn?.isEnabled = false
+                Toast.makeText(this@MainActivity, "停止播放即时音效", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // 初始化声音池的方法
+    fun initSoundPool() {
+        // 创建 SoundPool 对象
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val attr = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                .build()
+            mSoundPool = SoundPool.Builder()
+                .setMaxStreams(4)
+                .setAudioAttributes(attr)
+                .build()
+        } else {
+            mSoundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+        }
+        // 创建 HashMap 对象
+        mStreamIDs = HashMap()
+        mSoundPool?.let {
+            // 加载声音文件 musictest 并且设置为 1 号声音放入 mStreamIDs 中
+            mStreamIDs?.put(1, it.load(this@MainActivity, R.raw.musictest, 1))
+        }
+    }
+
+    // 播放声音的方法
+    fun playSound(sound: Int, loop: Int) {
+        // 获取 AudioManager 引用
+        val am = getSystemService(AUDIO_SERVICE) as AudioManager
+        // 获取当前音量
+        val streamVolumeCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
+        // 获取系统最大音量
+        val streamVolumeMax = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
+        // 计算得到播放音量
+        val volume = streamVolumeCurrent / streamVolumeMax
+        // 调用 SoundPool 的 play 方法来播放声音文件
+        mSoundPool?.apply {
+            mStreamIDs?.let {
+                mCurrStreamId = play(it.get(sound)!!.toInt(), volume, volume, 1, loop, 1.0f)
+            }
+        }
+    }
+
+    // 暂停播放音效的方法
+    fun pauseSound() {
+        mSoundPool?.pause(mCurrStreamId)
+    }
+
+    // 恢复播放音效的方法
+    fun resumeSound() {
+        mSoundPool?.resume(mCurrStreamId)
+    }
+
+    // 停止播放音效的方法
+    fun stopSound() {
+        mSoundPool?.stop(mCurrStreamId)
+        mCurrStreamId = -1
+    }
+}
 ```
 
 **Java 版本**
@@ -63,19 +190,20 @@ package com.qty.test;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private Button mStartBtn;
     private Button mPauseBtn;
@@ -83,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SoundPool mSoundPool;
     private HashMap<Integer, Integer> mStreamIDs;
-    private int currStreamId = -1;
+    private int mCurrStreamId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,13 +227,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mStartBtn.setOnClickListener(this);
         mPauseBtn.setOnClickListener(this);
         mStopBtn.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start:
-                playSound(1, 0);
+                if (mCurrStreamId == -1) {
+                    playSound(1, 0);
+                } else {
+                    resumeSound();
+                }
                 mStartBtn.setEnabled(false);
                 mPauseBtn.setEnabled(true);
                 mStopBtn.setEnabled(true);
@@ -115,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.pause:
                 pauseSound();
                 mStartBtn.setEnabled(true);
-                mPauseBtn.setEnabled(true);
+                mPauseBtn.setEnabled(false);
                 mStopBtn.setEnabled(true);
                 Toast.makeText(this, "暂停播放即时音效", Toast.LENGTH_SHORT).show();
                 break;
@@ -132,8 +266,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 初始化声音池的方法
     private void initSoundPool() {
-        mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);    // 创建 SoundPool 对象
-        mStreamIDs = new HashMap<>();   // 创建 HashMap 对象
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioAttributes attr = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                    .build();
+            mSoundPool = new SoundPool.Builder()
+                    .setMaxStreams(4)
+                    .setAudioAttributes(attr)
+                    .build();
+        } else {
+            mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);    // 创建 SoundPool 对象
+        }
+            mStreamIDs = new HashMap<>();   // 创建 HashMap 对象
         // 加载声音文件 musictest 并且设置为 1 号声音放入 mStreamIDs 中
         mStreamIDs.put(1, mSoundPool.load(this, R.raw.musictest, 1));
     }
@@ -149,18 +295,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 计算得到播放音量
         float volume = streamVolumeCurrent / streamVolumeMax;
         // 调用 SoundPool 的 play 方法来播放声音文件
-        currStreamId = mSoundPool.play(mStreamIDs.get(sound), volume, volume, 1, loop, 1.0f);
+        mCurrStreamId = mSoundPool.play(mStreamIDs.get(sound), volume, volume, 1, loop, 1.0f);
     }
 
     // 暂停播放音效的方法
     private void pauseSound() {
-        mSoundPool.pause(currStreamId);
+        mSoundPool.pause(mCurrStreamId);
+    }
+
+    // 恢复播放音效的方法
+    private void resumeSound() {
+        mSoundPool.resume(mCurrStreamId);
     }
 
     // 停止播放音效的方法
     private void stopSound() {
-        mSoundPool.stop(currStreamId);
-        currStreamId = -1;
+        mSoundPool.stop(mCurrStreamId);
+        mCurrStreamId = -1;
     }
 }
 ```
