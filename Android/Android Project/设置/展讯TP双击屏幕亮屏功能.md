@@ -156,5 +156,23 @@
       }
       ```
 
-      
+
+> 注意：驱动代码接收到的数据是字符串，像上面代码通过写入 1 或 0 来控制开关是不行的，必须在驱动代码中予以适配才行，如果发现上面代码控制不了，请检查驱动代码是否已经匹配，可以使用如下代码实现匹配：
+>
+> ```c
+> static ssize_t gsl_sysfs_tpgesture_func_store(struct device *dev,struct device_attribute *attr, const char *buf, size_t count)
+> {
+> //	char tmp_buf[16];
+> #if 1
+> 	if(buf[0] == '0' || buf[0] == 0){
+> 		gsl_gesture_flag = 0;  
+> 	}else if(buf[0] == '1' || buf[0] == 1){
+> 		gsl_gesture_flag = 1;
+> 	}
+> #endif
+>     return count;
+> }
+> ```
+
+
 

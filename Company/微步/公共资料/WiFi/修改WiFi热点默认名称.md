@@ -14,7 +14,7 @@ PRODUCT_SYSTEM_EXT_PROPERTIES += persist.wb.wifi_direct_name=Magnum_Pro
 
 ### 2. Android 标准修改流程
 
-修改 `frameworks\opt\net\wifi\service\java\com\android\server\wifi\WifiApConfigStore.java` 文件中 `getDefaultApConfiguration()` 方法的 `configBuilder.setSsid(mContext.getResources().getString(R.string.wifi_tether_configure_ssid_default) + "_" + getRandomIntForDefaultSsid());` 代码即可:
+修改 `frameworks/opt/net/wifi/service/java/com/android/server/wifi/WifiApConfigStore.java` 文件中 `getDefaultApConfiguration()` 方法的 `configBuilder.setSsid(mContext.getResources().getString(R.string.wifi_tether_configure_ssid_default) + "_" + getRandomIntForDefaultSsid());` 代码即可:
 
 ```java
 private SoftApConfiguration getDefaultApConfiguration() {

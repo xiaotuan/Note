@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val selection = "_id = $id"
                 val type = DocumentsContract.getDocumentId(uri).split(":")[0]
                 when (type) {
-                    "music" -> path = getFilePath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, selection)
-                    "movie" -> path = getFilePath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, selection)
+                    "audio" -> path = getFilePath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, selection)
+                    "video" -> path = getFilePath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, selection)
                     "image" -> path = getFilePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection)
                 }
             } else if (isDownloadsDocument(uri)) {
@@ -209,9 +209,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String id = DocumentsContract.getDocumentId(uri).split(":")[1];
                 String selection = "_id = " + id;
                 String type = DocumentsContract.getDocumentId(uri).split(":")[0];
-                if (type.equals("music"))
+                if (type.equals("audio"))
                     path = getFilePath(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, selection);
-                else if (type.equals("movie"))
+                else if (type.equals("video"))
                     path = getFilePath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, selection);
                 else if (type.equals("image"))
                     path = getFilePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
