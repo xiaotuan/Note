@@ -8,6 +8,12 @@
 STEP4_MAKE_OTA=1
 ```
 
+或者执行如下命令：
+
+```shell
+make otapackage  -j8 2>&1 | tee ota.log
+```
+
 ### 2. 拷贝 `otatools` 文件夹到根目录
 
 `otatools` 文件夹位于 `out/target/product/mssi_t_64_ab/obj/PACKAGING/otatools_intermediates/` 目录下。将 `otatools` 文件夹拷贝到源代码根目录下。
@@ -50,7 +56,33 @@ target_base.zip：           基准版本target包
 target_target.zip：         目标版本target包
 ```
 
+如果 `out` 目录中没有 `out/target/product/mssi_t_64_ab/obj/PACKAGING/otatools_intermediates/` 文件夹，可以在源码根目录下使用如下命令编译生成差分包：
 
+```shell
+$ ./build/tools/releasetools/ota_from_target_files –v –s device/mediate/build/releasetools/mt_ota_from_target_files.py -i old.zip new.zip update.zip
+```
 
+参数说明如下：
 
++ `-v` ：显示具体命令
++ `-s`： MTK 特有脚本文件
++ `-i`：制作差分包  
 
+如果没有 `device/mediate/build/releasetools/mt_ota_from_target_files.py` 文件，可以将上面的命令修改成如下命令：
+
+```shell
+$ ./build/tools/releasetools/ota_from_target_files –v -i old.zip new.zip update.zip
+```
+
+### 5.1 block 差分包生成方法
+
+```shell
+$ ./build/tools/releasetools/ota_from_target_files -v --block -s device/mediatek/build/releasetools/mt_ota_from_target_files.py -i old.zip new.zip update.zip
+```
+
+参数说明如下：
+
++ `-v` ：显示具体命令
++ `-s`： MTK 特有脚本文件
++ `--block`：生成基于模块式的 OTA  
++ `-i`：制作差分包  
