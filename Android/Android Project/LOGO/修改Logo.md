@@ -71,3 +71,15 @@ BootLogo=1@./vendor/sprd/release/bmp/unisoc_bmp/unisoc_HD_800_1280.bmp
 
 > 注意：通常开机 Logo 和 Fastboot Logo 是一样的，所以在设置开机 Logo 的时候也需要同时修改 Fastboot Logo。修改方法一样，在 `s9863a1h10_go_32b.ini` 文件中找到 Fastboot_Logo 这项，使用新的 Logo 替换掉该项值对应的文件即可。
 
+#### 1.2 MTK 平台
+
+##### 1.2.1 mt8766_r
+
+1. 查看 `device/mediateksample/项目名/ProjectConfig.mk` 文件中的 `BOOT_LOGO` 的值，例如：`device/mediateksample/m863u_bsp_64/ProjectConfig.mk`：
+
+   ```makefile
+   BOOT_LOGO = wxga
+   ```
+
+2. 替换 `vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/BOOT_LOGO的值/` 目录下的 `BOOT_LOGO的值_kernel.bmp` 和 `BOOT_LOGO的值_uboot.bmp` 图片，例如 `vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/wxga/` 目录下的 `wxga_kernel.bmp` 和 `wxga_uboot.bmp` 文件。
+
