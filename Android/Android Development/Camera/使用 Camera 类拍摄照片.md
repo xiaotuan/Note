@@ -28,258 +28,302 @@
 </LinearLayout>
 ```
 
-### 3. 实现代码
+### 3. 添加 SurfaceHolder 的 Callback
 
 #### 3.1 Kotlin 版本
 
 ```kotlin
-package com.apress.proandroidmedia.ch2.snapshot
+private lateinit var cameraView: SurfaceView
 
-import android.content.ContentValues
-import android.content.res.Configuration
-import android.hardware.Camera
-import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.view.View
-
-class SnapShot : AppCompatActivity(), SurfaceHolder.Callback, View.OnClickListener,
-    Camera.PictureCallback {
-
-    private lateinit var cameraView: SurfaceView
-    private lateinit var  surfaceHolder: SurfaceHolder
-    private var camera: Camera? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        cameraView = findViewById(R.id.CameraView)
-        surfaceHolder = cameraView.holder
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS)
-        surfaceHolder.addCallback(this)
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            cameraView.isFocusable = true
-        } else {
-            cameraView.focusable = View.FOCUSABLE
-        }
-        cameraView.isFocusableInTouchMode = true
-        cameraView.isClickable = true
-
-        cameraView.setOnClickListener(this)
-    }
-
-    override fun surfaceCreated(holder: SurfaceHolder) {
-        camera = Camera.open(0)
-        Log.d(TAG, "surfaceCreated=>camera: $camera")
-        camera?.let {
-            Log.d(TAG, "surfaceCreated=>setPreviewDisplay")
-            val parameters = it.parameters
-            it.setPreviewDisplay(holder)
-            if (resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                parameters["orientation"] = "portrait"
-
-                // For Android Version 2.2 and above
-                it.setDisplayOrientation(90)
-
-                // For Android Version 2.0 and above
-                parameters.setRotation(90)
-            }
-
-            // Effects are for Android Version 2.0 and higher
-            val colorEffects = parameters.supportedColorEffects
-            val iterable = colorEffects.iterator()
-            while (iterable.hasNext()) {
-                val currentEffect = iterable.next()
-                if (currentEffect.equals(Camera.Parameters.EFFECT_SOLARIZE)) {
-                    parameters.colorEffect = Camera.Parameters.EFFECT_SOLARIZE
-                    break
-                }
-            }
-            // End Effects for Android Version 2.0 and highter
-
-            it.parameters = parameters
-        }
-    }
-
-    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        Log.d(TAG, "surfaceChanged...")
-        camera?.startPreview()
-    }
-
-    override fun surfaceDestroyed(holder: SurfaceHolder) {
-        Log.d(TAG, "surfaceDestroyed...")
-        camera?.stopPreview()
-        camera?.release()
-    }
-
-    override fun onClick(v: View?) {
-        camera?.autoFocus(Camera.AutoFocusCallback() {
-            success: Boolean, camera: Camera? ->
-            if (success) {
-                camera?.takePicture(null, null, this)
-            }
-        })
-    }
-
-    override fun onPictureTaken(data: ByteArray?, camera: Camera?) {
-        data?.let {
-            val imageFileUri = contentResolver.insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                ContentValues()
-            )
-
-            imageFileUri?.let { uri ->
-                val imageFileOS = contentResolver.openOutputStream(uri)
-                imageFileOS?.let {  os ->
-                    os.write(it)
-                    os.flush()
-                    os.close()
-                }
-            }
-        }
-        camera?.startPreview()
-    }
-
-    companion object {
-        const val TAG = "SnapShot"
-    }
-}
+cameraView = findViewById(R.id.CameraView)
+cameraView.holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS)
+cameraView.holder.addCallback(this)
 ```
 
 #### 3.2 Java 版本
 
 ```java
-package com.apress.proandroidmedia.ch2.snapshot;
+cameraView = findViewById(R.id.CameraView);
+surfaceHolder = cameraView.getHolder();
+surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+surfaceHolder.addCallback(this);
+```
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+### 4. 实现 SurfaceHolder 的 Callback 方法
 
-import android.content.ContentValues;
-import android.content.res.Configuration;
-import android.hardware.Camera;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Toast;
+在 `surfaceCreated()` 方法中初始化 `Camera` 对象，在 `surfaceChanged()` 方法中开始预览，在 `surfaceDestroyed()` 方法中停止预览，并释放 `Camera` 对象。
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
+#### 4.1 Kotlin 版本
 
-public class SnapShot extends AppCompatActivity implements SurfaceHolder.Callback, View.OnClickListener, Camera.PictureCallback {
+```kotlin
+override fun surfaceCreated(holder: SurfaceHolder) {
+    // 打开相机
+    camera = Camera.open(0)
+    Log.d(TAG, "surfaceCreated=>camera: $camera")
+    camera?.let {
+        Log.d(TAG, "surfaceCreated=>setPreviewDisplay")
+        val parameters = it.parameters
+        // 设置相机预览界面
+        it.setPreviewDisplay(holder)
+        var rotation = 0
+        when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_0 -> {
+                rotation = 90
+            }
+            Surface.ROTATION_180 -> {
+                rotation = 270
+            }
+            Surface.ROTATION_270 -> {
+                rotation = 180
+            }
+            Surface.ROTATION_90 -> {
+                rotation = 0
+            }
+        }
+        // 设置相机方向
+        parameters.set("rotation", rotation)
+        parameters.setRotation(rotation)
+        it.setDisplayOrientation(rotation)
 
-    private static final String TAG = "SnapShot";
+        // 设置持续自动对焦
+        parameters.focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE
 
-    private SurfaceView cameraView;
-    private SurfaceHolder surfaceHolder;
-    private Camera camera;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        cameraView = findViewById(R.id.CameraView);
-        surfaceHolder = cameraView.getHolder();
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        surfaceHolder.addCallback(this);
-
-        cameraView.setFocusable(true);
-        cameraView.setFocusableInTouchMode(true);
-        cameraView.setClickable(true);
-
-        cameraView.setOnClickListener(this);
+        // 设置相机参数
+        it.parameters = parameters
     }
+}
 
-    @Override
-    public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        camera = Camera.open();
-        try {
-            camera.setPreviewDisplay(holder);
-            Camera.Parameters parameters = camera.getParameters();
-            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                parameters.set("orientation", "portrait");
-
-                // For Android Version 2.2 and above
-                camera.setDisplayOrientation(90);
-
-                // For Android Version 2.0 and above
-                parameters.setRotation(90);
+override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+    Log.d(TAG, "surfaceChanged...")
+    camera?.let {
+        val parameters = it.parameters
+        var rotation = 0
+        when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_0 -> {
+                rotation = 90
             }
-
-            // Effects are for Android Version 2.0 and higher
-            List<String> colorEffects = parameters.getSupportedColorEffects();
-            Iterator<String> cei = colorEffects.iterator();
-            while (cei.hasNext()) {
-                String currentEffect =cei.next();
-                if (currentEffect.equals(Camera.Parameters.EFFECT_SOLARIZE)) {
-                    parameters.setColorEffect(Camera.Parameters.EFFECT_SOLARIZE);
-                    break;
-                }
+            Surface.ROTATION_180 -> {
+                rotation = 270
             }
-            // End Effects for Android Version 2.0 and higher
+            Surface.ROTATION_270 -> {
+                rotation = 180
+            }
+            Surface.ROTATION_90 -> {
+                rotation = 0
+            }
+        }
+        // 设置相机预览方向
+        parameters.set("rotation", rotation)
+        parameters.setRotation(rotation)
+        it.setDisplayOrientation(rotation)
+        it.parameters = parameters
+        // 开始预览
+        it.startPreview()
+    }
+}
 
-            camera.setParameters(parameters);
-        } catch (IOException e) {
-            Log.d(TAG, "surfaceCreated=>error: ", e);
+override fun surfaceDestroyed(holder: SurfaceHolder) {
+    Log.d(TAG, "surfaceDestroyed...")
+    // 停止预览
+    camera?.stopPreview()
+    // 释放相机
+    camera?.release()
+    camera = null
+}
+```
+
+#### 4.2 Java 版本
+
+```java
+@Override
+public void surfaceCreated(@NonNull SurfaceHolder holder) {
+    camera = Camera.open();
+    try {
+        camera.setPreviewDisplay(holder);
+        Camera.Parameters parameters = camera.getParameters();
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        Log.d(TAG, "surfaceCreated=>rotation: " + rotation);
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                rotation = 90;
+                break;
+
+            case Surface.ROTATION_90:
+                rotation = 0;
+                break;
+
+            case Surface.ROTATION_180:
+                rotation = 270;
+                break;
+
+            case Surface.ROTATION_270:
+                rotation = 180;
+                break;
+        }
+        parameters.set("rotaion", rotation);
+        parameters.setRotation(rotation);
+        camera.setDisplayOrientation(rotation);
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+
+        camera.setParameters(parameters);
+    } catch (IOException e) {
+        Log.d(TAG, "surfaceCreated=>error: ", e);
+        if (camera != null) {
             camera.release();
         }
     }
+}
 
-    @Override
-    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-        camera.startPreview();
+@Override
+public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+    if (camera == null) {
+        return;
     }
+    Camera.Parameters parameters = camera.getParameters();
+    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+    Log.d(TAG, "surfaceCreated=>rotation: " + rotation);
+    switch (rotation) {
+        case Surface.ROTATION_0:
+            rotation = 90;
+            break;
 
-    @Override
-    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+        case Surface.ROTATION_90:
+            rotation = 0;
+            break;
+
+        case Surface.ROTATION_180:
+            rotation = 270;
+            break;
+
+        case Surface.ROTATION_270:
+            rotation = 180;
+            break;
+    }
+    parameters.set("rotaion", rotation);
+    parameters.setRotation(rotation);
+    camera.setDisplayOrientation(rotation);
+    camera.setParameters(parameters);
+    camera.startPreview();
+}
+
+@Override
+public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+    if (camera != null) {
         camera.stopPreview();
         camera.release();
+        camera = null;
+    }
+}
+```
+
+### 5. 实现拍照回调
+
+#### 5.1 Kotlin 版本
+
+```kotlin
+override fun onPictureTaken(data: ByteArray?, camera: Camera?) {
+    data?.let { d ->
+               // 获取保存图片的 Uri
+               val imageFileUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
+               // 通过 uri 获取输出流
+               val imageFileOS = imageFileUri?.let { contentResolver.openOutputStream(it) }
+               // 以照片数据构建 Bitmap 对象
+               var bmp = BitmapFactory.decodeByteArray(d, 0, d.size)
+               // 创建变形对象
+               val matrix = Matrix()
+               // 设置旋转角度
+               matrix.setRotate(rotation.toFloat())
+               // 应用变形
+               bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.width, bmp.height, matrix, true)
+               // 将 Bitmap 对象写入输出流
+               bmp.compress(Bitmap.CompressFormat.JPEG, 100, imageFileOS)
+               imageFileOS?.flush()
+               imageFileOS?.close()
+               Toast.makeText(this, "Saved JPEG!", Toast.LENGTH_SHORT).show()
+              }
+    camera?.startPreview()
+}
+```
+
+#### 5.2 Java 版本
+
+```java
+@Override
+public void onPictureTaken(byte[] data, Camera camera) {
+    Uri imageFileUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+
+    try {
+        OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
+        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotation);
+        bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, imageFileOS);
+        imageFileOS.flush();
+        imageFileOS.close();
+
+        Toast.makeText(this, "Saved JPEG!", Toast.LENGTH_SHORT).show();
+    } catch (FileNotFoundException e) {
+        Log.e(TAG, "onPictureTaken=>File not found.", e);
+    } catch (IOException e) {
+        Log.e(TAG, "onPictureTaken=>Write data error.", e);
     }
 
-    @Override
-    public void onClick(View v) {
-        camera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean success, Camera camera) {
-                if (success) {
-                    camera.takePicture(null, null, SnapShot.this);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onPictureTaken(byte[] data, Camera camera) {
-        Uri imageFileUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
-        try {
-            OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
-            imageFileOS.write(data);
-            imageFileOS.flush();
-            imageFileOS.close();
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    if (camera != null) {
         camera.startPreview();
     }
 }
 ```
 
-### 4. 注意
+### 6. 拍照
 
-+ `SurfaceHolder` 类的 `setType()` 方法已经过时，新版本的 `SurfaceHolder` 类已经自动管理缓冲区了。
+#### 6.1 Kotlin 版本
+
+```kotlin
+camera?.let {
+    // 获取照片方向，用于在保存图片时，旋转图片
+    when (windowManager.defaultDisplay.rotation) {
+        Surface.ROTATION_0 -> {
+            rotation = 90
+        }
+        Surface.ROTATION_180 -> {
+            rotation = 270
+        }
+        Surface.ROTATION_270 -> {
+            rotation = 180
+        }
+        Surface.ROTATION_90 -> {
+            rotation = 0
+        }
+    }
+    // 拍照
+    it.takePicture(null, null, null, this)
+}
+```
+
+#### 6.2 Java 版本
+
+```java
+if (camera != null) {
+    rotation = getWindowManager().getDefaultDisplay().getRotation();
+    Log.d(TAG, "onClick=>rotation: " + rotation);
+    switch (rotation) {
+        case Surface.ROTATION_0:
+            rotation = 90;
+            break;
+
+        case Surface.ROTATION_90:
+            rotation = 0;
+            break;
+
+        case Surface.ROTATION_180:
+            rotation = 270;
+            break;
+
+        case Surface.ROTATION_270:
+            rotation = 180;
+            break;
+    }
+    camera.takePicture(null, null, null, this);
+}
+```
