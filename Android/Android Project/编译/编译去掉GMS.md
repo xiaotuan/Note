@@ -28,3 +28,13 @@
 >
 >    文件管理器：[显示系统文件管理器.md](../文件管理器/显示系统文件管理器.md)
 
+### 2. MTK 平台
+
+#### 2.1 mt8766_r
+
+修改 `device/mediateksample/工程名/ProjectConfig.mk` 文件，将 `BUILD_GMS` 宏设置为 `no` 即可，例如修改 `device/mediateksample/m863u_bsp_64/ProjectConfig.mk` 文件：
+
+```makefile
+BUILD_GMS = no
+```
+
