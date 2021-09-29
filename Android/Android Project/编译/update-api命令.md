@@ -6,5 +6,6 @@
 
 ```shell
 make api-stubs-docs-update-current-api
+make api-stubs-docs-non-updatable-update-current-api
 ```
 

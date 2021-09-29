@@ -22,7 +22,7 @@
 
 这个网站也是一个的应用市场，你可以按照分类查找应用
 
-地址：[https://apk.support/zh_cn](https://link.zhihu.com/?target=https%3A//apk.support/zh_cn)
+地址：[https://apk.support/zh_cn](https://apk.support/apk-downloader)
 
 ![img](./images/13.jpg)
 
