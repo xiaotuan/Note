@@ -9,3 +9,5 @@ scanf("格式化字符串", 变量指针列表);
 ```
 float weight;
 scanf("%f", &weight);
+```
+
