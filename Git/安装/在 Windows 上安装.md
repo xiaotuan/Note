@@ -1,0 +1,1 @@
+打开 <http://git-scm.com/download/win> 下载 Git for Windows，然后安装正常操作安装即可。
