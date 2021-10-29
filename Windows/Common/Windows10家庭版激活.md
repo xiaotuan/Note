@@ -18,6 +18,12 @@ Slmgr /ipk PVMJN-6DFY6-9CCP6-7BKTT-D3WVR
 Slmgr /skms zh.us.to
 ```
 
+> 注意：如果在下一步提示无法连接任何密钥管理服务器的错误，可以将上面这行命令替换成：
+>
+> ```shell
+> Slmgr /skms kms.03k.org
+> ```
+
 （5）最后执行下面这个命令（确保没有出现错误信息）：
 
 ```shell
