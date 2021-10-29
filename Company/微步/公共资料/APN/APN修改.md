@@ -35,3 +35,9 @@ endif
 
 因此要修改 APN 配置文件可以通过修改 `vendor\sprd\telephony-res\apn\apns-conf_8_v2.xml` 文件来实现。
 
+### 2. MTK 平台
+
+#### 2.1 MTK8766、Android R
+
+修改 `device/mediatek/config/apns-conf.xml` 文件。
+
