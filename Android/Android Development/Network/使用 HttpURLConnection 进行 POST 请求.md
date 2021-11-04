@@ -89,3 +89,6 @@ if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 connection.disconnect();
 ```
 
+```shell
+curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/user
+```

@@ -64,3 +64,7 @@ $ sudo smbpasswd -a zhangwenlong
 sudo /etc/init.d/smbd restart
 ```
 
+```shell
+git diff 55f6ee88 820b9c9c 
+```
+
