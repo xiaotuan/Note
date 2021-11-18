@@ -1,20 +1,14 @@
-1. 在 `defaultConfig` 中添加 `useLibrary 'org.apache.http.legacy'`：
+1. 在 `build.gradle` 文件中的 `android` 节点添加 `useLibrary 'org.apache.http.legacy'`：
 
    ```
-   defaultConfig {
-       applicationId "net.zenconsult.android"
-       minSdkVersion 19
-       targetSdkVersion 30
-       versionCode 1
-       versionName "1.0"
+   android {
    
        useLibrary 'org.apache.http.legacy'
-   
-       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+       
    }
    ```
-
-2. 在 `android` 中添加如下配置信息：
+   
+2. 在 `build.gradle` 文件中的 `android` 节点添加如下配置信息：
 
    ```
    android {
@@ -32,10 +26,23 @@
    }
    ```
 
-3. 在 `dependencies` 中添加如下依赖：
+3. 在 `AndroidManifest.xml` 文件中的 `application` 节点内添加如下代码：
 
-   ```
-   implementation 'org.apache.httpcomponents:httpclient:4.4.1'
+   ```xml
+   <application
+           android:allowBackup="true"
+           android:icon="@mipmap/ic_launcher"
+           android:label="@string/app_name"
+           android:roundIcon="@mipmap/ic_launcher_round"
+           android:supportsRtl="true"
+           android:usesCleartextTraffic="true"
+           android:theme="@style/Theme.OAuthPicasa">
+   
+           <uses-library
+               android:name="org.apache.http.legacy"
+               android:required="false"/>
+       ...
+   </application>
    ```
 
    
