@@ -1,20 +1,23 @@
 [toc]
 
-### 1. 修改 `device/mediateksample/m863u_bsp_64/device.mk`
+### 1. 修改 `device/mediatek/system/common/device.mk`
 
 在 `device.mk` 文件末尾添加如下代码：
 
 ```diff
-@@ -175,5 +175,12 @@ $(call inherit-product, device/mediatek/mt6739/device.mk)
+@@ -3615,7 +3615,7 @@ PRODUCT_PACKAGES += libxtables
+ PRODUCT_PACKAGES += libip4tc
+ PRODUCT_PACKAGES += libip6tc
+ PRODUCT_PACKAGES += boot_logo_updater
+-PRODUCT_PACKAGES += bootanimation
++##PRODUCT_PACKAGES += bootanimation
  
- $(call inherit-product-if-exists, vendor/mediatek/libs/$(MTK_TARGET_PROJECT)/device-vendor.mk)
+ ifneq (,$(filter yes, $(MSSI_MTK_KERNEL_POWER_OFF_CHARGING)))
+     PRODUCT_PACKAGES += kpoc_charger
+@@ -3967,3 +3967,6 @@ $(call inherit-product-if-exists, vendor/weibu_sz/products/products.mk)
  
--
-+#add bootanimation
-+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-+  persist.sys.bootanimation=1 \
-+  persist.sys.shutanimation=1
-+
+ ## GMS interface
+ $(call inherit-product-if-exists, vendor/partner_gms/gms.mk)
 +PRODUCT_PACKAGES += \
 +    mtkbootanimation \
 +    libmtkbootanimation
@@ -39,8 +42,6 @@
              mAudioMixer->setBufferProvider(trackId, track);
              mAudioMixer->enable(trackId);
 ```
-
-### 3. 注释掉 `frameworks/base/cmds/bootanimation/Android.bp` 文件内容
 
 ### 4. 修改 `vendor/mediatek/proprietary/frameworks/base/res/res/values/config.xml`
 
@@ -82,7 +83,18 @@
  
      // CU/CMCC operator require 3-5s
      private static long beginAnimationTime = 0;
-@@ -234,7 +234,11 @@ public class MtkShutdownThread extends ShutdownThread{
+@@ -139,6 +139,10 @@ public class MtkShutdownThread extends ShutdownThread{
+             // for Shutdown animation
+             if (isCustBootAnim()== ANIMATION_MODE) {
+                 screenTurnOffTime = getScreenTurnOffTime(context);
++                if (((MtkShutdownThread)sInstance).mContext.getResources().getBoolean(
++                        com.mediatek.internal.R.bool.reboot_animation_play_time_delay)) {
++                    delayForPlayAnimation();
++                }
+             }
+             mHandler.postDelayed(mDelayDim, screenTurnOffTime);
+             return true;
+@@ -234,7 +238,11 @@ public class MtkShutdownThread extends ShutdownThread{
          Log.i(TAG, "set service.shutanim.running to 1");
          SystemProperties.set("service.shutanim.running", "1");
          /*M: play animation*/
@@ -95,7 +107,7 @@
                  (mReboot == false)) {
              delayForPlayAnimation();
          }
-@@ -275,6 +279,14 @@ public class MtkShutdownThread extends ShutdownThread{
+@@ -275,6 +283,14 @@ public class MtkShutdownThread extends ShutdownThread{
          } catch (RemoteException e) {
              e.printStackTrace();
          }
@@ -110,7 +122,7 @@
          beginAnimationTime = SystemClock.elapsedRealtime() + MIN_SHUTDOWN_ANIMATION_PLAY_TIME;
          //Disable key dispatch
          try {
-@@ -352,6 +364,13 @@ public class MtkShutdownThread extends ShutdownThread{
+@@ -352,6 +368,13 @@ public class MtkShutdownThread extends ShutdownThread{
          int screenTurnOffTime = 0;
          try {
              screenTurnOffTime = getScreenTurnOffTime();
@@ -124,7 +136,7 @@
              Log.i(TAG, "screen turn off time screenTurnOffTime =" + screenTurnOffTime);
          } catch (Exception e) {
              e.printStackTrace();
-@@ -360,7 +379,15 @@ public class MtkShutdownThread extends ShutdownThread{
+@@ -360,7 +383,15 @@ public class MtkShutdownThread extends ShutdownThread{
      }
  
      public static int isCustBootAnim() {
@@ -362,7 +374,7 @@ include $(BUILD_SHARED_LIBRARY)
  
  #ifdef MSSI_MTK_CARRIEREXPRESS_PACK
  #define GLOBAL_DEVICE_BOOTANIM_OPTR_NAME "persist.vendor.operator.optr"
-@@ -412,19 +415,34 @@ status_t BootAnimation::readyToRun() {
+@@ -412,19 +415,30 @@ status_t BootAnimation::readyToRun() {
  
      mAssets.addDefaultAssets();
  
@@ -370,20 +382,8 @@ include $(BUILD_SHARED_LIBRARY)
 -            ISurfaceComposer::eDisplayIdMain));
 -    DisplayInfo dinfo;
 -    status_t status = SurfaceComposerClient::getDisplayInfo(dtoken, &dinfo);
-+    // sp<IBinder> dtoken(SurfaceComposerClient::getBuiltInDisplay(
-+    //         ISurfaceComposer::eDisplayIdMain));
-+    // DisplayInfo dinfo;
-+    // status_t status = SurfaceComposerClient::getDisplayInfo(dtoken, &dinfo);
-+    // if (status)
-+    //     return -1;
-+    // /// M: The tablet rotation maybe 90/270 degrees, so set the lcm config for tablet
-+    // //SurfaceComposerClient::setDisplayProjection(dtoken, DisplayState::eOrientationDefault, Rect(dinfo.w, dinfo.h), Rect(dinfo.w, dinfo.h));
-+    // t.setDisplayProjection(dtoken, DisplayState::eOrientationDefault, Rect(dinfo.w, dinfo.h), Rect(dinfo.w, dinfo.h));
-+    // t.apply();
-+    // // create the native surface
-+    // sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation"),
-+    //         dinfo.w, dinfo.h, PIXEL_FORMAT_RGB_565);
-+
++    //sp<IBinder> dtoken(SurfaceComposerClient::getBuiltInDisplay(
++    //        ISurfaceComposer::eDisplayIdMain));
 +    sp<IBinder> dtoken = SurfaceComposerClient::getInternalDisplayToken();
 +    DisplayConfig displayConfig;
 +    status_t status = SurfaceComposerClient::getActiveDisplayConfig(dtoken, &displayConfig);
@@ -397,23 +397,32 @@ include $(BUILD_SHARED_LIBRARY)
 +            Rect(resolution.getWidth(), resolution.getHeight()));
      t.apply();
      // create the native surface
-     sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation"),
+-    sp<SurfaceControl> control = session()->createSurface(String8("BootAnimation"),
 -            dinfo.w, dinfo.h, PIXEL_FORMAT_RGB_565);
-+            resolution.getWidth(), resolution.getHeight(), PIXEL_FORMAT_RGB_565);
++  
++         //jnier add 20211011
++   char horizontal_screen[PROPERTY_VALUE_MAX] = "";
++       property_get("ro.wb.surface_flinger.horizontal_screen",horizontal_screen,"");
++       if (!strcmp("1",horizontal_screen)) {
++               //ALOGE("jnier BootAnimation horizontal_screen %s \n",horizontal_screen);
++       }
++    sp<SurfaceControl> control = (!strcmp("1",horizontal_screen)) ? (session()->createSurface(String8("BootAnimation"),
++            resolution.getHeight(), resolution.getWidth(), PIXEL_FORMAT_RGB_565)) : (session()->createSurface(String8("BootAnimation"),
++            resolution.getWidth(), resolution.getHeight(), PIXEL_FORMAT_RGB_565));             
  
  /*
      SurfaceComposerClient::openGlobalTransaction();
-@@ -538,7 +556,8 @@ bool BootAnimation::threadLoop()
+@@ -538,7 +552,8 @@ bool BootAnimation::threadLoop()
      // We have no bootanimation file, so we use the stock android logo
      // animation.
      sp<MediaPlayer> mediaplayer;
 -    const char* resourcePath = NULL;
-+    // const char* resourcePath = NULL;
++    //const char* resourcePath = NULL;
 +    const char* resourcePath = initAudioPath();
      status_t mediastatus = NO_ERROR;
      if (resourcePath != NULL) {
          bPlayMP3 = true;
-@@ -1510,6 +1529,7 @@ const char* BootAnimation::initAudioPath() {
+@@ -1510,6 +1525,7 @@ const char* BootAnimation::initAudioPath() {
  void BootAnimation::initBootanimationZip() {
      ZipFileRO* zipFile = NULL;
      String8     ZipFileName;
