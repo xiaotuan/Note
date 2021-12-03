@@ -152,6 +152,7 @@ allow uncrypt system_app_data_file:file {read getattr };
 ```makefile
 #redstone FOTA
 REDSTONE_FOTA_SUPPORT=yes
+REDSTONE_FOTA_IS_AB=no
 REDSTONE_FOTA_APK_ICON=no
 REDSTONE_FOTA_APK_KEY=none
 REDSTONE_FOTA_APK_CHANNELID=none

@@ -28,6 +28,11 @@ class ContactsDb(
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        // KILL PREVIOUS TABLE IF UPGRADED
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+
+        // CREATE NEW INSTANCE OF TABLE
+        onCreate(db)
     }
 
     companion object {
@@ -63,7 +68,11 @@ public class ContactsDb extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // KILL PREVIOUS TABLE IF UPGRADED
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 
+        // CREATE NEW INSTANCE OF TABLE
+        onCreate(db);
     }
 }
 ```
