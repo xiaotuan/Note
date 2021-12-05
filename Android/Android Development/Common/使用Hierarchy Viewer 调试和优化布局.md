@@ -1,0 +1,1 @@
+Hierarchy Viewer 工具位于：`Android SDK 目录/tools/monitor`。

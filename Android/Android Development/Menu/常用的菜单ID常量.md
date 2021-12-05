@@ -1,0 +1,10 @@
+辅助菜单ID：`Menu.CATEGORY_SECONDARY` ，它的值为 0x30000
+
+系统菜单ID：`Menu.CATEGORY_SYSTE`，它的值为 0x20000
+
+ 交替菜单ID：`Menu.CATEGORY_ALTERNATIVE`，它的值为 0x40000
+
+容器菜单ID：`Menu.CATEGORY_CONTAINER`，它的值为 0x10000
+
+普通菜单ID：`Menu.FIRST`，它的值为 1
+
