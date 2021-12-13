@@ -16,5 +16,16 @@ BUILD_NUMBER := $(shell date +%s)
 BUILD_NUMBER := 1632390036
 ```
 
+### 2. MTK 平台
 
+#### 2.1 MTK8766
+
+##### 2.1.1 Android R
+
+修改 `device/mediatek/system/common/BoardConfig.mk` 文件中 BUILD_NUMBER_WEIBU 宏的值：
+
+```makefile
+# BUILD_NUMBER_WEIBU := $(shell date +%s)
+BUILD_NUMBER_WEIBU := 1639122475
+```
 
