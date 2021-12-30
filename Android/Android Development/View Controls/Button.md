@@ -3,7 +3,7 @@
 ### 1. XML属性说明
 
 | 属性名 | 参数类型 | 功能 | 示例 |
-| :- | :- | :- | :- | :- |
+| :- | :- | :- | :- |
 | text | 字符串类型 | 按钮的名字 | android:text="Run" |
 | onClick | 字符串类型 | 按钮点击事件的方法名称 | android:onclick="runAnimation" |
 
