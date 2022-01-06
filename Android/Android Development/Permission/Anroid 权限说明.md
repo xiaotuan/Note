@@ -1,3 +1,6 @@
+> 提示
+> 完整的权限列表请访问 <http://developer.android.google.cn/reference/android/Manifest.permission.html>
+
 <center><b>Android Permission Constant</b></center>
 
 | Permission Constant            | Description                                                  |

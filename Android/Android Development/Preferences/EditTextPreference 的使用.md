@@ -16,3 +16,7 @@
 </PreferenceScreen>
 ```
 
+可以通过 `getEditText()` 来操作实际的 `EditText`。要获得 `EditTextPreference` 的文本，只需使用 `getText()` 方法。
+
+可以通过 `android:dialogLayout` 属性设置自定义对话框布局文件，只需要在布局文件中添加 ID 为 `@android:id/edit` 的 `EditText` 控件即可。
+
