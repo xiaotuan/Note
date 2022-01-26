@@ -256,5 +256,155 @@ public class LedClient extends Activity {
 **frameworks/base/core/java/mokoid/hardware/LedManager.java**
 
 ```java
+package mokoid.hardware;
+
+import android.content.Context;
+import android.os.Binder;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.ParcelFileDescriptor;
+import android.os.Process;
+import android.os.RemoteException;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import mokoid.hardware.ILedService;
+
+/**
+ * 用来访问 Mokoid LedService 的类
+ */
+public class LedManager {
+
+    private static final String TAG = "LedManager";
+    private ILedService mLedService;
+
+    public LedManager() {
+        mLedService = ILedService.Stub.asInterface(ServiceManager.getService("led"));
+
+        if (mLedService != null) {
+            Log.i(TAG, "The LedManager object is ready.");
+        }
+    }
+
+    public boolean LedOn(int n) {
+        boolean result = false;
+        try {
+            result = mLedService.setOn(n);
+        } catch (RemoteException e) {
+            Log.e(TAG, "RemoteException in LedManager.LedOn: ",  e);
+        }
+        return result;
+    }
+
+    public boolean LedOff(int n) {
+        boolean result = false;
+
+        try {
+            result = mLedService.setOff(n);
+        } catch (RemoteException e) {
+            Log.e(TAG, "RemoteException in LedManager.LedOff: ", e);
+        }
+        return result;
+    }
+}
+```
+
+**frameworks/base/core/java/mokoid/hardware/ILedService.java**
+
+```java
+package mokoid.hardware;
+
+interface ILedService {
+    boolean setOn(int led);
+    boolean setOff(int led);
+}
+```
+
+#### 2.2 SystemServer 的实现代码
+
+**apps/LedTest/src/com/mokoid/LedTest/LedSystemServer.java**
+
+```java
+package com.mokoid.LedTest;
+
+import com.mokoid.server.LedService;
+
+import android.os.IBinder;
+import android.os.ServiceManager;
+import android.util.Log;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+
+// 代表一个后台进程
+public class LedSystemServer extends Service {
+    
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        Log.i("LedSystemServer", "Start LedService...");
+        LedService ls = new LedService();
+        try {
+            ServiceManager.addService("led", ls);
+        } catch (RuntimeException e) {
+            Log.e("LedSystemServer", "Start LedService failed.");
+        }
+    }
+}
+```
+
+#### 2.3 APP 测试程序
+
+**mokoid-read-only/apps/LedTest/src/com/mokoid/LedTest/LedTest.java**
+
+```java
+package com.mokoid.LedTest;
+
+import mokoid.hardware.LedManager;
+import com.mokoid.server.LedService;
+import android.app.Activity;
+import android.osBundle;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Button;
+import android.content.Intent;
+import android.view.View;
+
+public class LedTest extends Activity implements View.OnClickListener {
+
+    private LedManager mLedManager = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // 在一个独立的进程启动 LedService
+        startService(new Intent("com.mokoid.systemserver"));
+        // 测试
+        Button btn = new Button(this);
+        btn.setText("Click to turn LED 1 On");
+        btn.setOnClickListener(this);
+        setContentView(btn);
+    }
+
+    public void onClick(View v) {
+        // 获取 LedManager
+        if (mLedManager == null) {
+            Log.i("LedTest", "Create a new LedManager object.");
+            mLedManager = new LedManager();
+        }
+        if (mLedManager != null) {
+            Log.i("LedTest", "Got LedManager object.");
+        }
+        mLedManager.LedOn(1);
+        TextView tv = new TextView(this);
+        tv.setText("LED 1 is On.");
+        setContentView(tv);
+    }
+}
 ```
 
