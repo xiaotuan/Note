@@ -246,3 +246,10 @@ context.stopService(Intent(this@MainActivity, BackgroundService::class.java))
 context.stopService(new Intent(MainActivity.this, BackgroundService.class);
 ```
 
+### 4. 提示
+
+`onStartCommand()` 方法的返回值可以是如下值：
+
++ `Service.START_NOT_STICKY`：如果没有挂起的 Intent，不应重新启动服务。
++ `Service.START_STICKY`：即使没有挂起的 Intent，Android 也应该重新启动服务。当服务重新启动时，使用一个空 Intent 调用 onCreate 和 onStartCommand。
++ `Service.START_REDELIVER_INTENT`：如果服务在启动时被杀死，那么它将被重新启动并且将最后的 Intent 再次通过 onStartCommand 方法，除非是调用了 stopSelf()。
