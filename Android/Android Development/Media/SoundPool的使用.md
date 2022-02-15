@@ -47,11 +47,196 @@
 
 ### 2. SoundPool 的使用
 
-2.1 将音频文件 `musictest.ogg` 文件复制到 `app/src/main/res/raw` 文件夹下。
+#### 2.1 创建 SoundPool 对象
 
-2.2 实现代码：
+> 注意
+>
+> `SoundPool(int maxStreams, int streamType, int srcQuality)` 构造函数中 `srcQuality` 参数的值没有效果，默认传 0。
 
-**Kotlin 版本**
+##### 2.1.1 Kotlin
+
+```kotlin
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
+
+val soundPool = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+    val aa = AudioAttributes.Builder()
+    .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+    .build()
+    SoundPool.Builder()
+    .setAudioAttributes(aa)
+    .setMaxStreams(5)
+    .build()
+} else {
+    SoundPool(5, AudioManager.STREAM_MUSIC, SRC_QUALITY)
+}
+
+// 设置播放完成监听器
+soundPool.setOnLoadCompleteListener(this)
+
+override fun onLoadComplete(soundPool: SoundPool?, sampleId: Int, status: Int) {
+    TODO("Not yet implemented")
+}
+
+companion object {
+    const val SRC_QUALITY = 0
+}
+```
+
+##### 2.1.2 Java
+
+```java
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+
+private static final int SRC_QUALITY = 0;
+
+SoundPool soundPool = null;
+if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+    AudioAttributes aa = new AudioAttributes.Builder()
+        .setLegacyStreamType(AudioManager.STREAM_MUSIC)
+        .build();
+    soundPool = new SoundPool.Builder()
+        .setMaxStreams(5)
+        .setAudioAttributes(aa)
+        .build();
+} else {
+    soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, SRC_QUALITY);
+}
+
+// 设置播放完成监听器
+soundPool.setOnLoadCompleteListener(this);
+
+@Override
+public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+
+}
+```
+
+#### 2.2 加载音频文件
+
+> 注意
+>
+> `load(FileDescriptor fd, long offset, long length, int priority)` 加载音频资源方法中 `priority` 的值没有效果，默认传 1。
+
+##### 2.2.1 Kotlin
+
+```kotlin
+import android.os.Environment
+import java.io.File
+import java.io.IOException
+
+// 方法一
+var audioId = soundPool.load(this, R.raw.test, PRIORITY)
+
+// 方法二
+try {
+    val afd = assets.openFd("test.mp3")
+    audioId = soundPool.load(afd.fileDescriptor, afd.startOffset, afd.length, PRIORITY)
+    afd.close()
+} catch (e : IOException) {
+    e.printStackTrace()
+}
+      
+// 方法三
+val dir = Environment.getExternalStorageDirectory()
+val file = File(dir, "test.mp3")
+if (file.exists() && file.isFile) {
+    audioId = soundPool.load(file.absolutePath, PRIORITY)
+}
+```
+
+##### 2.2.2 Java
+
+```java
+import android.content.res.AssetFileDescriptor;
+import android.os.Environment;
+import java.io.File;
+import java.io.IOException;
+
+int audioId = soundPool.load(this, R.raw.test, PRIORITY);
+        
+try {
+    AssetFileDescriptor afd = getAssets().openFd("test.mp3");
+    audioId = soundPool.load(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength(), PRIORITY);
+    afd.close();
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+File dir = Environment.getExternalStorageDirectory();
+File audioFile = new File(dir, "test.mp3");
+if (audioFile.exists() && audioFile.isFile()) {
+    audioId = soundPool.load(audioFile.getAbsolutePath(), PRIORITY);
+}
+```
+
+####  2.4 播放
+
+`play(int soundID, float leftVolume, float rightVolume, int priority, int loop, float rate)` 方法的参数说明：
+
++ soundID：音频资源ID，通过 load() 方法获取
++ leftVolume：左声道音量大小，取值范围：0.0 ~ 1.0
++ rightVolume：右声道音量大小，取值范围：0.0 ~ 1.0
++ priority：优先级， 0 表示最低优先级
++ loop：是否循环播放， 0 表示不循环，-1 表示循环播放
++ rate：播放速率， 1.0f 表示正常播放，取值范围为 0.5 ~ 2.0
+
+##### 2.4.1 Kotlin
+
+```kotlin
+import android.media.AudioManager
+
+val am = getSystemService(AUDIO_SERVICE) as AudioManager
+val currentVolume =
+am.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat() / am.getStreamMaxVolume(
+    AudioManager.STREAM_MUSIC
+).toFloat()
+val result = soundPool.play(audioId, currentVolume, currentVolume, PRIORITY, -1, 1.0f)
+if (result == 0) {
+    Log.e(TAG, "Failed to start sound")
+}
+```
+
+##### 2.4.2 Java
+
+```java
+import android.media.AudioManager;
+import android.util.Log;
+
+AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+final float currentVolume = ((float) am.getStreamVolume(AudioManager.STREAM_MUSIC)) / ((float) am.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+int result = soundPool.play(audioId, currentVolume, currentVolume, PRIORITY, -1, 1.0f);
+if (result == 0) {
+    Log.e(TAG, "Failed to start sound");
+}
+```
+
+#### 2.5 全部恢复播放或全部暂停
+
+##### 2.5.1 Kotlin
+
+```kotlin
+// 全部播放
+soundPool.autoResume()
+// 全部暂停
+soundPool.autoPause()
+```
+
+##### 2.5.2 Java
+
+```java
+// 全部播放
+soundPool.autoResume();
+// 全部暂停
+soundPool.autoPause();
+```
+
+#### 2.6 完整示例
+
+##### 2.6.1 Kotlin 版本
 
 ```kotlin
 package com.qty.kotlintest
@@ -183,7 +368,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 }
 ```
 
-**Java 版本**
+##### 2.6.2 Java 版本
 
 ```java
 package com.qty.test;

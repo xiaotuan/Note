@@ -2,7 +2,15 @@
 
 ### 1. MediaPlayer 常用方法
 
-+ 
++ `setDataSource()`：设置音频源
++ `prepare()`：为播放做准备
++ `start()`：开始播放
++ `pause()`：暂停播放，再次播放无需再调用 `prepare()` 方法
++ `getCurrentPosition()`：获取当前播放位置
++ `seekTo()`：设置播放位置
++ `stop()`：停止播放，再次播放前需要调用 `prepare()` 方法
++ `reset()`：重置播放状态
++ `release()`：释放资源
 
 ### 2. 播放网络音频文件
 
@@ -154,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 ```kotlin
 // 方法一
 val mPlayer = MediaPlayer.create(this, R.raw.test)
+// 无法在播放前调用 prepare()
 mPlayer.start()
 
 // 方法二
@@ -267,10 +276,56 @@ if (fileDesc != null) {
 #### 4.1 Kotlin
 
 ```kotlin
+import android.os.Environment
+import java.io.File
+
+val dir = Environment.getExternalStorageDirectory()
+Log.d(TAG, "dir: $dir")
+val file = File(dir, "左宏元 张慧清 - 渡情.mp3")
+if (file.exists() && file.isFile) {
+    mPlayer = MediaPlayer()
+    try {
+        mPlayer?.apply {
+            setDataSource(file.absolutePath)
+            prepare()
+            start()
+        }
+    } catch (e : IOException) {
+        Log.d(TAG, "error: ", e)
+        mPlayer?.apply {
+            stop()
+            reset()
+            release()
+        }
+        mPlayer = null
+    }
+}
 ```
 
 #### 4.2 Java
 
 ```java
+import android.os.Environment;
+import java.io.File;
+
+MediaPlayer mPlayer = null;
+File dir = Environment.getExternalStorageDirectory();
+File audioFile = new File(dir, "左宏元 张慧清 - 渡情.mp3");
+if (audioFile.exists() && audioFile.isFile()) {
+    mPlayer = new MediaPlayer();
+    try {
+        mPlayer.setDataSource(audioFile.getAbsolutePath());
+        mPlayer.prepare();
+        mPlayer.start();
+    } catch (IOException e) {
+        Log.d(TAG, "error: ", e);
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer.reset();
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+}
 ```
 
