@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsAppTestCases -m ndroid.app.cts.SystemFeaturesTest#testCameraFeatures
+$ run cts -m CtsAppTestCases -t android.app.cts.SystemFeaturesTest#testCameraFeatures
 ```
 
 ### 2. 错误列表

@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsPermission3TestCases -m android.permission3.cts.PermissionTest23#testGrantPreviouslyRevokedWithPrejudiceShowsPrompt
+$ run cts -m CtsPermission3TestCases -t android.permission3.cts.PermissionTest23#testGrantPreviouslyRevokedWithPrejudiceShowsPrompt
 ```
 
 ### 2. 报错信息

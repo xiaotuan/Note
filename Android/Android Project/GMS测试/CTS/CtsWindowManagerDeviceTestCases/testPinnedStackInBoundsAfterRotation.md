@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsWindowManagerDeviceTestCases -m android.server.wm.PinnedStackTests#testPinnedStackInBoundsAfterRotation
+$ run cts -m CtsWindowManagerDeviceTestCases -t android.server.wm.PinnedStackTests#testPinnedStackInBoundsAfterRotation
 ```
 
 ### 2. 报错信息
@@ -63,7 +63,7 @@ index 583953c..5043724 100644
          if ((mDisplayInfo.rotation == ROTATION_0) || (mDisplayInfo.rotation == ROTATION_180)) {
 -            updateNeeded = (mDisplayInfo.logicalWidth > mDisplayInfo.logicalHeight);
 +            if (!mDefaultLandscape) {
-+                updateNeeded = (mDisplayInfo.logicalWidth > mDisplayInfo.logicalHeight);
++                updateNeeded = (mDisplayInfo.logicalWidth < mDisplayInfo.logicalHeight);
 +            } else {
 +                updateNeeded = (mDisplayInfo.logicalWidth < mDisplayInfo.logicalHeight);
 +            }
@@ -81,4 +81,6 @@ index 583953c..5043724 100644
 
 > 注意：
 >
-> 合入 Patch 后，cts 测试 pass，但是刷 gsi 测试此项和 daily build gsi (aosp_arm64-img-7261607) fail，这是因为 GSI image 镜像 还没有合入该 Patch 造成的，此项可以豁免的。豁免 ID 为 https://android-review.googlesource.com/c/platform/frameworks/base/+/1659166。
+> 1. 合入 Patch 后，cts 测试 pass，但是刷 gsi 测试此项和 daily build gsi (aosp_arm64-img-7261607) fail，这是因为 GSI image 镜像 还没有合入该 Patch 造成的，此项可以豁免的。豁免 ID 为 https://android-review.googlesource.com/c/platform/frameworks/base/+/1659166。
+> 2. 由于实现横屏的方法不一样，上面的代码可能需要调整才能通过，比如将上面判断条件执行的代码进行调换，具体问题需要具体分析，最终该问题的解决方法还是修改这个类的这个方法。
+

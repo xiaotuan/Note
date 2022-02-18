@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsSystemApiAnnotationTestCases -m android.signature.cts.api.AnnotationTest#testAnnotation
+$ run cts -m CtsSystemApiAnnotationTestCases -t android.signature.cts.api.AnnotationTest#testAnnotation
 ```
 
 ### 2. 报错信息

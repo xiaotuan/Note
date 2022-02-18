@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsSensorTestCases -m android.hardware.cts.SensorTest#testSensorOperations
+$ run cts -m CtsSensorTestCases -t android.hardware.cts.SensorTest#testSensorOperations
 ```
 
 ### 2. 报错项列表

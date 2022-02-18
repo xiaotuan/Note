@@ -32,9 +32,9 @@
 >     String data =intent.getDataString();
 >     if(data.endsWith("setupwizard")){
 >           if("false".equalsIgnoreCase(SystemProperties.get("ro.wb.wifi_on", "false"))){
->               WifiManager mWifiManager =(WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+>               android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 >               int state =mWifiManager.getWifiState();	
->               if(state == WifiManager.WIFI_STATE_ENABLED){
+>               if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
 >                   mWifiManager.setWifiEnabled(false);
 >               }
 >           }

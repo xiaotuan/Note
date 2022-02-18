@@ -3,7 +3,7 @@
 ### 1. 测试命令
 
 ```shell
-$ run cts -t CtsViewTestCases -m android.view.cts.DisplayRefreshRateTest#testRefreshRate
+$ run cts -m CtsViewTestCases -t android.view.cts.DisplayRefreshRateTest#testRefreshRate
 ```
 
 ### 2. 报错信息
