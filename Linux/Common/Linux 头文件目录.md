@@ -1,0 +1,1 @@
+对于 C 语言来说，这些头文件几乎总是位于 `/usr/include` 目录及其子目录中。那些依赖于特定 Linux 版本的头文件通常可在目录 `/usr/include/sys` 和 `/usr/include/linux` 中找到。
