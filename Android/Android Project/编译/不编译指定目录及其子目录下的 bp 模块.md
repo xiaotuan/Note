@@ -1,0 +1,1 @@
+在指定目录下创建名字为 `.find-ignore` 的空文件即可。`.find-ignore` 文件的作用是使 find 命令忽略该目录。
