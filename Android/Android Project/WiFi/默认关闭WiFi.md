@@ -31,21 +31,23 @@
 > // and that system code is only sending protected broadcasts.
 > final boolean isProtectedBroadcast;
 > try {
->  isProtectedBroadcast = AppGlobals.getPackageManager().isProtectedBroadcast(action);
+> isProtectedBroadcast = AppGlobals.getPackageManager().isProtectedBroadcast(action);
 > } catch (RemoteException e) {
->  Slog.w(TAG, "Remote exception", e);
->  return ActivityManager.BROADCAST_SUCCESS;
+> Slog.w(TAG, "Remote exception", e);
+> return ActivityManager.BROADCAST_SUCCESS;
 > }
 > 
 > // 添加代码开始位置
 > if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_PACKAGE_CHANGED)) { 
 >     String data =intent.getDataString();
->     if (data.endsWith("setupwizard")) {
->         if (android.provider.Settings.Global.getInt(mContext.getContentResolver(), android.provider.Settings.Global.WIFI_ON, 0) == 0) {
->             android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
->             int state =mWifiManager.getWifiState();	
->             if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
->                 mWifiManager.setWifiEnabled(false);
+>     if (data != null && data.length() != 0) {
+>         if (data.endsWith("setupwizard")) {
+>             if (android.provider.Settings.Global.getInt(mContext.getContentResolver(), android.provider.Settings.Global.WIFI_ON, 0) == 0) {
+>                 android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+>                 int state =mWifiManager.getWifiState();	
+>                 if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
+>                     mWifiManager.setWifiEnabled(false);
+>                 }
 >             }
 >         }
 >     }
@@ -55,4 +57,3 @@
 > final boolean isCallerSystem;
 > switch (UserHandle.getAppId(callingUid)) {
 > ```
->

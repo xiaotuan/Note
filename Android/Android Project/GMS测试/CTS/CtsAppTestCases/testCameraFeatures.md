@@ -18,13 +18,13 @@ $ run cts -m CtsAppTestCases -t android.app.cts.SystemFeaturesTest#testCameraFea
 
 2. 问题分析
 
-   设备相机不支持自动对焦功能，需要去掉自动对焦功能。
+   设备相机支持自动对焦功能，需要添加自动对焦功能。
 
 3. 解决方法
 
    **3.1 MTK8766、Android O**
 
-   去掉自动对焦功能，修改 `device/mediateksample/m863u_bsp_64/android.hardware.camera.xml` 文件，去掉文件中的如下内容：
+   添加自动对焦功能，修改 `device/mediateksample/m863u_bsp_64/android.hardware.camera.xml` 文件，在文件中添加如下内容如下内容：
 
    ```xml
    <feature name="android.hardware.camera.autofocus" />
