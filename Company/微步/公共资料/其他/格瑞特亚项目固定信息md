@@ -1,0 +1,6 @@
+PLATFORM_SECURITY_PATCH := 2021-05-05
+ro.com.google.clientidbase=android-incar
+ro.system.build.fingerprint=GREATASIA/E108GC_EEA/E108GC:11/RP1A.201005.001/20210701:user/release-keys
++BUILD_NUMBER_WEIBU := 20210701
+
+上面这4个信息要统一 ：安全补丁日期，clientid，fingerprint前面是三个字段，build_number 

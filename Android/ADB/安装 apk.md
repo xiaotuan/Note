@@ -7,8 +7,14 @@ $ adb install "PATH TO APK FILE GOES HERE"
 如果要安装的 apk 已经存在，则需要使用 `-r` 参数，例如：
 
 ```shell
-$
+$adb install -r "PATH TO APK FILE GOES HERE"
 ```
 
+例如：
 
+```shell
+$ adb install antutu.apk
+或
+$ adb install -r antutu.apk
+```
 
