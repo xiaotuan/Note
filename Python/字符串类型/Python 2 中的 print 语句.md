@@ -4,5 +4,5 @@
 print "Hello Python 2.7 world!"
 ```
 
-在 `Python 2` 中，无需将要打印的内容放在括号内。
+> 提示：在 `Python 2` 中，无需将要打印的内容放在括号内。
 
