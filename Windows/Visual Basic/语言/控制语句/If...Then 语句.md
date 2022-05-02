@@ -2,9 +2,17 @@
 
 ``` vb
 If condition Then
-    statement
+    statements
 End If
 ```
+
+或者：
+
+```vb
+If condition Then statement
+```
+
+> 提示：多个语句可以写在多行中，也可以写在同一行中，并用冒号 `:` 隔开。
 
 例如：
 
