@@ -73,5 +73,34 @@
 | L          | 列出所有格式指定符                                        |
 | V          | 显示 ps 命令的版本号                                      |
 
+### 3. GNU 风格的 ps 命令参数
+
+| 参数            | 描述                                     |
+| --------------- | ---------------------------------------- |
+| --deselect      | 显示所有进程，命令行中列出的进程         |
+| --Group grpList | 显示组 ID 在 grpList 列表中的进程        |
+| --User userList | 显示用户 ID 在 userList 列表中的进程     |
+| --group grpList | 显示有效组 ID 在 grpList 列表中的进程    |
+| --pid pidList   | 显示 PID 在 pidList 列表中的进程         |
+| --ppid pidList  | 显示父 PID 在 pidList 列表中的进程       |
+| --sid sidList   | 显示会话 ID 在 sidList 列表中的进程      |
+| --tty ttyList   | 显示终端设备号在 ttyList 列表中的进程    |
+| --user userList | 显示有效用户 ID 在 userList 列表中的进程 |
+| --format format | 仅显示由 format 指定的列                 |
+| --context       | 显示额外的安全信息                       |
+| --cols n        | 将屏幕宽度设置为 n 列                    |
+| --columns n     | 将屏幕宽度设置为 n 列                    |
+| --cumulative    | 包含已停止的子进程的信息                 |
+| --forest        | 用层级结构显示出进程和父进程之间的关系   |
+| --headers       | 在每页输出中都显示列的头                 |
+| --no-headers    | 不显示列的头                             |
+| --lines n       | 将屏幕高度设为 n 行                      |
+| --rows n        | 将屏幕高度设为 n 排                      |
+| --sort order    | 指定将输出按哪列排序                     |
+| --width n       | 将屏幕宽度设为 n 列                      |
+| --help          | 显示帮助信息                             |
+| --info          | 显示调试信息                             |
+| --version       | 显示 ps 命令的版本号                     |
+
 
 
