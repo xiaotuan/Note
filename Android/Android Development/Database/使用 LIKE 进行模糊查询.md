@@ -37,7 +37,7 @@ Cursor cursor = sqldb.rawQuery(sql, selectionArgs);
 或者
 
 ```java
-String where = MediaStore.Audio.Media.DATA + " LIKE ?";
+String where = MediaStore.Audio.Media.DATA + " LIKE ? OR " + MediaStore.Audio.Media.DATA + " LIKE ?";
 Cursor recordingFileCursor = getContentResolver().query(
     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
     new String[] {
@@ -45,7 +45,7 @@ Cursor recordingFileCursor = getContentResolver().query(
         MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION,
         MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATE_ADDED,
         MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media._ID
-    }, where, new String[] {"%Recording/record%.amr"}, null);
+    }, where, new String[] {"%Recording/record%.amr", "%Recording/record%.3gp"}, null);
 ```
 
 
