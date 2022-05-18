@@ -35,3 +35,14 @@
 > 1. 签名环境必须是 64 位的 Ubuntu 系统（其他 Linux 系统也可以，但必须是 64 位系统）。
 > 2. Java 版本必须是 11 及以上。
 
+#### 1.2 通用签名方法
+
+1. 将要签名的 apk 文件放到源代码跟目录下。
+
+2. 在源代码根目录下执行如下命令签名：
+
+   ```shell
+   $ java -Djava.library.path="./out/host/linux-x86/lib64" -jar ./out/host/linux-x86/framework/signapk.jar ./build/target/product/security/platform.x509.pem ./build/target/product/security/platform.pk8 test.apk test_sign.apk
+   ```
+
+   
