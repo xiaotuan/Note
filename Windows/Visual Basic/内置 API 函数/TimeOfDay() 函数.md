@@ -1,0 +1,1 @@
+`TimeOfDay()` 是一个方便的 `Visual Basic` 函数，它根据系统时钟返回当前时间。
