@@ -20,3 +20,4 @@ filename = 'summing.c'
 count_words(filename)
 ```
 
+`pass` 语句还充当了占位符，它提醒你在程序的某个地方什么都没有做，并且以后也许要在这里做些什么。
