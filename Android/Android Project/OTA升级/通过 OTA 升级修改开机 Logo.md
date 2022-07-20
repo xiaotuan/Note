@@ -65,3 +65,7 @@ java -Xmx2048m -Djava.library.path=/work02/mtk/11/8766/B/mt8766_r/build/make/too
 > Error: Unable to access jarfile ./work02/mtk/11/8766/B/mt8766_r/build/make/tools/framework/signapk.jar
 > ```
 
+```shell
+java -Xmx2048m -Djava.library.path=./out/host/linux-x86/lib64 -jar ./out/host/linux-x86/framework/signapk.jar -w build/target/product/security/releasekey.x509.pem build/target/product/security/releasekey.pk8 ./updateV03-V04-test.zip ./updateV03-V04.zip
+```
+
