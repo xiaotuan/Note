@@ -49,20 +49,18 @@ $ run cts -m CtsPermission2TestCases -t android.permission2.cts.ProtectedBroadca
    try {
    isProtectedBroadcast = AppGlobals.getPackageManager().isProtectedBroadcast(action);
    } catch (RemoteException e) {
-   Slog.w(TAG, "Remote exception", e);
-   return ActivityManager.BROADCAST_SUCCESS;
+       Slog.w(TAG, "Remote exception", e);
+       return ActivityManager.BROADCAST_SUCCESS;
    }
    
    // 添加代码开始位置
    if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_PACKAGE_CHANGED)) { 
    	String data =intent.getDataString();
        if (data.endsWith("setupwizard")) {
-           if (android.provider.Settings.Global.getInt(mContext.getContentResolver(), android.provider.Settings.Global.WIFI_ON, 0) == 0) {
-               android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-               int state =mWifiManager.getWifiState();	
-               if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
-                   mWifiManager.setWifiEnabled(false);
-               }
+           android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+           int state =mWifiManager.getWifiState();	
+           if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
+               mWifiManager.setWifiEnabled(false);
            }
        }
    }
@@ -71,7 +69,7 @@ $ run cts -m CtsPermission2TestCases -t android.permission2.cts.ProtectedBroadca
    final boolean isCallerSystem;
    switch (UserHandle.getAppId(callingUid)) {
    ```
-
+   
    在上面的修改中，没有对 data 变量进行判空操作，导致当 data 为 null 时报错。
 
 3. 解决方法
@@ -94,12 +92,10 @@ $ run cts -m CtsPermission2TestCases -t android.permission2.cts.ProtectedBroadca
    	String data =intent.getDataString();
        if (data != null && data.length() != 0) {
            if (data.endsWith("setupwizard")) {
-               if (android.provider.Settings.Global.getInt(mContext.getContentResolver(), android.provider.Settings.Global.WIFI_ON, 0) == 0) {
-                   android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-                   int state =mWifiManager.getWifiState();	
-                   if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
-                       mWifiManager.setWifiEnabled(false);
-                   }
+               android.net.wifi.WifiManager mWifiManager =(android.net.wifi.WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+               int state =mWifiManager.getWifiState();	
+               if(state == android.net.wifi.WifiManager.WIFI_STATE_ENABLED){
+                   mWifiManager.setWifiEnabled(false);
                }
            }
        }
