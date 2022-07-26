@@ -1,0 +1,1 @@
+按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 组合键两次或者 <kbd>Ctrl</kbd> + <kbd>D</kbd> 键一次退出 REPL。

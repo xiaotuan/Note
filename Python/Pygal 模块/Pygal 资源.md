@@ -1,0 +1,1 @@
+要了解使用 `Pygal` 可创建什么样的图表，请查看图表类型图廊：访问 <http://www.pygal.org/>，单击 Documentation，再单击 Chart types。每个示例都包含源代码，让你知道这些图表是如何生成的。
