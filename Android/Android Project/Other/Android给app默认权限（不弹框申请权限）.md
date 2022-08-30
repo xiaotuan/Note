@@ -61,10 +61,9 @@ frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.j
                    <permission name="android.permission.WRITE_EXTERNAL_STORAGE" fixed="true"/>
             </exception>
 </exceptions>
-1234567
 ```
 
-3，将这个文件拷贝到 `system/etc/**default-permissions**/default-permissions.xml` 这个目录下。或者使用如下 bp 文件（注意，需要将该模块添加到编译中）：
+3，将这个文件拷贝到 `system/etc/default-permissions/default-permissions.xml` 这个目录下。或者使用如下 bp 文件（注意，需要将该模块添加到编译中）：
 
 ```bp
 prebuilt_etc {
