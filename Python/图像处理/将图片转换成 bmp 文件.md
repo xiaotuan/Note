@@ -2,14 +2,6 @@
 
 ### 1. 使用 opencv-python 转换
 
-#### 1. 安装 opencv-python
-
-```shell
-pip install opencv-python
-```
-
-#### 2. 转换代码
-
 ```python
 import cv2
 
@@ -21,14 +13,6 @@ cv2.imwrite(bmp,img) #写入
 ```
 
 ### 2. 使用 PIL 转换
-
-#### 2.1 安装 PIL
-
-```shell
-pip install pillow
-```
-
-#### 2.2 转换代码
 
 ```python
 from PIL import Image
@@ -51,5 +35,3 @@ img.show()
 print("size: " + str(img.size) + ", widht: " + str(img.width) + ", height: " + str(img.height) + ", format: " + str(img.format))
 img.close()
 ```
-
->  Aspose.Words 转换后的 bmp 文件最小。
