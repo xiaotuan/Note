@@ -76,3 +76,114 @@ p$ echo $testing
 
 ### 3. dash 内建命令
 
+| 命令     | 描述                                                     |
+| -------- | -------------------------------------------------------- |
+| alias    | 创建代表文本字符串的别名字符串                           |
+| bg       | 以后台模式继续执行指定的作业                             |
+| cd       | 切换到指定的目录                                         |
+| echo     | 显示文本字符串和环境变量                                 |
+| eval     | 将所有参数用空格连起来                                   |
+| exec     | 用指定命令替换 shell 进程                                |
+| exit     | 终止 shell 进程                                          |
+| export   | 导出指定的环境变量，供子 shell 使用                      |
+| fg       | 以前台模式继续执行指定的作业                             |
+| getopts  | 从参数列表中提取选项和参数                               |
+| hash     | 维护并提取最近执行的命令及其位置的哈希表                 |
+| pwd      | 显示当前工作目录                                         |
+| read     | 从 STDIN 读取一行并将其赋给一个变量                      |
+| readonly | 从 STDIN 读取一行并赋给一个只读变量                      |
+| printf   | 用格式化字符串显示文本和变量                             |
+| set      | 列出或设置选项标记和环境变量                             |
+| shift    | 按指定的次数移动位置参数                                 |
+| test     | 测试一个表达式，成立的话返回 0，不成立的话返回 1         |
+| times    | 显示当前 shell 和所有 shell 进程的累计用户时间和系统时间 |
+| trap     | 在 shell 收到某个指定信号时解析并执行命令                |
+| type     | 解释指定的名称并显示结果（别名、内建、命令或关键字）     |
+| ulimit   | 查询或设置进程限制                                       |
+| umask    | 设置文件和目录的默认权限                                 |
+| unalias  | 删除指定的别名                                           |
+| unset    | 从导出的变量中删除指定的变量或选项标记                   |
+| wait     | 等待指定的作业完成，然后返回退出状态码                   |
+
+### 3. 创建 dash 脚本
+
+可以在 shell 脚本的第一行指定：
+
+```shell
+#!/bin/dash
+```
+
+### 4. dash shell 不支持的功能
+
+#### 4.1 算术运算
+
+dash shell 支持 `expr` 命令和双圆括号方法，但不支持方括号方法。
+
+```shell
+$ cat test.sh
+#!/bin/dash
+# testing mathematical operations
+
+value1=10
+value2=15
+
+value3=$(($value1 * $value2))
+echo "The answer is $value3"
+$ ./test.sh 
+The answer is 150
+```
+
+#### 4.2 test 命令
+
+dash shell 中的 `test` 命令不能识别用作文本比较的 `==` 符号，只能识别 `=` 符号。
+
+```shell
+$ cat test.sh
+#!/bin/dash
+# testing the = comparison
+
+test1=abcdef
+test2=abcdef
+
+if [ $test1 = $test2 ]
+then
+    echo "They're the same!"
+else
+    echo "They're different"
+$ ./test.sh 
+They're the same!
+```
+
+#### 4.3 function 命令
+
+dash shell 不支持 `function`  语句。在 dash shell 中，你必须用函数名和圆括号定义函数。
+
+```shell
+$ cat test.sh
+#!/bin/dash
+# testing functions
+
+func1() {
+    echo "This is an example of a function"
+}
+
+count=1
+while [ $count -le 5 ]
+do
+    func1
+    count=$(( $count + 1 ))
+done
+echo "This is the end of the loop"
+func1
+echo "This is the end of the script"
+$ ./test.sh 
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is an example of a function
+This is the end of the loop
+This is an example of a function
+This is the end of the script
+```
+
