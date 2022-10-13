@@ -25,3 +25,22 @@ Private Sub CmdOk_Click(sender As Object, e As EventArgs) Handles CmdOk.Click
 End Sub
 ```
 
+使用步长：
+
+```vb
+Dim intCounter As Integer
+For intCounter = 1 To 100 Step 4
+	Debug.WriteLine(intCounter)
+Next intCounter
+```
+
+提前结束 `For` 循环：
+
+```vb
+Dim intCounter As Integer
+For intCounter = 1 To 100
+	If condition Then Exit For
+    Debug.WriteLine(intCounter)
+Next intCounter
+```
+
