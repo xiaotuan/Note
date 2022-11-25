@@ -1,4 +1,15 @@
-密码域是一种特殊类型的文本域。为了避免有不良企图的人看到密码，用户输入的字符不显示出来。每个输入的字符都用回显字符表示，典型的回显字符是星号（*）。Swing 提供了 `JPasswordField` 类来实现这样的文本域。
+在 Swing 中，文本区没有滚动条。如果需要滚动条，可以将文本区插入到滚动窗格中。
+
+```java
+textArea = new JTextArea(8, 40);
+JScrollPane scrollPane = new JScrollPane(textArea);ß
+```
+
+这是一种任意组件添加滚动功能的通用机制，而不是文本区特有的。也就是说，要想为组件添加滚动条，只需将它们放入一个滚动窗格中即可。
+
+>   提示：`JTextArea` 组件只显示无格式的文本，没有特殊字体或者格式设置。如果想要显示格式文本（如 HTML），就需要使用 `JEditorPane` 类。
+
+可以通过调用 `setTabSize(int c)` 方法将制表符设置为 c 列。注意，制表符不会被转换为空格，但可以让文本对齐到下一个制表符处。
 
 **示例代码：**
 
@@ -17,7 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class TextComponentTest {
+public class TextComponentTest {å
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -71,16 +82,3 @@ class TextComponentFrame extends JFrame {
 }
 ```
 
-## javax.swing.JPasswordField 1.2
-
-+ `JPasswordField(String text, int columns)`
-
-  构造一个新的密码域对象
-
-+ `void setEchoChar(char echo)`
-
-  为密码域设置回显字符。注意：独特的观感可以选择自己的回显字符。0 表示重新设置为默认的回显字符。
-
-+ `char[] getPassword()`
-
-  返回密码域中的文本。为了安全起见，在使用之后应该覆写返回的数组内容（密码并不是以 `String` 的形式返回，这是因为字符串在被垃圾回收器回收之前会一致驻留在虚拟机中）。
