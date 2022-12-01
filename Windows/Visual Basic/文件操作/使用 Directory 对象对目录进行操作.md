@@ -25,6 +25,12 @@
   ```vb
   System.IO.Directory.Delete("C:\temp")
   ```
+  
+  如果目录中存在文件或子目录，需要使用如下代码进行删除：
+  
+  ```vb
+  System.IO.Directory.Delete("C:\temp", True)
+  ```
 
 > 注意：要将目录发送到回收站，而不是永久性删除它，可像下面这样使用对象 My：
 >
@@ -32,4 +38,4 @@
 > My.Computer.FileSystem.DieleteDirectory("D:\OldDir", FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
 > ```
 >
-> 
+
