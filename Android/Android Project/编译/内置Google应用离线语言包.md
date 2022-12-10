@@ -4,7 +4,7 @@ Google 应用中 `More` -> `Settings` -> `Voice` -> `Offline speech recognition`
 
 1. 编译一个 `userdebug` 软件（为了提取语音包文件）
 
-2. 拷贝 `/data/data/com.google.android.googlequicksearchbox/app_g3_models` 目录下的所有文件夹及文件到本地。
+2. 拷贝 `/data/data/com.google.android.googlequicksearchbox/app_g3_models` 或者 `/data_mirror/data_ce/null/0/com.google.android.googlequicksearchbox/app_g3_models` 目录下的所有文件夹及文件到本地。
 
 3. 在源码中适当的位置存放拷贝出来的文件及文件夹，例如 `vendor/weibu_sz/etc/tts/`。
 
