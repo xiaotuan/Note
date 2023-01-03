@@ -1,0 +1,1 @@
+在 <https://www.xml.com/axml/axml.html> 处可以找到一个由 Tim Bray 注释的 XML 标准的极佳版本。
