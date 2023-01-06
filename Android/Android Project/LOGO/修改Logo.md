@@ -83,3 +83,12 @@ BootLogo=1@./vendor/sprd/release/bmp/unisoc_bmp/unisoc_HD_800_1280.bmp
 
 2. 替换 `vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/BOOT_LOGO的值/` 目录下的 `BOOT_LOGO的值_kernel.bmp` 和 `BOOT_LOGO的值_uboot.bmp` 图片，例如 `vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/wxga/` 目录下的 `wxga_kernel.bmp` 和 `wxga_uboot.bmp` 文件。
 
+##### 1.2.2. mt8766_t
+
+1. 查看 `vnd/device/mediateksample/项目名/ProjectConfig.mk` 文件中的 `BOOT_LOGO` 的值，例如：`device/mediateksample/m863u_bsp_64/ProjectConfig.mk`；或者驱动客制化目录中 `vnd/weibu/公版名称/项目名称/config/ProjectConfig.mk` 文件中的值，例如 `vnd/weibu/tb8766p1_64_bsp/M300Y_WH_472/config/ProjectConfig.mk`：
+
+   ```makefile
+   BOOT_LOGO = wxga
+   ```
+
+2. 替换 `vnd/vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/BOOT_LOGO的值/` 目录下的 `BOOT_LOGO的值_kernel.bmp` 和 `BOOT_LOGO的值_uboot.bmp` 图片，例如 `vnd/vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/wxga/` 目录下的 `wxga_kernel.bmp` 和 `wxga_uboot.bmp` 文件。

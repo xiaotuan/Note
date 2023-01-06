@@ -57,4 +57,32 @@ XML 元素可以包含属性，例如：
   &lt; &gt; &amp; &quot; &apos;
   ```
 
++ CDATA 部分（CDATA Section）用 `<![CDATA[` 和 `]]>` 来限定其界限。它们是字符数据的一种特殊形式。你可以使用它们来囊括那些含有 `<` 、`>`、`&` 之类字符的字符串，而不必将它们解释为标记，例如：
+
+  ```xml
+  <![CDATA[< & > are my favorite delimiters]]>
+  ```
+
+  > 注意：CDATA 部分不能包含字符串 `]]>`。
+
++ 处理指令是哪些专门在处理 XML 文档的应用程序中使用的指令，它们由 `<?` 和 `?>` 来限定其界限，例如：
+
+  ```xml
+  <?xml-stylesheet href="mystyle.css" type="text/css"?>
+  ```
+
+  每个 XML 都以一个处理指令开头：
+
+  ```xml
+  <?xml version="1.0"?>
+  ```
+
++ 注释用 `<!--` 和 `-->` 限定其界限，例如：
+
+  ```xml
+  <!-- This is a comment.	-->
+  ```
+
+  > 注意：注释不应该含有字符串 `--`。
+
   
