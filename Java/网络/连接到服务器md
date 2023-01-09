@@ -1,0 +1,129 @@
+[toc]
+
+### 1. 使用 telnet
+
+`telnet` 是一种用于网络编程的非常强大的调试工具，你可以在命令 `shell` 中输入 `telnet` 来启动它。
+
+> 注意：在 Windows 中，需要激活 `telnet`。要激活它，需要到 `设置` -> ` 应用` -> `程序和功能` -> `启用或关闭 Windows 功能`，在 `Windows 功能` 对话框中勾选 `Telnet 客户端`，然后点击 `确定` 按钮。
+
+下面是一个可以操作的例子：
+
+```shell
+$ telnet time-a.nist.gov 13
+59953 23-01-09 03:18:12 00 0 0 669.6 UTC(NIST) *
+```
+
+### 2. 用 Java 连接到服务器
+
+**示例代码：SocketTest.java**
+
+```java
+import java.io.IOException;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class SocketTest {
+
+	public static void main(String[] args) throws IOException {
+		try (Socket s = new Socket("time-a.nist.gov", 13); Scanner in = new Scanner(s.getInputStream(), "UTF-8")) {
+			while (in.hasNext()) {
+				String line = in.nextLine();
+				System.out.println(line);
+			}
+		} 
+	}
+
+}
+```
+
+我们将远程地址和端口号传递给套接字的构造器，如果连接失败，它将抛出一个 `UnknownHostException` 异常；如果存在其他问题，它将抛出一个 `IOException` 异常。
+
+一旦套接字被打开，`java.net.Socket` 类中的 `getInputStream` 方法就会返回一个 `InputStream` 对象，该对象可以像其他任何流对象一样使用。而一旦获取了这个流，该程序将直接把每一行打印到标准输出。
+
+### 3. 套接字超时
+
+从套接字读取信息时，在有数据可供访问之前，读操作将会被阻塞。如果此时主机不可达，那么应用将要等待很长的时间，并且因为受底层操作系统的限制而最终会导致超时。
+
+可以通过调用 `setSoTimeout` 方法设置这个超时值（单位：毫秒）：
+
+```java
+Socket s = new Socket(...);
+s.setSoTimeout(10000);	// time out after 10 seconds
+```
+
+如果已经为套接字设置了超时值，并且之后的读操作和写操作在没有完成之前就超过了时间限制，那么这些操作就会抛出 `SocketTimeoutException` 异常。
+
+```java
+try {
+    InputStream in = s.getInputStream();	// read from in
+    ...
+} catch (InterruptedIOException exception) {
+    react to timeout
+}
+```
+
+另外还有一个超时问题是必须解决的。下面这个构造器：
+
+```java
+Socket(String host, int port);
+```
+
+会一直无限期地阻塞下去，直到建立了到达主机的初始连接为止。
+
+可以通过先构建一个无连接的套接字，然后再使用一个超时来进行连接的方式解决这个问题。
+
+```java
+Socket s = new Socket();
+s.connect(new InetSocketAddress(host, port), timeout);
+```
+
+### 4. 因特网地址
+
+`InetAddress` 的 `getByName()` 静态方法可以返回代表某个主机的 `InetAddress` 对象。例如：
+
+```java
+InetAddress address = InetAddress.getByName("time-a.nist.gov");
+```
+
+`InetAddress` 对象封装了一个 4 字节的序列：`129.6.15.28`。可以使用 `getAddress` 方法来访问这些字节：
+
+```java
+byte[] addressBytes = address.getAddress();
+```
+
+一些访问量较大的主机名通常会对应于多个因特网地址，以实现负载均衡。当访问主机时，会随机选取其中的一个。可以通过调用 `getAllByName` 方法来获得所有主机：
+
+```java
+InetAdress[] addresses = InetAddress.getAllByName(host);
+```
+
+最后需要说明的是，有时我们可能需要本地主机的地址。如果只是要求得到 localhost 的地址，那么总会得到本地回环地址 `127.0.0.1`，但是其他程序无法用这个地址来连接这台机器上。此时，可以使用静态的 `getLocalHost` 方法来得到本地主机的地址：
+
+```java
+InetAddress address = InetAddress.getLocalHost();
+```
+
+**示例代码：**
+
+```java
+import java.io.IOException;
+import java.net.InetAddress;
+
+public class InetAddressTest {
+
+	public static void main(String[] args) throws IOException {
+		if (args.length > 0) {
+			String host = args[0];
+			InetAddress[] addresses = InetAddress.getAllByName(host);
+			for (InetAddress a : addresses) {
+				System.out.println(a);
+			}
+		} else {
+			InetAddress localHostAddress = InetAddress.getLocalHost();
+			System.out.println(localHostAddress);
+		}
+	}
+	
+}
+```
+
