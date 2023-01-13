@@ -70,6 +70,6 @@ java -Xmx2048m -Djava.library.path=./out/host/linux-x86/lib64 -jar ./out/host/li
 ```
 
 ```shell
-java -Xmx2048m -Djava.library.path=./out/host/linux-x86/lib64 -jar ./out/host/linux-x86/framework/signapk.jar -w device/mediatek/security/releasekey.x509.pem device/mediatek/security/releasekey.pk8 Acer_AV0S0_P10-11_RV00RC01_RV00RC04_EEA_GEN1.zip  Acer_AV0S0_P10-11_RV00RC01_RV00RC04_EEA_GEN1—new.zip
+java -Xmx2048m -Djava.library.path=./out/host/linux-x86/lib64 -jar ./out/host/linux-x86/framework/signapk.jar -w device/mediatek/security/releasekey.x509.pem device/mediatek/security/releasekey.pk8 update-v4-v6-test.zip update-v4-v6-test-new.zip
 ```
 
