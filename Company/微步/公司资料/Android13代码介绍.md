@@ -36,7 +36,7 @@ Split Build 1.0 ( MT8321 MT8765 MT8766 MT8768 MT8183 MT8788 适⽤)
 #### 3.1 编译 kernel 及 vnd
 
 ```shell
-cd vnd ; source build/envsetup.sh && export OUT_DIR=out && lunch vnd_tb8766p1_64_bsp-userdebug M869YCR100_YM_445 && make krn_images vnd_images
+cd vnd ; source build/envsetup.sh && export OUT_DIR=out && lunch vnd_tb8766p1_64_bsp-userdebug M869YCR100_YM_546 && make krn_images vnd_images
 ```
 
 WB_PROJECT对应vnd/weibu/tb8766p1_64_bsp/M866YA_WB_420，如果不存在则报错

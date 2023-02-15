@@ -159,5 +159,66 @@ class MainActivity : AppCompatActivity() {
 **Java**
 
 ```java
+package com.bignerdranch.android.geoquizj;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button trueButton;
+    private Button falseButton;
+    private Button nextButton;
+    private TextView questionTextView;
+
+    private QuizViewModel quizViewModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
+
+        trueButton = findViewById(R.id.true_button);
+        falseButton = findViewById(R.id.false_button);
+        nextButton = findViewById(R.id.next_button);
+        questionTextView = findViewById(R.id.question_text_view);
+
+        trueButton.setOnClickListener(v -> {
+            checkAnswer(true);
+        });
+
+        falseButton.setOnClickListener(v -> {
+            checkAnswer(false);
+        });
+
+        nextButton.setOnClickListener(v -> {
+            quizViewModel.moveToNext();
+            updateQuestion();
+        });
+
+        updateQuestion();
+    }
+
+    private void updateQuestion() {
+        int questionTextResId = quizViewModel.getCurrentQuestionText();
+        questionTextView.setText(questionTextResId);
+    }
+
+    private void checkAnswer(boolean userAnswer) {
+        boolean correctAnswer = quizViewModel.getCurrentQuestionAnswer();
+        int messageResId = R.string.incorrect_toast;
+        if (userAnswer == correctAnswer) {
+            messageResId = R.string.correct_toast;
+        }
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+}
 ```
 
