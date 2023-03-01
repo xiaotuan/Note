@@ -5,21 +5,9 @@
 2. 配置 build.gradle 文件。
 
 ```
-android {
-    ...
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-    ...
-}
-```
-
-```
 dependencies {
     ...
-    compile(name: 'aiwinn', ext:'aar')
+    implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
     ...
 }
 ```
