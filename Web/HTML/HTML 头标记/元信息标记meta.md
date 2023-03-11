@@ -153,3 +153,245 @@
 <meta http-equiv="Content-Language" content="zh_CN">
 ```
 
+### 7. 设置网页的定时跳转
+
+#### 7.1 语法
+
+```html
+<meta http-equiv="refresh" content="跳转时间;url=链接地址">
+```
+
+在该语法中，`refresh` 表示网页的刷新，而在 `content` 中设定刷新的时间和刷新后的地址，时间和链接地址之间用分号相隔。默认情况下，跳转时间是以秒为单位的。
+
+#### 7.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>设置网页的定时跳转</title>
+        <meta http-equiv="refresh" content="3;url=http://www.mingribook.com">
+    </head>
+    <body>
+    	您好，本页在3 秒之后将自动跳转到明日图书网
+    </body>
+</html>
+```
+
+### 8. 设定有效期限
+
+在某些网站上会设置网页的到期时间，一旦过期则必须到服务器上重新调用。
+
+#### 8.1 语法
+
+```html
+<meta http-equiv="expires" content="到期的时间">
+```
+
+到期的时间必须是 GMT 时间格式，即星期，日月年时分秒，这些时间都使用英文和数字进行设定。
+
+#### 8.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>设置有效期限</title>
+        <meta http-equiv="expires" content="Web, 14 september 2011 16:20:00 GMT ">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 9. 禁止从缓存中调用
+
+#### 9.1 语法
+
+```html
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content=" no-cache ">
+```
+
+`cache-control` 和 `pragma` 都可以用来设定缓存的属性，而在 `content` 中则是真正禁止调用缓存的语句。
+
+#### 9.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>禁止从缓存中调用</title>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content=" no-cache ">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 10. 删除过期的 cookie
+
+#### 10.1 语法
+
+```html
+<meta http-equiv="set-cookie" content="到期的时间">
+```
+
+到期的时间同样是 GMT 时间格式。
+
+#### 10.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>删除过期的cookie</title>
+        <meta http-equiv="set-cookie" content=" Web, 14 september 2011 16:20:00 GMT">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 11. 强制打开新窗口
+
+强制网页在当前窗口中以独立的页面显示，可以防止自己的网页被别人当作一个 frame 页调用。
+
+#### 11.1 语法
+
+```html
+<meta http-equiv="windows-target" content="_top">
+```
+
+`windows-target` 表示新网页的打开方式，而 `content` 中设置 `_top` 则代表打开的是一个独立页面。
+
+#### 11.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>强制打开新窗口</title>
+        <meta http-equiv="windows-target" content="_top">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 12. 设置网页的过渡效果
+
+#### 12.1 语法
+
+```html
+<meta http-equiv="过渡事件" content="revealtrans(duration=过渡效果持续时间,transition=过渡方式)">
+```
+
+进入页面的 `http-equiv` 值为 `page-enter` ，离开页面的 `http-equiv` 值为 `page-exist`。过渡效果的持续时间默认情况下以秒为单位，过渡方式的编号及含义如下表所示。
+
+| 编号 | 含义           | 编号 | 含义                 |
+| ---- | -------------- | ---- | -------------------- |
+| 0    | 盒状收缩       | 12   | 随意溶解             |
+| 1    | 盒状放射       | 13   | 从左右两端向中间展开 |
+| 2    | 圆形收缩       | 14   | 从中间向左右两端展开 |
+| 3    | 圆形反射       | 15   | 从上下两端向中间展开 |
+| 4    | 由下往上       | 16   | 从中间向上下两端展开 |
+| 5    | 由上往下       | 17   | 从右上角向左下角展开 |
+| 6    | 从左至右       | 18   | 从右下角向左上角展开 |
+| 7    | 从右至左       | 19   | 从左上角向右下角展开 |
+| 8    | 垂直百叶窗     | 20   | 从左下角向右上角展开 |
+| 9    | 水平百叶窗     | 21   | 水平线状展开         |
+| 10   | 水平格状百叶窗 | 22   | 垂直线状展开         |
+| 11   | 垂直格状百叶窗 | 23   | 随机产生一种过渡方式 |
+
+#### 12.2 示例代码
+
+```html
+<html>
+    <head>
+    	<title>页面的过渡效果</title>
+    </head>
+    <body bgcolor="#FFCC00">
+        <center><h2>页面的过渡效果</h2>
+            <img src="images/1.jpg" width="498" height="349" /><br/><br/><br/>
+            <a href="2-enter.html">进入网页</a><br/><br/><br/>
+            <a href="2-exit.html">离开网页</a>
+    	</center>
+    </body>
+</html>
+```
+
+```html
+<html>
+    <head>
+        <title>页面的进入效果</title>
+        <meta http-equiv="page-enter" content="revealtrans(duration=3,transition=21)"/>
+    </head>
+    <body bgcolor="#FFCC99">
+        <center><h2>显示页面的进入效果</h2>
+            <img src="images/2.jpg" width="498" height="462" /><br /><br />
+            <a href="2-gd.html">返回</a>
+        </center>
+    </body>
+</html>
+```
+
+### 13. 设定建立网站的日期
+
+#### 13.1 语法
+
+```html
+<meta name="build" content="网站建立的日期">
+```
+
+#### 13.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>设定网站建立日期</title>
+        <meta name="build" content="2008.08.08">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 14. 设定网页版权信息
+
+#### 14.1 语法
+
+```html
+<meta name="copyright" content="网页版权信息">
+```
+
+#### 14.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>设定网页版权</title>
+        <meta name="copyright" content="明日科技">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
+### 15. 设定联系人的邮箱
+
+#### 15.1 语法
+
+```html
+<meta name="reply-to" content="邮箱地址">
+```
+
+#### 15.2 示例代码
+
+```html
+<html>
+    <head>
+        <title>设定网站联系人邮箱</title>
+        <meta name="reply-to" content="mingrisoft@mingrisoft.com">
+    </head>
+    <body>
+    </body>
+</html>
+```
+
