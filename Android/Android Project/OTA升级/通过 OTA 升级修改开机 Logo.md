@@ -39,7 +39,11 @@ package_extract_file("loader_ext.img", "/dev/block/platform/bootdevice/by-name/l
 使用下面命令对修改后的 OTA 升级包进行签名：
 
 ```shell
-java -Xmx2048m -Djava.library.path=/work02/mtk/11/8766/B/mt8766_r/build/make/tools/lib64 -jar /work02/mtk/11/8766/B/mt8766_r/build/make/tools/framework/signapk.jar -w device/mediatek/security/releasekey.x509.pem device/mediatek/security/releasekey.pk8 ./updateV05-V06-test-202204081411.zip ./updatev05-v06.zip
+java -Xmx2048m -Djava.library.path=/work02/mtk/11/8766/B/mt8766_r/build/make/tools/lib64 -jar /work02/mtk/11/8766/B/mt8766_r/build/make/tools/framework/signapk.jar -w device/mediatek/security/releasekey.x509.pem device/mediatek/security/releasekey.pk8 ./updateV05-V06-test-202204081411.zip ./updatev05-v06.zip	
+```
+
+```shell
+$ java -Xmx2048m -Djava.library.path=./out/host/linux-x86/lib64/ -jar ./out/host/linux-x86/framework/signapk.jar -w device/mediatek/security/releasekey.x509.pem device/mediatek/security/releasekey.pk8 ./update-V4-V7-old.zip ./update-V4-V7.zip
 ```
 
 > 注意：

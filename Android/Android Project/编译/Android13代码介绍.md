@@ -47,6 +47,11 @@ WB_PROJECT对应vnd/weibu/tb8766p1_64_bsp/M866YA_WB_420，如果不存在则报�
 cd sys ; source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M869YCR100_YM_536-MMI && m api-stubs-docs-non-updatable-update-current-api && make -j24 sys_images
 ```
 
+```shell
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M869YCR100_YM_536-MMI
+```
+
+
 
 WB_PROJECT对应vnd/weibu/mssi_t_64_cn/M866YA_WB_420-MMI，如果不存在则报错
 
