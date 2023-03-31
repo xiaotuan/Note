@@ -1,0 +1,35 @@
+[toc]
+
+### 1. MTK
+
+#### 1.1 MT8766
+
+##### 1.1.1 Android T
+
+> 注意：修改时下面的工程路径需要按实际项目路径进行修改。
+
+1. 修改 `sys/weibu/mssi_t_64_cn/M869YCR100_YM_536-MMI/config/SystemConfig.mk` 文件，添加如下宏开关，打开 sys 目录下的 AB 升级功能：
+
+   ```makefile
+   MTK_AB_OTA_UPDATER=yes
+   ```
+
+2. 修改 `vnd/weibu/tb8766p1_64_bsp/M869YCR100_YM_536/config/ProjectConfig.mk` 文件，添加如下宏开关，打开 vnd 目录下的 AB 升级功能：
+
+   ```makefile
+   MTK_AB_OTA_UPDATER=yes
+   ```
+
+3. 修改 `vnd/weibu/tb8766p1_64_bsp/M869YCR100_YM_536/config/tb8766p1_64_bsp_pl.mk` 文件，添加如下宏开关，打开 vnd 目录下的 AB 升级功能：
+
+   ```makefile
+   MTK_AB_OTA_UPDATER=yes
+   ```
+
+4. 修改 `vnd/weibu/tb8766p1_64_bsp/M869YCR100_YM_536/config/tb8766p1_64_bsp_lk.mk` 文件，添加如下宏开关，打开 vnd 目录下的 AB 升级功能：
+
+   ```makefile
+   MTK_AB_OTA_UPDATER=yes
+   ```
+
+   
