@@ -92,3 +92,9 @@ BootLogo=1@./vendor/sprd/release/bmp/unisoc_bmp/unisoc_HD_800_1280.bmp
    ```
 
 2. 替换 `vnd/vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/BOOT_LOGO的值/` 目录下的 `BOOT_LOGO的值_kernel.bmp` 和 `BOOT_LOGO的值_uboot.bmp` 图片，例如 `vnd/vendor/mediatek/proprietary/bootable/bootloader/lk/dev/logo/wxga/` 目录下的 `wxga_kernel.bmp` 和 `wxga_uboot.bmp` 文件。
+
+##### 1.2.3 mt8781_t
+
+修改 `vnd/vendor/mediatek/proprietary/external/BootLogo/logo/wuxga2000nl/` 目录下的 `wuxga2000nl_uboot.bmp` 和 `wuxga2000nl_kernel.bmp` 文件。
+
+> 注意：请根据自己项目的屏幕分辨率进行设置。
