@@ -2,7 +2,9 @@
 
 ### 1. MTK 平台
 
-#### 1.1 MTK8766、Android R
+#### 1.1 MTK8766
+
+##### 1.1.1 Android R
 
 1. 修改 `vendor/mediatek/proprietary/packages/apps/SystemUI/res/layout/status_bar_wifi_group.xml` 文件：
 
@@ -30,5 +32,22 @@
         <com.android.systemui.statusbar.phone.StatusIconContainer android:id="@+id/statusIcons"
    ```
 
-   
+
+##### 1.1.2 Android T
+
+修改 `sys/vendor/mediatek/proprietary/packages/apps/SystemUI/res/layout/status_bar_wifi_group.xml` 文件的如下代码：
+
+```diff
+@@ -27,6 +27,7 @@
+    <com.android.keyguard.AlphaOptimizedLinearLayout
+        android:id="@+id/wifi_group"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_marginStart="2.5dp"
++               android:layout_marginEnd="5dp"
+     >
+         <FrameLayout
+                 android:id="@+id/inout_container"
+```
 

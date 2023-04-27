@@ -10,3 +10,4 @@ MTK Online： https://online.mediatek.com/_layouts/15/mol/ui/ext/home.aspx
 账号：yexin.chen@httek.net  密码： weibu999
 文档密码：7872225733
 
+yexin.chen@httek.net  weibu@#888
