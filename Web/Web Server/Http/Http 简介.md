@@ -1,0 +1,1 @@
+国际互联网工程任务组（The Internet Engineering Task Force, IETF）制定了 HTTP 的细节。其中，HTTP/1.1 对应的 RFC 文档为 RFC2616，它对 HTTP/1.1 做了详细的阐述，网址为：<http://www.ietf.org/rfc/rfc2616.txt>。HTTP/2 对应的 RFC 文档为 RFC7540，它对 HTTP/2 做了详细的阐述，网址为：<http://www.ietf.org/rfc/rfc7540.txt>。
