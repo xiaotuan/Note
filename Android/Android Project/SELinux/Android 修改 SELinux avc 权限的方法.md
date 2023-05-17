@@ -71,6 +71,22 @@ external/selinux/prebuilts/bin
 ./audit2allow -i log > audio.txt
 ```
 
+> 提示：可以使用如下命令安装 audit2allow 程序：
+>
+> ```shell
+> $ sudo apt install policycoreutils		
+> ```
+> 如果运行 audit2allow 报如下错误：
+> ```
+> $ audit2allow 
+>   File "/usr/bin/audit2allow", line 138
+>     except OSError, e:
+>                   ^
+> SyntaxError: invalid syntax
+> ```
+>
+> 请检查 Python 版本是否正确。
+
 执行以上命令可将生成的 avc 权限配置信息输出到 audio.txt 文件。例如，输出信息如下：
 
 ```

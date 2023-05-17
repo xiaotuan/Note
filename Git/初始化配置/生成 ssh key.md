@@ -4,3 +4,9 @@
 $ ssh-keygen -t rsa -C "your_email@youremail.com"
 ```
 
+或者
+
+```shell
+$ ssh_keygen
+```
+
