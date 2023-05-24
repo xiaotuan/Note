@@ -1,0 +1,1 @@
+`Tomcat` 安装软件中附带了详细的使用说明文档，在安装好 `Tomcat` 以后，该文档以 Web 应用的形式存放在 `<CATALINA_HOME>/webapps/docs` 目录下。
