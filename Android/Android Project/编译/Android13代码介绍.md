@@ -60,13 +60,15 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-user M869YCR100_YM_546-MMI
 
-source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-userdebug M869YCR100_YM_537-MMI
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-userdebug M869YCR100_YM_546-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M102BS_QCZN_511-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-user M102BS_QCZN_511-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-userdebug M863YAR310_CC_768_WIFI-MMI
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-user M863YAR310_CC_768_WIFI-MMI
 ```
 
 
