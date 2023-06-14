@@ -77,10 +77,10 @@ On startup:
 
 ```xml
 <array name="bookmark_preloads">
-	<item>@drawable/ic_baidu_favicon</item>
-    <item>@drawable/ic_baidu_touchicon</item>
-    <item>@drawable/ic_google_favicon</item>
-    <item>@drawable/ic_google_touchicon</item>
+	<item>@raw/ic_baidu_favicon</item>
+    <item>@raw/ic_baidu_touchicon</item>
+    <item>@raw/ic_google_favicon</item>
+    <item>@raw/ic_google_touchicon</item>
 </array>
 ```
 
@@ -99,8 +99,13 @@ PartnerBookmarksProvider
 |					|__ PartnerBookmarksProvider.java
 |__ res
 |	|__ values
-|		|__ bookmarks_icons.xml
-|		|__ strings.xml
+|	|	|__ bookmarks_icons.xml
+|	|	|__ strings.xml
+|	|__ raw
+|		|__ ic_baidu_favicon.png
+|		|__ ic_baidu_touchicon.png
+|		|__ ic_google_favicon.png
+|   	|__ ic_google_touchicon.png
 |__ Android.mk
 |__ AndroidManifest.xml
 ```
