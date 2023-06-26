@@ -1,0 +1,1 @@
+`Windows` 终端的源代码可在 <https://github.com/Microsoft/terminal> 访问，它提供了许多有助于开发的特性。

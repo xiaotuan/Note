@@ -34,3 +34,15 @@ namespace N1    // 建立命名空间 N1
 }
 ```
 
+使用 `using` 语句引用静态方法或变量的格式如下：
+
+```c#
+using static 名称空间.静态方法或变量;
+```
+
+例如：
+
+```c#
+using static System.Console;
+```
+
