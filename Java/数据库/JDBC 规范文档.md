@@ -1,0 +1,1 @@
+`JDBC` 规范可以在 <https://download.oracle.com/otndocs/jcp/jdbc-4_2-mrel2-spec/> 处获得。

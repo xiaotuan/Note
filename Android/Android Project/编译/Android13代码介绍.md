@@ -48,6 +48,10 @@ cd sys ; source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_c
 ```
 
 ```shell
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M869YCR100_YM_536-MMI
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M869YCR100_YM_775-MMI
+
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-user M869YCR100_YM_552-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M863YAR310_XJD_645-MMI
