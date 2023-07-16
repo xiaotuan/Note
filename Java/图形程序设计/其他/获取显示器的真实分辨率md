@@ -1,0 +1,10 @@
+可以通过如下代码获取显示器的真实分辨率：
+
+```java
+import java.awt.GraphicsEnvironment;
+
+// 获取显示器真实分辨率
+int screenRealWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+int screenRealHeight = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+```
+
