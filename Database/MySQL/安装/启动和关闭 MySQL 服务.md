@@ -30,13 +30,13 @@ $ mysqladmin -uroot shutdown
 ##### 1.2.2 启动服务
 
 ```shell
-$ net start mysql80
+$ net start MySQL
 ```
 
 ##### 1.2.3 关闭服务
 
 ```shell
-$ net stop mysql80
+$ net stop MySQL
 ```
 
 ### 2. Linux
