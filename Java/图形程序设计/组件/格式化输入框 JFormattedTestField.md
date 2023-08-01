@@ -199,6 +199,7 @@ Object stringToValue(String text);
 > 提示：`Swing Connection` 在线通讯有一篇短文描述了一个可以与任何正则表达式匹配的格式器。参见 <http://www.oracle.com/technetwork/java/reftf-138955.html>。
 
 **示例代码：**
+
 运行效果如下：
 
 ![04](./images/04.png)
