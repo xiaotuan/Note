@@ -50,3 +50,6 @@
 
 ### 3. 文件检查器面板
 
+单击属性窗口中图标 <img src="./images/32.png" style="zoom:50%;" /> 后会显示文件检查器面板，此面板用于显示该文件存储的相关信息。
+
+<img src="./images/33.png" alt="33" style="zoom:50%;" />
