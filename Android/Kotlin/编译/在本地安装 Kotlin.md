@@ -34,6 +34,13 @@
 
 在 `Windows` 上，你可以使用 `Scoop`（<https://scoop.sh>）。`Scoop` 需要 `PowerShell 5`（或更新版本）与 `.NET Framework 4.5`（或更新版本）。简单的安装说明可以在 `Scoop` 网站上找到。
 
+打开一个 `PowerShell` 终端（5.1 版本及以上），并运行下面命令：
+
+```shell
+> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
+> irm get.scoop.sh | iex
+```
+
 `Scoop` 安装成功之后，主 `bucket` 会允许你安装当前版本的 `Kotlin`：
 
 ```shell

@@ -17,7 +17,7 @@ fun main() {
 执行完上面命令后将会生成 `hellokt` 文件，可以使用下面命令运行 `hellokt`：
 
 ```shell
-> kotlin hellokt
+> kotlin hellokt.class
 ```
 
 如果你希望生成一个自包含的可以被 `Java` 命令执行的 `JAR` 文件，可以添加 `-include-runtime` 参数。这将允许你生成一个可以使用 `java` 命令执行的 `JAR`。
