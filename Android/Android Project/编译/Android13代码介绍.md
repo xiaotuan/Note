@@ -85,6 +85,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-us
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-user M863YAR330_YBT_868-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-user M869YCR100_YM_736-MMI
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M100BS_CC_850
 ```
 
 
