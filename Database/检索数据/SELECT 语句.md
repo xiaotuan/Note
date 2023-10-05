@@ -193,9 +193,6 @@ SELECT TOP 限制的行数 列名 FROM Products;
 >    SELECT 列名 FROM 表明 WHERE ROWNUM <= 限制数量;
 >    ```
 >
->    
->
-> 
 
 例如：
 
