@@ -29,3 +29,39 @@ BUILD_NUMBER := 1632390036
 BUILD_NUMBER_WEIBU := 1639122475
 ```
 
+##### 2.1.2 Android T
+
+1. 修改 `sys/device/mediatek/system/common/BoardConfig.mk` 文件的如下代码：
+
+   ```diff
+   @@ -249,7 +249,7 @@ include device/mediatek/system/common/connectivity/BoardConfig.mk
+    
+    include device/mediatek/system/common/BoardConfig-image.mk
+    
+   -WEIBU_BUILD_NUMBER := $(shell date +%s)
+   +WEIBU_BUILD_NUMBER := 1696757177
+    
+    BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+    
+   ```
+
+2. 修改 `vnd/build/make/core/build_id.mk` 文件的如下代码：
+
+   ```diff
+   @@ -18,4 +18,4 @@
+    # (like "CRB01").  It must be a single word, and is
+    # capitalized by convention.
+    
+   -BUILD_ID=SP1A.210812.016
+   +BUILD_ID=TP1A.220624.014
+   ```
+
+3. 修改 `vnd/build/make/core/weibu_config.mk` 文件如下代码：
+
+   ```diff
+   @@ -1 +1 @@
+   -WEIBU_BUILD_NUMBER ?= $(shell date +%s)
+   +WEIBU_BUILD_NUMBER ?= 1696757177
+   ```
+
+   
