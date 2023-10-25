@@ -1,9 +1,0 @@
-函数的格式如下所示：
-
-```c++
-type functionname(argumentlist)
-{
-    statements
-}
-```
-
