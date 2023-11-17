@@ -52,6 +52,15 @@ $ chmod 777 -R WorkSpace/
 + `available = yes`：这个共享是否生效
 + `writable = yes`：是否允许对共享文件夹进行写入操作
 
+在 `[global]` 项下添加如下配置，以允许客户端访问共享目录中的软链接目录或文件：
+
+```
+[global]
+   follow symlinks = yes
+   unix extensions = no
+   wide links = yes
+```
+
 ### 5. 将共享账号添加到 samba 中并设置登录密码
 
 ```shell

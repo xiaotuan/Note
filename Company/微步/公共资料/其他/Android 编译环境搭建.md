@@ -77,7 +77,7 @@ sudo update-alternative --config javac
 使用如下命令打开 `~/.bashrc` 文件，在文件末尾添加如下代码：
 
 ```
-export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=.:$JAVA_HOME/bin:$PATH
 ```
