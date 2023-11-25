@@ -8,3 +8,10 @@ $ setenv GIT_EDITOR emacs
 $ export GIT_EDITOR=vim
 ```
 
+编辑器的选择按照以下步骤的顺序确定：
+
++ `GIT_EDITOR` 环境变量；
++ `core.editor` 配置选项；
++ `VISUAL` 环境变量；
++ `EDITOR` 环境变量；
++ `vi` 命令。

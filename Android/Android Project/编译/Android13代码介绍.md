@@ -97,6 +97,9 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-user M100TBR200_MDF_952
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-userdebug M621QC_CC_793_WIFI-MMI
+
+source build/envsetup.sh;lunch sys_mssi_t_64_ab-user  M862P_YH_273-MMI
+lunch_item="sys_mssi_t_64_ab-user vnd_tb8168p1_64_bsp_k510-user M862P_YH_273-MMI"
 ```
 
 
