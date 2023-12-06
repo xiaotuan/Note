@@ -19,7 +19,19 @@
    startActivityForResult(intent, OPEN_DOCUMENT_REQUEST_CODE);
    ```
 
-3. 在 `Activity` 中覆写 `onActivityResult()` 方法，在该方法中获取 `Activity` 返回的数据。
+3. 在子 `Activity` 中的合适位置调用如下方法返回数据给父 `Activity`：
+
+   ```kotlin
+   setResult(resultCode: Int)
+   setResult(resultCode: Int, data: Intent)
+   ```
+
+   一般来说，参数 `resultCode` 可以是以下任意一个预定义的常量。
+
+   + Activity.RESULT_OK
+   + Activity.RESULT_CANCELED
+
+4. 在 `Activity` 中覆写 `onActivityResult()` 方法，在该方法中获取 `Activity` 返回的数据。
 
    ```java
    @Override
