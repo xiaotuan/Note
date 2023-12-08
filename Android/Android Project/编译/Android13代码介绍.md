@@ -98,6 +98,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-userdebug M621QC_CC_793_WIFI-MMI
 
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M300BS_CF_1007
+
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-userdebug M100TCR100_YH_1036_WIFI
 
 source build/envsetup.sh;lunch sys_mssi_t_64_ab-user  M862P_YH_273-MMI
