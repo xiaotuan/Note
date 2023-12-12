@@ -104,6 +104,7 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_
 
 source build/envsetup.sh;lunch sys_mssi_t_64_ab-user  M862P_YH_273-MMI
 lunch_item="sys_mssi_t_64_ab-user vnd_tb8168p1_64_bsp_k510-user M862P_YH_273-MMI"
+./split_build.sh full ota
 ```
 
 WB_PROJECT对应vnd/weibu/mssi_t_64_cn/M866YA_WB_420-MMI，如果不存在则报错
