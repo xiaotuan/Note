@@ -23,5 +23,27 @@
          @Override
 ```
 
+##### 1.1.2 Android U
 
+修改 `u_sys/vendor/mediatek/proprietary/packages/apps/MtkSettings/src/com/android/settings/wifi/WifiUtils.java` 文件中 `checkShowWifiHotspot()` 方法的如下代码：
+
+```diff
+@@ -259,6 +259,8 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
+      * @return true if Wi-Fi hotspot settings can be displayed
+      */
+     public static boolean checkShowWifiHotspot(Context context) {
++        return false;
++        /*
+         if (context == null) return false;
+ 
+         boolean showWifiHotspotSettings =
+@@ -285,6 +287,7 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
+             return false;
+         }
+         return true;
++        */
+     }
+ 
+     /**
+```
 

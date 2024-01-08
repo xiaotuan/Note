@@ -107,6 +107,8 @@ lunch_item="sys_mssi_t_64_ab-user vnd_tb8168p1_64_bsp_k510-user M862P_YH_273-MMI
 ./split_build.sh full ota
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M300BS_GRTY_1083-MMI-1113
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-user M M863YAR330_YBT_1117-MMI
 ```
 
 WB_PROJECT对应vnd/weibu/mssi_t_64_cn/M866YA_WB_420-MMI，如果不存在则报错
