@@ -116,3 +116,51 @@ public class TomcatConfig {
 文件结构如下：
 
 ![04](./images/04.png)
+
+### 2. Jetty 配置
+
+除了 Tomcat 外，也可以在 Spring Boot 中嵌入 Jetty，配置方法如下（在 pom.xml 文件中修改）：
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+  <!-- 排除默认的 Tomcat 依赖 -->
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-jetty</artifactId>
+</dependency>
+</dependencies>
+```
+
+主要是从 spring-boot-starter-web 中除去默认的 Tomcat，然后加入 Jetty 的依赖即可。
+
+### 3. Undertow 配置
+
+Undertow 是一个红帽公司开源的 Java 服务器，具有非常好的性能，配置方式与 Jetty 类似，代码如下：
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+  <!-- 排除默认的 Tomcat 依赖 -->
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-undertow</artifactId>
+</dependency>
+```
+

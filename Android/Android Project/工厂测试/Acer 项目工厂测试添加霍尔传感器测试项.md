@@ -1,21 +1,5 @@
 [toc]
 
-> 提示：Acer 工厂测试修改。
->
-> ```
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/AndroidManifest.xml
-> new file:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/res/layout/test_result_hall_switch.xml
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/res/values-zh-rCN/strings.xml
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/res/values/strings.xml
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/src/com/mediatek/factorymode/BatteryLog.java
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/src/com/mediatek/factorymode/FactoryMode.java
-> modified:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/src/com/mediatek/factorymode/Utils.java
-> new file:   vendor/mediatek/proprietary/packages/apps/FactoryMode_Acer/src/com/mediatek/factorymode/sensor/HallSwitchTest.java
-> modified:   weibu/mssi_t_64_cn_armv82_wifi/M100TCR100_YH_1036_WIFI/alps/frameworks/base/services/core/java/com/android/server/policy/PhoneWindowManager.java
-> ```
->
-> 
-
 ### 1. MTK
 
 #### 1.1 MT8766
