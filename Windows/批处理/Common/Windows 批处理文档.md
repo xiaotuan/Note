@@ -1,0 +1,1 @@
+关于 `Windows` 批处理的更多细节请参阅 <https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands>.
