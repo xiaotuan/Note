@@ -1,0 +1,59 @@
+可以通过监听 `valueChanged(int)` 信号来监听仪表盘数值的变化：
+
+在 `mainwindow.h` 头文件中声明槽：
+
+```h
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+
+private slots:
+    void on_Dial_valueChanged(int value);
+
+private:
+    Ui::MainWindow *ui;
+};
+
+#endif // MAINWINDOW_H
+```
+
+在 `mainwindow.cpp` 源代码文件中将信号与槽关联：
+
+```cpp
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    QObject::connect(ui->dial, SIGNAL(valueChanged(int)), this, SLOT(on_Dial_valueChanged(int)));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_Dial_valueChanged(int value)
+{
+    // 设置 LCD 的显示值等于 Dial 的值
+    ui->LCDDisplay->display(value);
+}
+```
+

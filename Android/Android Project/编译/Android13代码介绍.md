@@ -90,6 +90,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M100BS_CC_850
 
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-user M100BS_CC_851
+
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-userdebug M100TBR200_MDF_952
 
 source build/envsetup.sh && export OUT_DIR=out && lunch vext_tb8781p1_64-user M100TBR200_MDF_952

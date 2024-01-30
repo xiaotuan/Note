@@ -1,6 +1,4 @@
-[toc]
-
-`QSlider`、`QScrollBar` 和 `Qdial` 3 个组件都从 `QAbstractSlider` 继承而来，有一些共有的属性。`QSlider` 是滑动的标尺型组件，滑动标尺上的一个滑块可以改变值。
+`QScrollBar` 从 `QAbstractSlider` 继承而来的，具有 `QAbstractSlider` 的基本属性，没有专有属性。
 
 基类 `QAbstractSlider` 的主要属性包括以下几种：
 
@@ -15,14 +13,3 @@
   + `Qt::Vertical` 垂直方向
 + `invertedAppearance`：显示方式是否反向，`invertedAppearance=false` 时， 水平的 `Slider` 由左向右数值增大，否则返过来。
 + `invertedControls`：反向按键控制，若 `invertedControls=true`，则按下 `PgUp` 或   `PgDn` 按键时调整数值的方向相反。
-
-属于 `QSlider` 的专有属性有两个，如下：
-
-+ `tickPosition`：标尺刻度的显示位置，使用枚举类型 `QSlider::TickPosition`，取值包括以下 6 种：
-  + `QSlider::NoTicks`：不显示刻度
-  + `QSlider::TicksBothSides`：标尺两侧都显示刻度
-  + `QSlider::TicksAbove`：标尺上方显示刻度
-  + `QSlider::TicksBelow`：标尺下方显示刻度
-  + `QSlider::TicksLeft`：标尺左侧显示刻度
-  + `QSlider::TicksRight`：标尺右侧显示刻度
-+ `tickInterval`：标尺刻度的间隔值，若设置为 0，会在 `singleStep` 和 `pageStep` 之间自动选择。
