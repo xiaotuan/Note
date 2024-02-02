@@ -1,0 +1,419 @@
+在实际的打印操作中，通常不应该将原生的 `Printable` 对象传递给打印作业。相反，应该获取一个实现了 `Pageable` 接口的类的对象。`Java` 平台提供了这样的一个被称为 `Book` 的类。可以通过添加 `Printable` 对象和相应的页数来构建一个 `Book` 对象：
+
+```java
+Book book = new Book();
+Printable coverPage = ...;
+Printable bodyPages = ...;
+book.append(coverPage, pageFormat);	// append 1 page
+book.append(bodyPage, pageFormat, pageCount);
+```
+
+然后，可以使用 `setPageable` 方法把 `Book` 对象传递给打印作业。
+
+```java
+printJob.setPageable(book);
+```
+
+现在，打印作业就知道将要打印的确切页数了。然后，打印对话框显示一个准确的页面范围，用户可以选择整个页面范围或可选择它的一个子范围。
+
+> 警告：当打印作业调用 `Printable` 章节的 `print` 方法时， 它传递的是该书的当前页码，而不是每个章节的页码。这让人非常痛苦，因为每个章节必须知道它之前所有章节的页数，这样才能使得页码参数有意义。
+
+从程序员的视角来看，使用 `Book` 类最大的挑战就是，当你打印它时，必须知道每一个章节究竟有多少页。你的 `Printable` 类需要一个布局算法，以便用来计算在打印页面上的素材的布局。在打印开始前，要调用这个算法来计算出分页符的位置和页数。可以保留此布局信息，从而可以在打印的过程中方便地使用它。
+
+必须警惕 “用户已经修改过页面格式” 这种情况的发生。如果用户修改了页面格式，即使是锁打印的信息没有发生任何改变，也必须要重新计算布局。
+
+> 警告：如果要准确地布局打印信息，通常需要访问打印机的图形上下文。遗憾的是，只有当打印真正开始时，才能获得打印机的图形上下文。在我们的示例程序中使用的是屏幕的图形上下文，并且希望屏幕的字体度量单位与打印机的相匹配。
+
+下面示例中显示了如何产生一个多页打印输出。该程序用很大的字符在多个页面上打印一条消息。然后，可以剪裁掉页边缘，并将这些页面粘连起来，形成一个标语。
+
+![05](./images/05.png)
+
+`Banner` 类的 `layoutPages` 方法用以计算页面的布局。我们饿首先展示了一个字体为 72 磅的消息字符串。然后，我们计算产生的字符串的高度，并且将其与该页面的可打印高度进行比较。我们根据这两个高度值得出一个比例因子，当打印该字符串时，我们安装比例因子来放大次字符串。
+
+`Banner` 类的 `getPageCount` 方法首先调用布局方法。然后，扩展字符串的宽度，并且将该宽度除以每一页的可打印宽度。得到的商向上取整，就是要打印的页数。
+
+**PrintPreviewCanvas.java**
+
+```java
+package com.qty;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+
+/**
+ * The canvas for displaying the print preview.
+ */
+public class PrintPreviewCanvas extends JComponent {
+
+    private Book book;
+    private int currentPage;
+
+    /**
+     * Constructs a print preview canvas.
+     * @param b the book to be previewed
+     */
+    public PrintPreviewCanvas(Book b) {
+        book = b;
+        currentPage = 0;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        PageFormat pageFormat = book.getPageFormat(currentPage);
+
+        double xoff;    // x offset of page start in window
+        double yoff;    // y offset of page start in window
+        double scale;   // scale factor to fit page in window
+        double px = pageFormat.getWidth();
+        double py = pageFormat.getHeight();
+        double sx = getWidth() - 1;
+        double sy = getHeight() -1;
+        if (px / py < sx / sy) {    // center horizontally
+            scale = sy / py;
+            xoff = 0.5 * (sx - scale * px);
+            yoff = 0;
+        } else {    // center vertically
+            scale = sx / px;
+            xoff = 0;
+            yoff = 0.5 * (sy - scale * py);
+        }
+        g2.translate((float) xoff, (float) yoff);
+        g2.scale((float) scale, (float) scale);
+
+        // draw page outline (ignoring margins)
+        Rectangle2D page = new Rectangle2D.Double(0, 0, px, py);
+        g2.setPaint(Color.WHITE);
+        g2.fill(page);
+        g2.setPaint(Color.BLACK);
+        g2.draw(page);
+
+        Printable printable = book.getPrintable(currentPage);
+        try {
+            printable.print(g2, pageFormat, currentPage);
+        } catch (PrinterException e) {
+            g2.draw(new Line2D.Double(0, 0, px, py));
+            g2.draw(new Line2D.Double(px, 0, 0, py));
+        }
+    }
+
+    /**
+     * Flip the book by the given number of pages.
+     * @param by the number of pages to flip by, Negative values flip backward.
+     */
+    public void flipPage(int by) {
+        int newPage = currentPage + by;
+        if (0 <= newPage && newPage < book.getNumberOfPages()) {
+            currentPage = newPage;
+            repaint();
+        }
+    }
+}
+```
+
+**PrintPreviewDialog.java**
+
+```java
+package com.qty;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+
+/**
+ * This class implements a generic print preview dialog.
+ */
+public class PrintPreviewDialog extends JDialog {
+
+    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_HEIGHT = 300;
+
+    private PrintPreviewCanvas canvas;
+
+    /**
+     * Constructs a print preview dialog.
+     * @param p a Printable
+     * @param pf the page format
+     * @param pages the number of pages in p
+     */
+    public PrintPreviewDialog(Printable p, PageFormat pf, int pages) {
+        Book book = new Book();
+        book.append(p, pf, pages);
+        layoutUI(book);
+    }
+
+    public PrintPreviewDialog(Book b) {
+        layoutUI(b);
+    }
+
+    /**
+     * Lays out the UI of the dialog
+     * @param book the book to be previewed
+     */
+    public void layoutUI(Book book) {
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+        canvas = new PrintPreviewCanvas(book);
+        add(canvas, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+
+        JButton nextButton = new JButton("Next");
+        buttonPanel.add(nextButton);
+        nextButton.addActionListener(event -> canvas.flipPage(1));
+
+        JButton previousButton = new JButton("Previous");
+        buttonPanel.add(previousButton);
+        previousButton.addActionListener(event -> canvas.flipPage(-1));
+
+        JButton closeButton = new JButton("Close");
+        buttonPanel.add(closeButton);
+        closeButton.addActionListener(event -> setVisible(false));
+
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+}
+```
+
+**Banner.java**
+
+```java
+package com.qty;
+
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+
+/**
+ * A banner that prints a text string on multiple pages.
+ */
+public class Banner implements Printable {
+
+    private String message;
+    private double scale;
+
+    /**
+     * Constructs a banner.
+     * @param m the message string
+     */
+    public Banner(String m) {
+        message = m;
+    }
+
+    /**
+     * Gets the page count of this section.
+     * @param g2 the graphics context
+     * @param pf the page format
+     * @return the number of pages needed
+     */
+    public int getPageCount(Graphics2D g2, PageFormat pf) {
+        if (message.isEmpty()) {
+            return 0;
+        }
+        FontRenderContext context = g2.getFontRenderContext();
+        Font f = new Font("Serif", Font.PLAIN, 72);
+        Rectangle2D bounds = f.getStringBounds(message, context);
+        scale = pf.getImageableHeight() / bounds.getHeight();
+        double width = scale * bounds.getWidth();
+        int pages = (int) Math.ceil(width / pf.getImageableWidth());
+        return pages;
+    }
+
+    @Override
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        Graphics2D g2 = (Graphics2D) graphics;
+        if (pageIndex > getPageCount(g2, pageFormat)) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+
+        drawPage(g2, pageFormat, pageIndex);
+        return Printable.PAGE_EXISTS;
+    }
+
+    public void drawPage(Graphics2D g2, PageFormat pf, int page) {
+        if (message.isEmpty()) {
+            return;
+        }
+        page--; // account for cover page
+
+        drawCropMarks(g2, pf);
+
+        g2.clip(new Rectangle2D.Double(0, 0, pf.getImageableWidth(), pf.getImageableHeight()));
+        g2.translate(-page * pf.getImageableWidth(), 0);
+        g2.scale(scale, scale);
+        FontRenderContext context = g2.getFontRenderContext();
+        Font f = new Font("Serif", Font.PLAIN, 72);
+        TextLayout layout = new TextLayout(message, f, context);
+        AffineTransform transform = AffineTransform.getTranslateInstance(0, layout.getAscent());
+        Shape outline = layout.getOutline(transform);
+        g2.draw(outline);
+    }
+
+    /**
+     * Draws 1/2" crop marks in the corners of the page.
+     * @param g2 the graphics context
+     * @param pf the page format
+     */
+    public void drawCropMarks(Graphics2D g2, PageFormat pf) {
+        final double C = 36;    // crop mark length = 1/2 inch
+        double w = pf.getImageableWidth();
+        double h = pf.getImageableHeight();
+        g2.draw(new Line2D.Double(0, 0, 0, C));
+        g2.draw(new Line2D.Double(0, 0, C, 0));
+        g2.draw(new Line2D.Double(w, 0, w, C));
+        g2.draw(new Line2D.Double(w, 0, w - C, 0));
+        g2.draw(new Line2D.Double(0, h, 0, h - C));
+        g2.draw(new Line2D.Double(0, h, C, h));
+        g2.draw(new Line2D.Double(w, h, w, h - C));
+        g2.draw(new Line2D.Double(w, h, w - C, h));
+    }
+}
+
+/**
+ * This class prints a cover page with a title.
+ */
+class CoverPage implements Printable {
+
+    private String title;
+
+    /**
+     * Constructs a cover page.
+     * @param t the title
+     */
+    public CoverPage(String t) {
+        title = t;
+    }
+
+    @Override
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        if (pageIndex >= 1) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        Graphics2D g2 = (Graphics2D) graphics;
+        g2.setPaint(Color.BLACK);
+        g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+        FontRenderContext context = g2.getFontRenderContext();
+        Font f = g2.getFont();
+        TextLayout layout = new TextLayout(title, f, context);
+        float ascent = layout.getAscent();
+        g2.drawString(title, 0, ascent);
+        return Printable.PAGE_EXISTS;
+    }
+}
+```
+
+**BookTestFrame.java**
+
+```java
+package com.qty;
+
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.print.*;
+
+/**
+ * This frame has a text field for the banner text and buttons for printing, page setup, and print
+ * preview.
+ */
+public class BookTestFrame extends JFrame {
+
+    private JTextField text;
+    private PageFormat pageFormat;
+    private PrintRequestAttributeSet attributes;
+
+    public BookTestFrame() {
+        text = new JTextField();
+        add(text, BorderLayout.NORTH);
+
+        attributes = new HashPrintRequestAttributeSet();
+
+        JPanel buttonPanel = new JPanel();
+
+        JButton printButton = new JButton("Print");
+        buttonPanel.add(printButton);
+        printButton.addActionListener(event -> {
+            try {
+                PrinterJob job = PrinterJob.getPrinterJob();
+                job.setPageable(makeBook());
+                if (job.printDialog(attributes)) {
+                    job.print(attributes);
+                }
+            } catch (PrinterException e) {
+                JOptionPane.showMessageDialog(BookTestFrame.this, e);
+            }
+        });
+
+        JButton pageSetupButton = new JButton("Page setup");
+        buttonPanel.add(pageSetupButton);
+        pageSetupButton.addActionListener(event -> {
+            PrinterJob job = PrinterJob.getPrinterJob();
+            pageFormat = job.pageDialog(attributes);
+        });
+
+        JButton printPreviewButton = new JButton("Print preview");
+        buttonPanel.add(printPreviewButton);
+        printPreviewButton.addActionListener(event -> {
+            PrintPreviewDialog dialog = new PrintPreviewDialog(makeBook());
+            dialog.setVisible(true);
+        });
+
+        add(buttonPanel, BorderLayout.SOUTH);
+        pack();
+    }
+
+    /**
+     * Makes a book that contains a cover page and the pages for the banner.
+     */
+    public Book makeBook() {
+        if (pageFormat == null) {
+            PrinterJob job = PrinterJob.getPrinterJob();
+            pageFormat = job.defaultPage();
+        }
+        Book book = new Book();
+        String message = text.getText();
+        Banner banner = new Banner(message);
+        int pageCount = banner.getPageCount((Graphics2D) getGraphics(), pageFormat);
+        book.append(new CoverPage(message + " (" + pageCount + " pages)"), pageFormat);
+        book.append(banner, pageFormat, pageCount);
+        return book;
+    }
+}
+```
+
+**BookTest.java**
+
+```java
+package com.qty;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BookTest {
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            BookTestFrame frame = new BookTestFrame();
+            frame.setTitle("打印多页文件");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        });
+    }
+}
+```
+
