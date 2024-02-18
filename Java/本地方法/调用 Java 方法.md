@@ -252,3 +252,29 @@ jobject obj_ret = (*env)->CallStaticObjectMethod(env, class_System, id_getProper
 jstring str_ret = (jstring) obj_ret;
 ```
 
+### 3. 构造器
+
+本地方法可以通过构造器来创建新的 `Java` 对象。可以调用 `NewObject` 函数来调用构造器：
+
+```c
+jobject obj_new = (*env)->NewObject(env, class, methodID, construction parameters);
+```
+
+可以通过指定方法名为 `<init>`，并指定构造器（返回值为 `void`）的编码签名，从 `GetMethodID` 函数中获取该调用必需的方法 `ID`。例如，下面是本地方法创建 `FileOutputStream` 对象的情形：
+
+```c
+const char[] fileName = "...";
+jstring str_fileName = (*env)->NewStringUTF(env, fileName);
+jclass class_FileOutputStream = (*env)->FindClass(env, "java/io/FileOutputStream");
+jmethodID id_FileOutputStream = (*env)->GetMethodID(env, class_FileOutputStream, "<init>", "(Ljava/lang/String;)V");
+jobject obj_stream = (*env)->NewObject(env, class_FileOutputStream, id_FileOutputStream, str_fileName);
+```
+
+### 4. 另一种方法调用
+
+有若干种 `JNI` 函数的变体都可以从本地代码调用 `Java` 方法。
+
+`CallNonvirtualXxxMethod` 函数接收一个隐式参数、一个方法 `ID`、一个类对象（必须对应于隐式参数的超类）和一个显式参数。这个函数将调用指定的类中指定版本的方法，而不使用常规的动态调用机制。
+
+所有调用函数都有后缀 `A` 和 `V` 的版本，用于接收数组中或 `va_list` 中的显示参数（就像在 `C` 头文件 `stdarg.h` 中所定义的那样。
+
