@@ -48,7 +48,7 @@ id_print = (*env)->GetMethodID(env, class_PrintWriter, "print", "(Ljava/lang/Str
 > methodID FromReflectedMethod(JNIEnv* env, jobject method);
 > jobject ToReflectedField(JNIEnv* env, jclass class, jfieldID fieldID);
 > // returns Field object
-> fieldIDFromReflec(JNIEnv* env, jobject field);
+> fieldID FromReflec(JNIEnv* env, jobject field);
 > ```
 
 **示例程序：**

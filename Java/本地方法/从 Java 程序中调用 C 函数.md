@@ -188,7 +188,7 @@ gcc -mno-cygwin -D __int64="long long" -I jdk/include/ -I jdk/include/win32 -sha
 
 10）最后点击菜单 `生成(B)` -> `生成 HelloNative (U)` 菜单生成 `HelloNative.dll` 文件。
 
-![10](./images/10.pn)
+![10](./images/10.png)
 
 最后，我们要在程序中添加一个对 `System.loadLibrary` 方法的调用。为了确保虚拟机在第一次使用该类之前就会转载这个库，需要使用静态初始化代码。下图给出了对本地代码处理的总结：
 
