@@ -26,7 +26,6 @@ frameworks/base/services/core/java/com/android/server/pm/DefaultPermissionGrantP
 +                grantRuntimePermissionsLPw(feedBackPackage, STORAGE_PERMISSIONS, userId);
 +                grantRuntimePermissionsLPw(feedBackPackage, CAMERA_PERMISSIONS, userId);
 +            } 
-123456789101112131415161718
 ```
 
 2.非系统签名应用，（手动安装以及v2签名应用）
@@ -49,7 +48,7 @@ frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.j
 123456789101112
 ```
 
-### 3. 通过配置文件进行修改
+### 2. 通过配置文件进行修改
 1， 需要新建一个以.xml结尾的XML文件，例如default-permissions.xml
 2，这个文件的内容如下：
 
@@ -82,3 +81,23 @@ prebuilt_etc {
 | proprietary : true     | vendor/etc/subdir  |
 
 4, 恢复出厂设置验证
+
+### 3. Android 13 给应用添加默认权限
+
+修改 `frameworks/base/services/core/java/com/android/server/pm/permission/DefaultPermissionGrantPolicy.java` 文件中 `grantDefaultSystemHandlerPermissions(PackageManagerWrapper pm, int userId)` 方法的如下代码：
+
+```diff
+@@ -714,6 +714,11 @@ public final class DefaultPermissionGrantPolicy {
+                 getDefaultSystemHandlerActivityPackageForCategory(pm,
+                         Intent.CATEGORY_APP_CALENDAR, userId),
+                 userId, CALENDAR_PERMISSIONS, CONTACTS_PERMISSIONS, NOTIFICATION_PERMISSIONS);
++                               
++        // The notification permission is granted to the alarm application by default by qty at 2023-03-15 {{&&
++        // DeskClock
++        grantPermissionsToSystemPackage(pm, "com.google.android.deskclock", userId, NOTIFICATION_PERMISSIONS);
++        // &&}}
+ 
+         // Calendar provider
+         String calendarProvider =
+```
+
