@@ -81,7 +81,43 @@ crimeRecyclerView.adapter = adapter
 
 ### 6. 完整代码
 
-**CrimeListFragment.kt**
+#### 6.1 Crime.kt
+
+```kotlin
+package com.bignerdranch.android.criminalintent
+
+import java.util.Date
+import java.util.UUID
+
+data class Crime(val id: UUID = UUID.randomUUID(),
+    var title: String = "",
+    var date: Date = Date(),
+    var isSolved: Boolean = false)
+```
+
+#### 6.2 CrimeListViewModel.kt
+
+```kotlin
+package com.bignerdranch.android.criminalintent
+
+import androidx.lifecycle.ViewModel
+
+class CrimeListViewModel : ViewModel() {
+
+    val crimes = mutableListOf<Crime>()
+
+    init {
+        for (i in 0 until 100) {
+            val crime = Crime()
+            crime.title = "Crime #$i"
+            crime.isSolved = i % 2 == 0
+            crimes += crime
+        }
+    }
+}
+```
+
+#### 6.3 CrimeListFragment.kt
 
 ```kotlin
 package com.bignerdranch.android.criminalintent
@@ -179,3 +215,78 @@ class CrimeListFragment : Fragment() {
 }
 ```
 
+#### 6.4 MainActivity.kt
+
+```kotlin
+package com.bignerdranch.android.criminalintent
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if (currentFragment == null) {
+            val fragment = CrimeListFragment.newInstance()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit()
+        }
+    }
+}
+```
+
+#### 6.5 list_item_crime.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/crime_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crime Title" />
+
+    <TextView
+        android:id="@+id/crime_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crime Date" />
+
+</LinearLayout>
+```
+
+#### 6.6 fragment_crime_list.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/crime_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
+
+#### 6.7 activity_main.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" />
+```
+
+运行效果如下：
+
+![01](./images/01.png)

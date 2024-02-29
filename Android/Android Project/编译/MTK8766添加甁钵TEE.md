@@ -67,9 +67,13 @@ TRUSTKERNEL_TEE_VERSION=20
 
 `array.c` 文件可以在甁钵TEE申请网站下载。
 
+> 注意：MT8781 芯片放置位置为 `vendor/mediatek/proprietary/trustzone/trustkernel/source/build/hal_mgvi_t_64_armv82/array.c`。
+
 #### 2.7 将在甁钵TEE网站生成的 `dat` 证书文件替换掉 `vendor/mediatek/proprietary/trustzone/trustkernel/source/build/m863u_bsp_64/cert.dat` 文件
 
 证书文件可以在甁钵申请网站上获得。
+
+> 注意：MT8781 芯片放置位置为 `vendor/mediatek/proprietary/trustzone/trustkernel/source/build/hal_mgvi_t_64_armv82/cert.dat`。
 
 #### 2.8 最后需要将申请到的 keybox 压缩包文件上传到甁钵网站
 

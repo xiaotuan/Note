@@ -106,6 +106,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdeb
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-userdebug M100TCR100_YH_1036_WIFI
 
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1239
+
 source build/envsetup.sh;lunch sys_mssi_t_64_ab-user  M862P_YH_273-MMI
 lunch_item="sys_mssi_t_64_ab-user vnd_tb8168p1_64_bsp_k510-user M862P_YH_273-MMI"
 ./split_build.sh full ota
@@ -115,6 +117,10 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdeb
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_datasms-user M863YAR330_YBT_1117-MMI
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-user M863DC_YG_988_WIFI
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M866YC_SBYH_770
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-userdebug M100TCR100_BSD_1145
 ```
 
 WB_PROJECT对应vnd/weibu/mssi_t_64_cn/M866YA_WB_420-MMI，如果不存在则报错
