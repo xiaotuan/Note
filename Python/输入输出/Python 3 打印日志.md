@@ -39,5 +39,8 @@ print("请选择要阅读的小说编号：", end='')
 **方法四：**
 
 ```python
+age = 36
+name = "Xiaotuan"
+print('You age is', i, ", Hello ", name)
 ```
 
