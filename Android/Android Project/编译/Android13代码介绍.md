@@ -108,6 +108,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1239
 
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1247
+
 source build/envsetup.sh;lunch sys_mssi_t_64_ab-user  M862P_YH_273-MMI
 lunch_item="sys_mssi_t_64_ab-user vnd_tb8168p1_64_bsp_k510-user M862P_YH_273-MMI"
 ./split_build.sh full ota
