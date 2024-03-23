@@ -106,6 +106,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdeb
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-userdebug M100TCR100_YH_1036_WIFI
 
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1202
+
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1239
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82_wifi-user M100TCR100_YH_1036_WIFI-1247
@@ -123,6 +125,8 @@ source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_wifi-us
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn-userdebug M866YC_SBYH_770
 
 source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-userdebug M100TCR100_BSD_1145
+
+source build/envsetup.sh && export OUT_DIR=out && lunch sys_mssi_t_64_cn_armv82-userdebug M300TCR100_HQ_1160
 ```
 
 WB_PROJECT对应vnd/weibu/mssi_t_64_cn/M866YA_WB_420-MMI，如果不存在则报错

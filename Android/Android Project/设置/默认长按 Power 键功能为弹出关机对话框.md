@@ -6,7 +6,7 @@
 
 ##### 1.1.1 Android U
 
-修改 `sys/vendor/partner_gms/gms_overlay/frameworks/base/core/res/res/values/config.xml` 文件的如下代码：
+修改 `sys/vendor/partner_gms/overlay/gms_overlay/frameworks/base/core/res/res/values/config.xml` 文件的如下代码：
 
 ```diff
 @@ -45,5 +45,5 @@

@@ -1,0 +1,31 @@
+[toc]
+
+### 1. MTK
+
+#### 1.1 MT8168
+
+##### 1.1.1 Android S
+
+修改 `frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java` 文件 `InstallParams` 类的 `handleStartCopy()` 方法的如下代码：
+
+```diff
+@@ -18217,6 +18217,17 @@ public class PackageManagerService extends IPackageManager.Stub
+          * on the install location.
+          */
+         public void handleStartCopy() {
++            // Forbid Google Store to install apps by qty at 2024-03-22 {{
++            boolean enabled = android.provider.Settings.Secure.getInt(mContext.getContentResolver(), "prohibit_googleplay_install", 0) == 1;
++            android.util.Log.d("PMS", "handleStartCopy=>enabled: " + enabled);
++            if (enabled) {
++                android.util.Log.d("PMS", "handleStartCopy=>install package name: " + (installSource != null ? installSource.installerPackageName : "null"));
++                if (installSource != null && "com.android.vending".equals(installSource.installerPackageName)) {
++                    mRet = android.content.pm.PackageManager.INSTALL_FAILED_VERIFICATION_FAILURE;
++                    return;
++                }
++            }
++            // &&}}
+             if ((installFlags & PackageManager.INSTALL_APEX) != 0) {
+                 mRet = INSTALL_SUCCEEDED;
+                 return;
+```
+
